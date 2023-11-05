@@ -1,0 +1,22 @@
+{% extends 'base.html' %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}login - in {% endblock %}</title>
+</head>
+{% block content %}
+<body>
+    <div class="container">
+        <h1>Login - in</h1>
+        <p>Please, use the following form to login - in</p>
+        <form method="post">
+            {{ form.as_p }}
+            {% csrf_token %}
+            <p><input type="submit" value="Log in"></p>
+        </form>         
+    </div>
+</body>
+{% endblock %}
+</html>

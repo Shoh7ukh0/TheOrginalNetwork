@@ -1,0 +1,40 @@
+{% extends "base.html" %}
+{% block title %}Create an account{% endblock %}
+{% block content %}
+<!-- **************** MAIN CONTENT START **************** -->
+<main>
+  
+    <!-- Container START -->
+    <div class="container">
+      <div class="row justify-content-center align-items-center vh-100 py-5">
+        <!-- Main content START -->
+        <div class="col-sm-10 col-md-8 col-lg-7 col-xl-6 col-xxl-5">
+          <!-- Sign up START -->
+          <div class="card card-body rounded-3 p-4 p-sm-5">
+            <div class="text-center">
+              <!-- Title -->
+              <h1 class="mb-2">Sign up</h1>
+              <span class="d-block">Already have an account? <a href="{% url 'login' %}">Sign in here</a></span>
+            </div>
+            <!-- Form START -->
+            <form class="mt-4">
+                {{ user_form.as_p }}
+                {% csrf_token %}
+              <!-- Button -->
+              <div class="d-grid"><button type="submit" class="btn btn-lg btn-primary">Sign me up</button></div>
+              <!-- Copyright -->
+              <p class="mb-0 mt-3 text-center">©2023 <a target="_blank" href="">Shohrukh Uralov.</a> All rights reserved</p>
+            </form>
+            <!-- Form END -->
+          </div>
+          <!-- Sign up END -->
+        </div>
+      </div> <!-- Row END -->
+    </div>
+    <!-- Container END -->
+  
+  </main>
+  
+  <!-- **************** MAIN CONTENT END **************** -->
+  
+{% endblock %}

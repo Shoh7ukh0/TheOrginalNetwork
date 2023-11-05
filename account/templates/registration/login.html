@@ -388,10 +388,24 @@
                 </div>
                 <!-- Button -->
                 <div class="d-grid">
-                    <button type="submit" class="btn btn-lg btn-primary-soft">Login</button>
+                    <button type="submit" class="btn btn-lg btn-primary-soft" value="Log in">Login</button>
+                </div> <br>
+                <div>
+                  <ul>
+                    <li style="padding: 10px 100px; position: relative; left: -15px;" class="btn btn-info">
+                      <a style="color: #fff; letter-spacing: 1px;" href="{% url 'social:begin' 'facebook' %}">
+                        Sign in with Facebook
+                      </a>
+                    </li>
+                    <li style="padding: 10px 110px; position: relative; top: 1em; left: -15px;" class="btn btn-danger">
+                      <a style="color: #fff; letter-spacing: 1px;" href="{% url 'social:begin' 'google-oauth2' %}">
+                        Sign in with Google
+                      </a>
+                    </li>
+                  </ul>
                 </div>
                 <!-- Copyright -->
-                <p class="mb-0 mt-3">©2023 <a target="_blank" href="#">Shohrukh Uralov.</a> All rights reserved</p>
+                <p style="position: relative; top: 1em;" class="mb-0 mt-3">©2023 <a target="_blank" href="#">Shohrukh Uralov.</a> All rights reserved</p>
             </form>
             <!-- Form END -->
           </div>

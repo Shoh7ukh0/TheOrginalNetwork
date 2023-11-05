@@ -1,5 +1,6 @@
 {% extends 'base.html' %}
 {% load static %}
+{% load thumbnail %}
 <!DOCTYPE html>
 <html lang="en">
 	
@@ -120,10 +121,14 @@
 										<div class="text-center">
 										<!-- Avatar -->
 										<div class="avatar avatar-lg mt-n5 mb-3">
-											<a href="#!"><img class="avatar-img rounded border border-white border-3" src="{% static 'assets/images/avatar/07.jpg' %}" alt=""></a>
+											<a href="#!"><img class="avatar-img rounded border border-white border-3" src="{% thumbnail user.profile.photo 180x180 %}" alt=""></a>
 										</div>
 										<!-- Info -->
-										<h5 class="mb-0"> <a href="#!">Sam Lanson </a> </h5>
+										<h5 class="mb-0"> <a href="#!">
+											{% if request.user.is_authenticated %}
+												{{ request.user.first_name|default:request.user.username }} 
+											{% endif %} <i class="bi bi-patch-check-fill text-success small"></i>
+										</a> </h5>
 										<small>Web Developer at Webestica</small>
 										<p class="mt-3">I'd love to change the world, but they won’t give me the source code.</p>
 
@@ -184,7 +189,7 @@
 								<!-- Card body END -->
 								<!-- Card footer -->
 								<div class="card-footer text-center py-2">
-									<a class="btn btn-link btn-sm" href="my-profile.html">View Profile </a>
+									<a class="btn btn-link btn-sm" href="{% url 'dashboard' %}">View Profile </a>
 								</div>
 							</div>
 							<!-- Card END -->
@@ -212,7 +217,7 @@
 							</ul>
 							<!-- Helper link END -->
 							<!-- Copyright -->
-							<p class="small text-center mt-1">©2023 <a class="text-body" target="_blank" href="https://www.webestica.com/"> Webestica </a></p>
+							<p class="small text-center mt-1">©2023 <a class="text-body" target="_blank" href="#"> The Original </a></p>
 						</div>
 					</div>
 				</nav>

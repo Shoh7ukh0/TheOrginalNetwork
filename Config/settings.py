@@ -12,6 +12,8 @@ https://docs.djangoproject.com/en/4.2/ref/settings/
 
 from pathlib import Path
 
+from django.urls import reverse_lazy
+
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
@@ -25,7 +27,15 @@ SECRET_KEY = 'django-insecure-4#ro1y)@fuy4z4u41)!8y)e#u@lcmgs!dgi0k#g**qv43bje*!
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['mysite.com', 'localhost', '127.0.0.1']
+
+ABSOLUTE_URL_OVERRIDES = {
+    'auth.user': lambda u: reverse_lazy('user_detail', args=[u.username])
+}
+
+INTERNAL_IPS = [
+    '127.0.0.1',
+]
 
 
 # Application definition
@@ -39,7 +49,11 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'account',
     'actions',
-    'original'
+    'original',
+
+    'social_django',
+    'django_extensions',
+    'easy_thumbnails',
 
     # +998 90 6966996
 ]
@@ -59,7 +73,7 @@ ROOT_URLCONF = 'Config.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
+        'DIRS': [BASE_DIR / 'templates'],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -140,3 +154,24 @@ EMAIL_PORT = '587'
 EMAIL_USE_TLS = True
 EMAIL_HOST_USER = 'avalondokoni@gmail.com'
 EMAIL_HOST_PASSWORD = 'dacdavlgtxruglrh'
+
+
+AUTHENTICATION_BACKENDS = [
+    'django.contrib.auth.backends.ModelBackend',
+    # 'account.authentication.EmailAuthBackend',
+    'social_core.backends.facebook.FacebookOAuth2',
+    'social_core.backends.google.GoogleOAuth2',
+]
+
+
+# >>>>>>>>>>>>>> Facebook <<<<<<<<<<<<<
+
+SOCIAL_AUTH_FACEBOOK_KEY = '1310041119690270' # ИД приложения Facebook
+SOCIAL_AUTH_FACEBOOK_SECRET = 'b26ee97e84165687194d1114fa6e0397' # Секрет приложения Facebook
+
+SOCIAL_AUTH_FACEBOOK_SCOPE = ['email']
+
+# >>>>>>>>>>>>>> Google <<<<<<<<<<<<<<<
+
+SOCIAL_AUTH_GOOGLE_OAUTH2_KEY = '316288742019-2o89ajpufmh02a4qu52ot36pr6ijg23t.apps.googleusercontent.com' # ИД клиента Google
+SOCIAL_AUTH_GOOGLE_OAUTH2_SECRET = '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' # Секрет клиента Google

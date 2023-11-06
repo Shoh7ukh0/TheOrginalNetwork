@@ -36,9 +36,7 @@
                   <div class="ms-sm-4 mt-sm-3">
                     <!-- Info -->
                     <h1 class="mb-0 h5">
-                        {% if request.user.is_authenticated %}
-                            {{ request.user.first_name|default:request.user.username }} <i class="bi bi-patch-check-fill text-success small"></i>
-                        {% endif %}
+                        {{ user.get_full_name }} <i class="bi bi-patch-check-fill text-success small"></i>
                     </h1>
                     <p>250 connections</p>
                   </div>
@@ -475,9 +473,9 @@
                   <p>He moonlights difficult engrossed it, sportsmen. Interested has all Devonshire difficulty gay assistance joy.</p>
                   <!-- Date time -->
                   <ul class="list-unstyled mt-3 mb-0">
-                    <li class="mb-2"> <i class="bi bi-calendar-date fa-fw pe-1"></i> Born: <strong> October 20, 1990 </strong> </li>
+                    <li class="mb-2"> <i class="bi bi-calendar-date fa-fw pe-1"></i> Born: <strong> {{ user.date_of_birth }} </strong> </li>
                     <li class="mb-2"> <i class="bi bi-heart fa-fw pe-1"></i> Status: <strong> Single </strong> </li>
-                    <li> <i class="bi bi-envelope fa-fw pe-1"></i> Email: <strong> webestica@gmail.com </strong> </li>
+                    <li> <i class="bi bi-envelope fa-fw pe-1"></i> Email: <strong> {{ user.email }} </strong> </li>
                   </ul>
                 </div>
                 <!-- Card body END -->

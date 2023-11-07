@@ -75,17 +75,20 @@
 											<!-- Divider -->
 											<div class="vr"></div>
 											<!-- User stat item -->
-											<div>
-												<h6 class="mb-0">2.5K</h6>
-												<small>Followers</small>
-											</div>
-											<!-- Divider -->
-											<div class="vr"></div>
-											<!-- User stat item -->
-											<div>
-												<h6 class="mb-0">365</h6>
-												<small>Following</small>
-											</div>
+											{% with total_followers=user.followers.count %}
+												<div>
+													<h6 class="mb-0">{{ total_followers }}</h6>
+													<small>Followers </small>
+												</div>
+											
+												<!-- Divider -->
+												<div class="vr"></div>
+												<!-- User stat item -->
+												<div>
+													<h6 class="mb-0">365</h6>
+													<small>Following</small>
+												</div>
+											{% endwith %}
 										</div>
 										<!-- User stat END -->
 									</div>
@@ -1348,7 +1351,7 @@
 							<!-- Slider items -->
 							<div>
 								<!-- Card START -->
-								<div class="card card-overlay-bottom border-0 position-relative h-150px" style="background-image:url(../../static/assets/images/bg/01.jpg); background-position: center left; background-size: cover;">
+								<div class="card card-overlay-bottom border-0 position-relative h-150px" style="background-image:url('../../static/assets/images/bg/01.jpg'); background-position: center left; background-size: cover;">
 									<div class="card-img-overlay d-flex align-items-center p-2">
 										<div class="w-100 mt-auto">
 											<!-- Name -->
@@ -1671,97 +1674,28 @@
 							<!-- Card body START -->
 							<div class="card-body">
 								<!-- Connection item START -->
-								<div class="hstack gap-2 mb-3">
-									<!-- Avatar -->
-									<div class="avatar">
-										<a href="#!"><img class="avatar-img rounded-circle" src="{% thumbnail user.profile.photo 180x180 %}" alt=""></a>
-									</div>
-									<!-- Title -->
-									<div class="overflow-hidden">
-										<a class="h6 mb-0" href="#!">
-											{% if request.user.is_authenticated %}
-												{{ request.user.first_name|default:request.user.username }} 
-											{% endif %} <i class="bi bi-patch-check-fill text-success small"></i> </a>
-										<p class="mb-0 small text-truncate">News anchor</p>
-									</div>
-									<!-- Button -->
-									<a class="btn btn-primary-soft rounded-circle icon-md ms-auto" href="#"><i class="fa-solid fa-plus"> </i></a>
-								</div>
-								<!-- Connection item END -->
-								<!-- Connection item START -->
+								{% for user in users %}
 									<div class="hstack gap-2 mb-3">
 										<!-- Avatar -->
-										<div class="avatar avatar-story">
-											<a href="#!"> <img class="avatar-img rounded-circle" src="{% thumbnail user.profile.photo 180x180 %}" alt=""> </a>
+										<div class="avatar">
+											<a href="#!"><img class="avatar-img rounded-circle" src="{% thumbnail user.profile.photo 180x180 %}" alt=""></a>
 										</div>
 										<!-- Title -->
 										<div class="overflow-hidden">
-											<a class="h6 mb-0" href="#!">
-												{% if request.user.is_authenticated %}
-													{{ request.user.first_name|default:request.user.username }} 
-												{% endif %} <i class="bi bi-patch-check-fill text-success small"></i> </a>
-											<p class="mb-0 small text-truncate">Web Developer</p>
+											<a class="h6 mb-0" href="{{ user.get_absolute_url }}">
+												{{ user.username }}<i class="bi bi-patch-check-fill text-success small"></i> </a>
+											<p class="mb-0 small text-truncate">News anchor</p>
 										</div>
 										<!-- Button -->
-										<a class="btn btn-primary-soft rounded-circle icon-md ms-auto" href="#"><i class="fa-solid fa-plus"> </i></a>
-								</div>
-								<!-- Connection item END -->
-
-								<!-- Connection item START -->
-								<div class="hstack gap-2 mb-3">
-									<!-- Avatar -->
-									<div class="avatar">
-										<a href="#"> <img class="avatar-img rounded-circle" src="{% thumbnail user.profile.photo 180x180 %}" alt=""> </a>
+										<a class="btn btn-primary-soft rounded-circle icon-md ms-auto" data-id="{{ user.id }}" data-action="{% if request.user in user.followers.all %}un{% endif %}follow href="#">
+											{% if request.user not in user.followers.all %}
+												<i class="fa-solid fa-plus"> </i>
+											{% else %}
+												<i class="bi bi-person-check-fill"> </i>
+											{% endif %}
+										</a>
 									</div>
-									<!-- Title -->
-									<div class="overflow-hidden">
-										<a class="h6 mb-0" href="#!">
-											{% if request.user.is_authenticated %}
-												{{ request.user.first_name|default:request.user.username }} 
-											{% endif %} <i class="bi bi-patch-check-fill text-success small"></i> </a>
-										<p class="mb-0 small text-truncate">News anchor</p>
-									</div>
-									<!-- Button -->
-									<a class="btn btn-primary rounded-circle icon-md ms-auto" href="#"><i class="bi bi-person-check-fill"> </i></a>
-								</div>
-								<!-- Connection item END -->
-								
-								<!-- Connection item START -->
-								<div class="hstack gap-2 mb-3">
-									<!-- Avatar -->
-									<div class="avatar">
-										<a href="#"> <img class="avatar-img rounded-circle" src="{% thumbnail user.profile.photo 180x180 %}" alt=""> </a>
-									</div>
-									<!-- Title -->
-									<div class="overflow-hidden">
-										<a class="h6 mb-0" href="#!">
-											{% if request.user.is_authenticated %}
-												{{ request.user.first_name|default:request.user.username }} 
-											{% endif %} <i class="bi bi-patch-check-fill text-success small"></i> </a>
-										<p class="mb-0 small text-truncate">Web Developer at Webestica</p>
-									</div>
-									<!-- Button -->
-									<a class="btn btn-primary-soft rounded-circle icon-md ms-auto" href="#"><i class="fa-solid fa-plus"> </i></a>
-								</div>
-								<!-- Connection item END -->
-
-								<!-- Connection item START -->
-								<div class="hstack gap-2 mb-3">
-									<!-- Avatar -->
-									<div class="avatar">
-										<a href="#"> <img class="avatar-img rounded-circle" src="{% thumbnail user.profile.photo 180x180 %}" alt=""> </a>
-									</div>
-									<!-- Title -->
-									<div class="overflow-hidden">
-										<a class="h6 mb-0" href="#!">
-											{% if request.user.is_authenticated %}
-												{{ request.user.first_name|default:request.user.username }} 
-											{% endif %} <i class="bi bi-patch-check-fill text-success small"></i> </a>
-										<p class="mb-0 small text-truncate">News anchor</p>
-									</div>
-									<!-- Button -->
-									<a class="btn btn-primary-soft rounded-circle icon-md ms-auto" href="#"><i class="fa-solid fa-plus"> </i></a>
-								</div>
+								{% endfor %}
 								<!-- Connection item END -->
 
 								<!-- View more button -->
@@ -2358,7 +2292,7 @@
 						<!-- Chat message left -->
 						<div class="d-flex mb-1">
 							<div class="flex-shrink-0 avatar avatar-xs me-2">
-								<img class="avatar-img rounded-circle" src="/02.jpg' %}" alt="">
+								<img class="avatar-img rounded-circle" src="{% thumbnail user.profile.photo 180x180 %}" alt="">
 							</div>
 							<div class="flex-grow-1">
 								<div class="w-100">
@@ -2701,6 +2635,46 @@
 
 
 </body>
+{% endblock %}
+{% block domready %}
+  const url = '{% url "user_follow" %}';
+  var options = {
+    method: 'POST',
+    headers: {'X-CSRFToken': csrftoken},
+    mode: 'same-origin'
+  }
+
+  document.querySelector('a.follow')
+          .addEventListener('click', function(e){
+    e.preventDefault();
+    var followButton = this;
+
+    // add request body
+    var formData = new FormData();
+    formData.append('id', followButton.dataset.id);
+    formData.append('action', followButton.dataset.action);
+    options['body'] = formData;
+
+    // send HTTP request
+    fetch(url, options)
+    .then(response => response.json())
+    .then(data => {
+      if (data['status'] === 'ok')
+      {
+        var previousAction = followButton.dataset.action;
+
+        // toggle button text and data-action
+        var action = previousAction === 'follow' ? 'unfollow' : 'follow';
+        followButton.dataset.action = action;
+        followButton.innerHTML = action;
+
+        // update follower count
+        var followerCount = document.querySelector('span.count .total');
+        var totalFollowers = parseInt(followerCount.innerHTML);
+        followerCount.innerHTML = previousAction === 'follow' ? totalFollowers + 1 : totalFollowers - 1;
+      }
+    })
+  });
 {% endblock %}
 <!-- Mirrored from social.webestica.com/ by HTTrack Website Copier/3.x [XR&CO'2014], Thu, 27 Apr 2023 18:07:35 GMT -->
 </html>

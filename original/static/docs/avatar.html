@@ -415,10 +415,10 @@
 <div class="tab-content bg-light p-4">
 	<div class="tab-pane show active" id="tab-7">
     <div class="avatar align-middle avatar-story">
-      <a href="#!"> <img class="avatar-img rounded-circle" src="assets/images/avatar/09.jpg" alt=""> </a>
+      <a href="#!"> <img class="avatar-img rounded-circle" src="{% thumbnail user.profile.photo 180x180 %}" alt=""> </a>
     </div>
 		<div class="avatar align-middle">
-			<img class="avatar-img" src="assets/images/avatar/01.jpg" alt="avatar">
+			<img class="avatar-img" src="{% thumbnail user.profile.photo 180x180 %}" alt="avatar">
 		</div>
 		<div class="avatar align-middle">
 			<div class="avatar-img bg-primary"><span class="text-white position-absolute top-50 start-50 translate-middle fw-bold">SL</span></div>

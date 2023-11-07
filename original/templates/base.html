@@ -12,6 +12,7 @@
 	<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 	<meta name="author" content="Webestica.com">
 	<meta name="description" content="Bootstrap 5 based Social Media Network and Community Theme">
+	<script src="//cdn.jsdelivr.net/npm/js-cookie@3.0.1/dist/js.cookie.min.js"></script>
 
 	<!-- Dark mode -->
 	<script>
@@ -232,7 +233,7 @@ Header START -->
 							<li class="dropdown-submenu dropstart">
 								<a class="dropdown-item dropdown-toggle" href="#">Authentication</a>
 								<ul class="dropdown-menu dropdown-menu-end" data-bs-popper="none">
-									<li> <a class="dropdown-item" href="#">Sign in</a> </li>
+									<li> <a class="dropdown-item" href="{% url 'login' %}">Sign in</a> </li>
 									<li> <a class="dropdown-item" href="#">Sing up</a> </li>
 									<li> <a class="dropdown-item" href="#">Forgot password</a> </li>
 									<li class="dropdown-divider"></li>
@@ -451,6 +452,14 @@ JS libraries, plugins and custom scripts -->
 
 
 </body>
+<script>
+	const csrftoken = Cookies.get('csrftoken');
+	document.addEventListener('DOMContentLoaded', (event) => {
+		// DOM загружена
+		{% block domready %}
+		{% endblock %}
+	})
+</script>
 
 <!-- Mirrored from social.webestica.com/ by HTTrack Website Copier/3.x [XR&CO'2014], Thu, 27 Apr 2023 18:07:35 GMT -->
 </html>

@@ -13,73 +13,6 @@
 	<meta name="author" content="Webestica.com">
 	<meta name="description" content="Bootstrap 5 based Social Media Network and Community Theme">
 
-	<!-- Dark mode -->
-	<script>
-		const storedTheme = localStorage.getItem('theme')
- 
-		const getPreferredTheme = () => {
-			if (storedTheme) {
-				return storedTheme
-			}
-			return window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light'
-		}
-
-		const setTheme = function (theme) {
-			if (theme === 'auto' && window.matchMedia('(prefers-color-scheme: dark)').matches) {
-				document.documentElement.setAttribute('data-bs-theme', 'dark')
-			} else {
-				document.documentElement.setAttribute('data-bs-theme', theme)
-			}
-		}
-
-		setTheme(getPreferredTheme())
-
-		window.addEventListener('DOMContentLoaded', () => {
-		    var el = document.querySelector('.theme-icon-active');
-			if(el != 'undefined' && el != null) {
-				const showActiveTheme = theme => {
-				const activeThemeIcon = document.querySelector('.theme-icon-active use')
-				const btnToActive = document.querySelector(`[data-bs-theme-value="${theme}"]`)
-				const svgOfActiveBtn = btnToActive.querySelector('.mode-switch use').getAttribute('href')
-
-				document.querySelectorAll('[data-bs-theme-value]').forEach(element => {
-					element.classList.remove('active')
-				})
-
-				btnToActive.classList.add('active')
-				activeThemeIcon.setAttribute('href', svgOfActiveBtn)
-			}
-
-			window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', () => {
-				if (storedTheme !== 'light' || storedTheme !== 'dark') {
-					setTheme(getPreferredTheme())
-				}
-			})
-
-			showActiveTheme(getPreferredTheme())
-
-			document.querySelectorAll('[data-bs-theme-value]')
-				.forEach(toggle => {
-					toggle.addEventListener('click', () => {
-						const theme = toggle.getAttribute('data-bs-theme-value')
-						localStorage.setItem('theme', theme)
-						setTheme(theme)
-						showActiveTheme(theme)
-					})
-				})
-
-			}
-		})
-		
-	</script>
-	<script>
-		window.dataLayer = window.dataLayer || [];
-		function gtag(){dataLayer.push(arguments);}
-		gtag('js', new Date());
-
-		gtag('config', 'G-GMKQ4P9YMZ');
-	</script>
-
 </head>
 {% block content %}
 <body>
@@ -300,7 +233,9 @@
 								<!-- Info -->
 								<div>
 									<div class="nav nav-divider">
-										<h6 class="nav-item card-title mb-0"> <a href="#!"> Lori Ferguson </a></h6>
+										<h6 class="nav-item card-title mb-0"> <a href="#!"> {% if request.user.is_authenticated %}
+											{{ request.user.first_name|default:request.user.username }} 
+										{% endif %} <i class="bi bi-patch-check-fill text-success small"></i> </a></h6>
 										<span class="nav-item small"> 2hr</span>
 									</div>
 									<p class="mb-0 small">Web Developer at Webestica</p>
@@ -592,7 +527,9 @@
 								</div>
 								<!-- Info -->
 								<div>
-									<h6 class="card-title mb-0"> <a href="#"> Judy Nguyen </a></h6>
+									<h6 class="card-title mb-0"> <a href="#">{% if request.user.is_authenticated %}
+										{{ request.user.first_name|default:request.user.username }} 
+									{% endif %} <i class="bi bi-patch-check-fill text-success small"></i></a></h6>
 										<div class="nav nav-divider">
 											<p class="nav-item mb-0 small">Web Developer at Webestica</p>
 											<span class="nav-item small" data-bs-toggle="tooltip" data-bs-placement="top" title="Public"> <i class="bi bi-globe"></i> </span>
@@ -700,7 +637,9 @@
 										<!-- Comment by -->
 										<div class="bg-light rounded-start-top-0 p-3 rounded">
 											<div class="d-flex justify-content-between">
-												<h6 class="mb-1"> <a href="#!"> Frances Guerrero </a></h6>
+												<h6 class="mb-1"> <a href="#!"> {% if request.user.is_authenticated %}
+													{{ request.user.first_name|default:request.user.username }} 
+												{% endif %} <i class="bi bi-patch-check-fill text-success small"></i> </a></h6>
 												<small class="ms-2">5hr</small>
 											</div>
 											<p class="small mb-0">Removed demands expense account in outward tedious do. Particular way thoroughly unaffected projection.</p>
@@ -732,7 +671,9 @@
 											<div class="ms-2">
 												<div class="bg-light p-3 rounded">
 													<div class="d-flex justify-content-between">
-														<h6 class="mb-1"> <a href="#!"> Lori Stevens </a> </h6>
+														<h6 class="mb-1"> <a href="#!"> {% if request.user.is_authenticated %}
+															{{ request.user.first_name|default:request.user.username }} 
+														{% endif %} <i class="bi bi-patch-check-fill text-success small"></i> </a> </h6>
 														<small class="ms-2">2hr</small>
 													</div>
 													<p class="small mb-0">See resolved goodness felicity shy civility domestic had but Drawings offended yet answered Jennings perceive.</p>
@@ -761,7 +702,9 @@
 											<div class="ms-2">
 												<div class="bg-light p-3 rounded">
 													<div class="d-flex justify-content-between">
-														<h6 class="mb-1"> <a href="#!"> Billy Vasquez </a> </h6>
+														<h6 class="mb-1"> <a href="#!"> {% if request.user.is_authenticated %}
+															{{ request.user.first_name|default:request.user.username }} 
+														{% endif %} <i class="bi bi-patch-check-fill text-success small"></i> </a> </h6>
 														<small class="ms-2">15min</small>
 													</div>
 													<p class="small mb-0">Wishing calling is warrant settled was lucky.</p>
@@ -801,10 +744,12 @@
 									<div class="ms-2">
 										<div class="bg-light p-3 rounded">
 											<div class="d-flex justify-content-center">
-												<h6 class="mb-1"> <a href="#!"> Frances Guerrero </a> </h6>
+												<h6 class="mb-1"> <a href="#!"> {% if request.user.is_authenticated %}
+													{{ request.user.first_name|default:request.user.username }} 
+												{% endif %} <i class="bi bi-patch-check-fill text-success small"></i> </a> </h6>
 												<small class="ms-2">4min</small>
 											</div>
-											<p class="small mb-0">Congratulations:)</p>
+											<p class="small mb-0">Congratulations: </p>
 											<div class="card p-2 border border-2 rounded mt-2 shadow-none">
 												<img src="{% static 'assets/images/elements/12.svg' %}" alt="">
 											</div>
@@ -857,7 +802,9 @@
 								</div>
 								<!-- Title -->
 								<div>
-									<h6 class="card-title mb-0"> <a href="#!"> Apple Education </a></h6>
+									<h6 class="card-title mb-0"> <a href="#!"> {% if request.user.is_authenticated %}
+										{{ request.user.first_name|default:request.user.username }} 
+									{% endif %} <i class="bi bi-patch-check-fill text-success small"></i> </a></h6>
 									<p class="mb-0 small">9 November at 23:29</p>
 								</div>
 							</div>
@@ -949,7 +896,9 @@
 											<div class="avatar avatar-xl">
 												<a href="#!"><img class="avatar-img rounded-circle" src="{% thumbnail user.profile.photo 180x180 %}" alt=""></a>
 											</div>
-											<h6 class="card-title mb-1 mt-3"> <a href="#!"> Amanda Reed </a></h6>
+											<h6 class="card-title mb-1 mt-3"> <a href="#!"> {% if request.user.is_authenticated %}
+												{{ request.user.first_name|default:request.user.username }} 
+											{% endif %} <i class="bi bi-patch-check-fill text-success small"></i> </a></h6>
 											<p class="mb-0 small lh-sm">50 mutual connections</p>
 										</div>
 										<!-- Card footer -->
@@ -967,7 +916,9 @@
 											<div class="avatar avatar-story avatar-xl">
 												<a href="#!"><img class="avatar-img rounded-circle" src="{% thumbnail user.profile.photo 180x180 %}" alt=""></a>
 											</div>
-											<h6 class="card-title mb-1 mt-3"> <a href="#!"> Larry Lawson </a></h6>
+											<h6 class="card-title mb-1 mt-3"> <a href="#!"> {% if request.user.is_authenticated %}
+												{{ request.user.first_name|default:request.user.username }} 
+											{% endif %} <i class="bi bi-patch-check-fill text-success small"></i> </a></h6>
 											<p class="mb-0 small lh-sm">33 mutual connections</p>
 										</div>
 										<!-- Card footer -->
@@ -985,7 +936,9 @@
 											<div class="avatar avatar-xl">
 												<a href="#!"><img class="avatar-img rounded-circle" src="{% thumbnail user.profile.photo 180x180 %}" alt=""></a>
 											</div>
-											<h6 class="card-title mb-1 mt-3"> <a href="#!"> Louis Crawford </a></h6>
+											<h6 class="card-title mb-1 mt-3"> <a href="#!"> {% if request.user.is_authenticated %}
+												{{ request.user.first_name|default:request.user.username }} 
+											{% endif %} <i class="bi bi-patch-check-fill text-success small"></i> </a></h6>
 											<p class="mb-0 small lh-sm">45 mutual connections</p>
 										</div>
 										<!-- Card footer -->
@@ -1003,7 +956,9 @@
 											<div class="avatar avatar-xl">
 												<a href="#!"><img class="avatar-img rounded-circle" src="{% thumbnail user.profile.photo 180x180 %}" alt=""></a>
 											</div>
-											<h6 class="card-title mb-1 mt-3"> <a href="#!"> Dennis Barrett </a></h6>
+											<h6 class="card-title mb-1 mt-3"> <a href="#!"> {% if request.user.is_authenticated %}
+												{{ request.user.first_name|default:request.user.username }} 
+											{% endif %} <i class="bi bi-patch-check-fill text-success small"></i> </a></h6>
 											<p class="mb-0 small lh-sm">21 mutual connections</p>
 										</div>
 										<!-- Card footer -->
@@ -1393,11 +1348,14 @@
 							<!-- Slider items -->
 							<div>
 								<!-- Card START -->
-								<div class="card card-overlay-bottom border-0 position-relative h-150px" style="background-image:url(../../static/assets/images/post/1by1/02.jpg); background-position: center left; background-size: cover;">
+								<div class="card card-overlay-bottom border-0 position-relative h-150px" style="background-image:url(../../static/assets/images/bg/01.jpg); background-position: center left; background-size: cover;">
 									<div class="card-img-overlay d-flex align-items-center p-2">
 										<div class="w-100 mt-auto">
 											<!-- Name -->
-											<a href="#!" class="stretched-link text-white small">Judy Nguyen</a>
+											<a href="#!" class="stretched-link text-white small">
+												{% if request.user.is_authenticated %}
+													{{ request.user.first_name|default:request.user.username }} 
+												{% endif %} <i class="bi bi-patch-check-fill text-success small"></i></a>
 										</div>
 									</div>
 								</div>
@@ -1411,7 +1369,10 @@
 									<div class="card-img-overlay d-flex align-items-center p-2">
 										<div class="w-100 mt-auto">
 											<!-- Name -->
-											<a href="#!" class="stretched-link text-white small">Samuel Bishop</a>
+											<a href="#!" class="stretched-link text-white small">
+												{% if request.user.is_authenticated %}
+													{{ request.user.first_name|default:request.user.username }} 
+												{% endif %} <i class="bi bi-patch-check-fill text-success small"></i></a>
 										</div>
 									</div>
 								</div>
@@ -1425,7 +1386,10 @@
 									<div class="card-img-overlay d-flex align-items-center p-2">
 										<div class="w-100 mt-auto">
 											<!-- Name -->
-											<a href="#!" class="stretched-link text-white small">Carolyn Ortiz</a>
+											<a href="#!" class="stretched-link text-white small">
+												{% if request.user.is_authenticated %}
+													{{ request.user.first_name|default:request.user.username }} 
+												{% endif %} <i class="bi bi-patch-check-fill text-success small"></i></a>
 										</div>
 									</div>
 								</div>
@@ -1439,7 +1403,10 @@
 									<div class="card-img-overlay d-flex align-items-center p-2">
 										<div class="w-100 mt-auto">
 											<!-- Name -->
-											<a href="#!" class="stretched-link text-white small">Amanda Reed</a>
+											<a href="#!" class="stretched-link text-white small">
+												{% if request.user.is_authenticated %}
+													{{ request.user.first_name|default:request.user.username }} 
+												{% endif %} <i class="bi bi-patch-check-fill text-success small"></i></a>
 										</div>
 									</div>
 								</div>
@@ -1453,7 +1420,10 @@
 									<div class="card-img-overlay d-flex align-items-center p-2">
 										<div class="w-100 mt-auto">
 											<!-- Name -->
-											<a href="#!" class="stretched-link text-white small">Lori Stevens</a>
+											<a href="#!" class="stretched-link text-white small">
+												{% if request.user.is_authenticated %}
+													{{ request.user.first_name|default:request.user.username }} 
+												{% endif %} <i class="bi bi-patch-check-fill text-success small"></i></a>
 										</div>
 									</div>
 								</div>
@@ -1467,7 +1437,10 @@
 									<div class="card-img-overlay d-flex align-items-center p-2">
 										<div class="w-100 mt-auto">
 											<!-- Name -->
-											<a href="#!" class="stretched-link text-white small">Joan Wallace</a>
+											<a href="#!" class="stretched-link text-white small">
+												{% if request.user.is_authenticated %}
+													{{ request.user.first_name|default:request.user.username }} 
+												{% endif %} <i class="bi bi-patch-check-fill text-success small"></i></a>
 										</div>
 									</div>
 								</div>
@@ -1491,7 +1464,10 @@
 								<!-- Info -->
 								<div>
 									<div class="nav nav-divider">
-										<h6 class="nav-item card-title mb-0"> <a href="#!"> Joan Wallace </a></h6>
+										<h6 class="nav-item card-title mb-0"> <a href="#!"> 
+											{% if request.user.is_authenticated %}
+												{{ request.user.first_name|default:request.user.username }} 
+											{% endif %} <i class="bi bi-patch-check-fill text-success small"></i> </a></h6>
 										<span class="nav-item small"> 1day</span>
 									</div>
 									<p class="mb-0 small">12 January at 12:00</p>
@@ -1587,7 +1563,10 @@
 											<!-- Comment by -->
 											<div class="bg-light rounded-start-top-0 p-3 rounded">
 												<div class="d-flex justify-content-between">
-													<h6 class="mb-1"> <a href="#!"> Frances Guerrero </a></h6>
+													<h6 class="mb-1"> <a href="#!"> 
+														{% if request.user.is_authenticated %}
+															{{ request.user.first_name|default:request.user.username }} 
+														{% endif %} <i class="bi bi-patch-check-fill text-success small"></i> </a></h6>
 													<small class="ms-2">5hr</small>
 												</div>
 												<p class="small mb-0">Preference any astonished unreserved Mrs.</p>
@@ -1619,7 +1598,10 @@
 												<div class="ms-2">
 													<div class="bg-light p-3 rounded">
 														<div class="d-flex justify-content-between">
-															<h6 class="mb-1"> <a href="#!"> Lori Stevens </a> </h6>
+															<h6 class="mb-1"> <a href="#!"> 
+																{% if request.user.is_authenticated %}
+																	{{ request.user.first_name|default:request.user.username }} 
+																{% endif %} <i class="bi bi-patch-check-fill text-success small"></i> </a> </h6>
 															<small class="ms-2">2hr</small>
 														</div>
 														<p class="small mb-0">Dependent on so extremely delivered by. Yet ﻿no jokes worse her why.</p>
@@ -1696,7 +1678,10 @@
 									</div>
 									<!-- Title -->
 									<div class="overflow-hidden">
-										<a class="h6 mb-0" href="#!">Judy Nguyen </a>
+										<a class="h6 mb-0" href="#!">
+											{% if request.user.is_authenticated %}
+												{{ request.user.first_name|default:request.user.username }} 
+											{% endif %} <i class="bi bi-patch-check-fill text-success small"></i> </a>
 										<p class="mb-0 small text-truncate">News anchor</p>
 									</div>
 									<!-- Button -->
@@ -1711,7 +1696,10 @@
 										</div>
 										<!-- Title -->
 										<div class="overflow-hidden">
-											<a class="h6 mb-0" href="#!">Amanda Reed </a>
+											<a class="h6 mb-0" href="#!">
+												{% if request.user.is_authenticated %}
+													{{ request.user.first_name|default:request.user.username }} 
+												{% endif %} <i class="bi bi-patch-check-fill text-success small"></i> </a>
 											<p class="mb-0 small text-truncate">Web Developer</p>
 										</div>
 										<!-- Button -->
@@ -1727,7 +1715,10 @@
 									</div>
 									<!-- Title -->
 									<div class="overflow-hidden">
-										<a class="h6 mb-0" href="#!">Billy Vasquez </a>
+										<a class="h6 mb-0" href="#!">
+											{% if request.user.is_authenticated %}
+												{{ request.user.first_name|default:request.user.username }} 
+											{% endif %} <i class="bi bi-patch-check-fill text-success small"></i> </a>
 										<p class="mb-0 small text-truncate">News anchor</p>
 									</div>
 									<!-- Button -->
@@ -1743,7 +1734,10 @@
 									</div>
 									<!-- Title -->
 									<div class="overflow-hidden">
-										<a class="h6 mb-0" href="#!">Lori Ferguson </a>
+										<a class="h6 mb-0" href="#!">
+											{% if request.user.is_authenticated %}
+												{{ request.user.first_name|default:request.user.username }} 
+											{% endif %} <i class="bi bi-patch-check-fill text-success small"></i> </a>
 										<p class="mb-0 small text-truncate">Web Developer at Webestica</p>
 									</div>
 									<!-- Button -->
@@ -1759,7 +1753,10 @@
 									</div>
 									<!-- Title -->
 									<div class="overflow-hidden">
-										<a class="h6 mb-0" href="#!">Carolyn Ortiz </a>
+										<a class="h6 mb-0" href="#!">
+											{% if request.user.is_authenticated %}
+												{{ request.user.first_name|default:request.user.username }} 
+											{% endif %} <i class="bi bi-patch-check-fill text-success small"></i> </a>
 										<p class="mb-0 small text-truncate">News anchor</p>
 									</div>
 									<!-- Button -->
@@ -1891,7 +1888,10 @@
 					</div>
 					<!-- Info -->
 					<div class="overflow-hidden">
-						<a class="h6 mb-0 stretched-link" href="#!">Frances Guerrero </a>
+						<a class="h6 mb-0 stretched-link" href="#!">
+							{% if request.user.is_authenticated %}
+								{{ request.user.first_name|default:request.user.username }} 
+							{% endif %} <i class="bi bi-patch-check-fill text-success small"></i> </a>
 						<div class="small text-secondary text-truncate">Frances sent a photo.</div>
 					</div>
 					<!-- Chat time -->
@@ -1906,7 +1906,10 @@
 					</div>
 					<!-- Info -->
 					<div class="overflow-hidden">
-						<a class="h6 mb-0 stretched-link" href="#!">Lori Ferguson </a>
+						<a class="h6 mb-0 stretched-link" href="#!">
+							{% if request.user.is_authenticated %}
+								{{ request.user.first_name|default:request.user.username }} 
+							{% endif %} <i class="bi bi-patch-check-fill text-success small"></i> </a>
 						<div class="small text-secondary text-truncate">You missed a call form Carolyn🤙</div>
 					</div>
 					<!-- Chat time -->
@@ -1921,7 +1924,10 @@
 					</div>
 					<!-- Info -->
 					<div class="overflow-hidden">
-						<a class="h6 mb-0 stretched-link" href="#!">Samuel Bishop </a>
+						<a class="h6 mb-0 stretched-link" href="#!">
+							{% if request.user.is_authenticated %}
+								{{ request.user.first_name|default:request.user.username }} 
+							{% endif %} <i class="bi bi-patch-check-fill text-success small"></i> </a>
 						<div class="small text-secondary text-truncate">Day sweetness why cordially 😊</div>
 					</div>
 					<!-- Chat time -->
@@ -1936,7 +1942,10 @@
 					</div>
 					<!-- Info -->
 					<div class="overflow-hidden">
-						<a class="h6 mb-0 stretched-link" href="#!">Dennis Barrett </a>
+						<a class="h6 mb-0 stretched-link" href="#!">
+							{% if request.user.is_authenticated %}
+								{{ request.user.first_name|default:request.user.username }} 
+							{% endif %} <i class="bi bi-patch-check-fill text-success small"></i> </a>
 						<div class="small text-secondary text-truncate">Happy birthday🎂</div>
 					</div>
 					<!-- Chat time -->
@@ -1951,7 +1960,10 @@
 					</div>
 					<!-- Info -->
 					<div class="overflow-hidden">
-						<a class="h6 mb-0 stretched-link" href="#!">Judy Nguyen </a>
+						<a class="h6 mb-0 stretched-link" href="#!">
+							{% if request.user.is_authenticated %}
+								{{ request.user.first_name|default:request.user.username }} 
+							{% endif %} <i class="bi bi-patch-check-fill text-success small"></i> </a>
 						<div class="small text-secondary text-truncate">Thank you!</div>
 					</div>
 					<!-- Chat time -->
@@ -1966,7 +1978,10 @@
 					</div>
 					<!-- Info -->
 					<div class="overflow-hidden">
-						<a class="h6 mb-0 stretched-link" href="#!">Carolyn Ortiz </a>
+						<a class="h6 mb-0 stretched-link" href="#!">
+							{% if request.user.is_authenticated %}
+								{{ request.user.first_name|default:request.user.username }} 
+							{% endif %} <i class="bi bi-patch-check-fill text-success small"></i> </a>
 						<div class="small text-secondary text-truncate">Greetings from Webestica.</div>
 					</div>
 					<!-- Chat time -->
@@ -2009,7 +2024,10 @@
 					</div>
 					<!-- Info -->
 					<div class="overflow-hidden">
-						<a class="h6 mb-0 stretched-link" href="#!">Bryan Knight </a>
+						<a class="h6 mb-0 stretched-link" href="#!">
+							{% if request.user.is_authenticated %}
+								{{ request.user.first_name|default:request.user.username }} 
+							{% endif %} <i class="bi bi-patch-check-fill text-success small"></i> </a>
 						<div class="small text-secondary text-truncate">if you are available to discuss🙄</div>
 					</div>
 					<!-- Chat time -->
@@ -2024,7 +2042,10 @@
 					</div>
 					<!-- Info -->
 					<div class="overflow-hidden">
-						<a class="h6 mb-0 stretched-link" href="#!">Louis Crawford </a>
+						<a class="h6 mb-0 stretched-link" href="#!">
+							{% if request.user.is_authenticated %}
+								{{ request.user.first_name|default:request.user.username }} 
+							{% endif %} <i class="bi bi-patch-check-fill text-success small"></i> </a>
 						<div class="small text-secondary text-truncate">🙌Congrats on your work anniversary!</div>
 					</div>
 					<!-- Chat time -->
@@ -2039,7 +2060,10 @@
 					</div>
 					<!-- Info -->
 					<div class="overflow-hidden">
-						<a class="h6 mb-0 stretched-link" href="#!">Jacqueline Miller </a>
+						<a class="h6 mb-0 stretched-link" href="#!">
+							{% if request.user.is_authenticated %}
+								{{ request.user.first_name|default:request.user.username }} 
+							{% endif %} <i class="bi bi-patch-check-fill text-success small"></i> </a>
 						<div class="small text-secondary text-truncate">No sorry, Thanks.</div>
 					</div>
 					<!-- Chat time -->
@@ -2054,7 +2078,10 @@
 					</div>
 					<!-- Info -->
 					<div class="overflow-hidden">
-						<a class="h6 mb-0 stretched-link" href="#!">Amanda Reed </a>
+						<a class="h6 mb-0 stretched-link" href="#!">
+							{% if request.user.is_authenticated %}
+								{{ request.user.first_name|default:request.user.username }} 
+							{% endif %} <i class="bi bi-patch-check-fill text-success small"></i> </a>
 						<div class="small text-secondary text-truncate">Interested can share CV at.</div>
 					</div>
 					<!-- Chat time -->
@@ -2069,7 +2096,10 @@
 					</div>
 					<!-- Info -->
 					<div class="overflow-hidden">
-						<a class="h6 mb-0 stretched-link" href="#!">Larry Lawson </a>
+						<a class="h6 mb-0 stretched-link" href="#!">
+							{% if request.user.is_authenticated %}
+								{{ request.user.first_name|default:request.user.username }} 
+							{% endif %} <i class="bi bi-patch-check-fill text-success small"></i> </a>
 						<div class="small text-secondary text-truncate">Hope you're doing well and Safe.</div>
 					</div>
 					<!-- Chat time -->
@@ -2102,7 +2132,10 @@
 								<img class="avatar-img rounded-circle" src="{% thumbnail user.profile.photo 180x180 %}" alt="">
 							</div>
 							<div class="flex-grow-1">
-								<h6 class="mb-0 mt-1">Frances Guerrero</h6>
+								<h6 class="mb-0 mt-1">
+									{% if request.user.is_authenticated %}
+										{{ request.user.first_name|default:request.user.username }} 
+									{% endif %} <i class="bi bi-patch-check-fill text-success small"></i></h6>
 								<div class="small text-secondary"><i class="fa-solid fa-circle text-success me-1"></i>Online</div>
 							</div>
 						</div>
@@ -2249,7 +2282,10 @@
 								<img class="avatar-img rounded-circle" src="{% thumbnail user.profile.photo 180x180 %}" alt="">
 							</div>
 							<div class="flex-grow-1">
-								<h6 class="mb-0 mt-1">Lori Ferguson</h6>
+								<h6 class="mb-0 mt-1">
+									{% if request.user.is_authenticated %}
+										{{ request.user.first_name|default:request.user.username }} 
+									{% endif %} <i class="bi bi-patch-check-fill text-success small"></i></h6>
 								<div class="small text-secondary"><i class="fa-solid fa-circle text-success me-1"></i>Online</div>
 							</div>
 						</div>

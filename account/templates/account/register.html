@@ -17,11 +17,13 @@
               <span class="d-block">Already have an account? <a href="{% url 'login' %}">Sign in here</a></span>
             </div>
             <!-- Form START -->
-            <form class="mt-4">
+            <form class="mt-4" >
                 {{ user_form.as_p }}
                 {% csrf_token %}
               <!-- Button -->
-              <div class="d-grid"><button type="submit" class="btn btn-lg btn-primary" value="Create my account">Sign me up</button></div>
+              <div class="d-grid">
+                <button type="submit" class="btn btn-lg btn-primary" value="Create my account">Sign me up</button>
+              </div>
               <!-- Copyright -->
               <p class="mb-0 mt-3 text-center">©2023 <a target="_blank" href="">Shohrukh Uralov.</a> All rights reserved</p>
             </form>

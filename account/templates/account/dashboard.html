@@ -43,8 +43,8 @@
                   <!-- Button -->
                   <div class="d-flex mt-3 justify-content-center ms-sm-auto">
                     {% with total_followers=user.followers.count %}
-                      <button class="btn btn-primary-soft me-2" type="button" data-id="{{ user.id }}" data-action="{% if request.user in user.followers.all %}un{% endif %}follow">
-                        <a style="color: #fff !important;" href="#"><i class="fa-solid fa-plus"> </i>
+                      <button class="btn btn-primary-soft me-2" type="button" >
+                        <a style="color: #fff !important;" href="#" data-id="{{ user.id }}" data-action="{% if request.user in user.followers.all %}un{% endif %}follow"><i class="fa-solid fa-plus"> </i>
                           {% if request.user not in user.followers.all %}
                             Follow
                           {% else %}
@@ -624,8 +624,9 @@
                           <div class="avatar avatar-story avatar-xl">
                             <a href="#!"><img class="avatar-img rounded-circle" src="{% thumbnail user.profile.photo 180x180 %}" alt=""></a>
                           </div>
-                          <h6 class="card-title mb-1 mt-3"> <a href="#!"> Amanda Reed </a></h6>
-                          <p class="mb-0 small lh-sm">16 mutual connections</p>
+                          {% for action in actions %}
+        {% include "actions/action/detail.html" %}
+        {% endfor %}
                         </div>
                         <!-- Card footer -->
                         <div class="card-footer p-2 border-0">

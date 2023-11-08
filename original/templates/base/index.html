@@ -326,7 +326,7 @@
 							<form action="{% url 'blog:post_comment' %}" method="post" class="nav nav-item w-100 position-relative">
 								{{ form.as_p }}
 								{% csrf_token %}
-								<i class="bi bi-send-fill"> </i>
+								<p><input type="submit" value="Add comment"></p>
 							</form>
 						</div>
 						<!-- Comment wrap START -->

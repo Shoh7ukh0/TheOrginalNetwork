@@ -265,13 +265,17 @@
 					<!-- Card header END -->
 					<!-- Card body START -->
 					<div class="card-body">
-						<p>I'm thrilled to share that I've completed a graduate certificate course in project management with the president's honor roll.</p>
+						<p>{{ image.description|linebreaks }}</p>
 						<!-- Card img -->
-						<img class="card-img" src="{% static 'assets/images/post/3by2/01.jpg' %}" alt="Post">
+						<img class="card-img" src="{{ image.image.url }}" alt="Post">
 						<!-- Feed react START -->
+						{% with total_likes=image.users_like.count users_like=image.users_like.all %}
 						<ul class="nav nav-stack py-3 small">
 							<li class="nav-item">
-								<a class="nav-link active" href="#!" data-bs-container="body" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-html="true" data-bs-custom-class="tooltip-text-start" data-bs-title="Frances Guerrero<br> Lori Stevens<br> Billy Vasquez<br> Judy Nguyen<br> Larry Lawson<br> Amanda Reed<br> Louis Crawford"> <i class="bi bi-hand-thumbs-up-fill pe-1"></i>Liked (56)</a>
+								<a class="nav-link active" href="#!" data-id="{{ image.id }}" data-action="{% if request.user in users_like %}un{% endif %}like data-bs-container="body" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-html="true" data-bs-custom-class="tooltip-text-start" data-bs-title="{{ user.all_username }}<br> "> <i class="bi bi-hand-thumbs-up-fill pe-1"></i>Liked ({{ total_likes }})</a>
+							</li>
+							<li class="nav-item">
+								<a class="nav-link" href="#!"> <i class="bi bi-eye"></i> Views ({{ total_views }})</a>
 							</li>
 							<li class="nav-item">
 								<a class="nav-link" href="#!"> <i class="bi bi-chat-fill pe-1"></i>Comments (12)</a>
@@ -279,7 +283,7 @@
 							<!-- Card share action START -->
 							<li class="nav-item dropdown ms-sm-auto">
 								<a class="nav-link mb-0" href="#" id="cardShareAction" data-bs-toggle="dropdown" aria-expanded="false">
-									<i class="bi bi-reply-fill flip-horizontal ps-1"></i>Share (3)
+									<i class="bi bi-reply-fill flip-horizontal ps-1"></i>(3)
 								</a>
 								<!-- Card share action dropdown menu -->
 								<ul class="dropdown-menu dropdown-menu-end" aria-labelledby="cardShareAction">
@@ -293,6 +297,7 @@
 							</li>
 							<!-- Card share action END -->
 						</ul>
+						{% endwith %}
 						<!-- Feed react END -->
 
 						<!-- Add comment -->
@@ -1674,28 +1679,30 @@
 							<!-- Card body START -->
 							<div class="card-body">
 								<!-- Connection item START -->
-								<div class="hstack gap-2 mb-3">
-									<!-- Avatar -->
-									<div class="avatar">
-										<a href="#!">
-											<img class="avatar-img rounded-circle" src="{% thumbnail user.profile.photo 180x180 %}" alt="">
+								{% for user in users %}
+									<div class="hstack gap-2 mb-3">
+										<!-- Avatar -->
+										<div class="avatar">
+											<a href="{{ user.get_absolute_url }}">
+												<img class="avatar-img rounded-circle" src="{% thumbnail user.profile.photo 180x180 %}" alt="">
+											</a>
+										</div>
+										<!-- Title -->
+										<div class="overflow-hidden">
+											<a class="h6 mb-0" href="{{ user.get_absolute_url }}">
+												{{ user.username }}<i class="bi bi-patch-check-fill text-success small"></i> </a>
+											<p class="mb-0 small text-truncate">News anchor</p>
+										</div>
+										<!-- Button -->
+										<a class="btn btn-primary-soft rounded-circle icon-md ms-auto" data-id="{{ user.id }}" data-action="{% if request.user in user.followers.all %}un{% endif %}follow href="#">
+											{% if request.user not in user.followers.all %}
+												<i class="fa-solid fa-plus"> </i>
+											{% else %}
+												<i class="bi bi-person-check-fill"> </i>
+											{% endif %}
 										</a>
 									</div>
-									<!-- Title -->
-									<div class="overflow-hidden">
-										<a class="h6 mb-0" href="">
-											{{ user.username }}<i class="bi bi-patch-check-fill text-success small"></i> </a>
-										<p class="mb-0 small text-truncate">News anchor</p>
-									</div>
-									<!-- Button -->
-									<a class="btn btn-primary-soft rounded-circle icon-md ms-auto" data-id="{{ user.id }}" data-action="{% if request.user in user.followers.all %}un{% endif %}follow href="#">
-										{% if request.user not in user.followers.all %}
-											<i class="fa-solid fa-plus"> </i>
-										{% else %}
-											<i class="bi bi-person-check-fill"> </i>
-										{% endif %}
-									</a>
-								</div>
+								{% endfor %}
 								<!-- Connection item END -->
 
 								<!-- View more button -->
@@ -2672,6 +2679,46 @@
         var followerCount = document.querySelector('span.count .total');
         var totalFollowers = parseInt(followerCount.innerHTML);
         followerCount.innerHTML = previousAction === 'follow' ? totalFollowers + 1 : totalFollowers - 1;
+      }
+    })
+  });
+
+
+  const url = '{% url "images:like" %}';
+  var options = {
+    method: 'POST',
+    headers: {'X-CSRFToken': csrftoken},
+    mode: 'same-origin'
+  }
+
+  document.querySelector('a.like')
+          .addEventListener('click', function(e){
+    e.preventDefault();
+    var likeButton = this;
+
+    // add request body
+    var formData = new FormData();
+    formData.append('id', likeButton.dataset.id);
+    formData.append('action', likeButton.dataset.action);
+    options['body'] = formData;
+
+    // send HTTP request
+    fetch(url, options)
+    .then(response => response.json())
+    .then(data => {
+      if (data['status'] === 'ok')
+      {
+        var previousAction = likeButton.dataset.action;
+
+        // toggle button text and data-action
+        var action = previousAction === 'like' ? 'unlike' : 'like';
+        likeButton.dataset.action = action;
+        likeButton.innerHTML = action;
+
+        // update like count
+        var likeCount = document.querySelector('span.count .total');
+        var totalLikes = parseInt(likeCount.innerHTML);
+        likeCount.innerHTML = previousAction === 'like' ? totalLikes + 1 : totalLikes - 1;
       }
     })
   });

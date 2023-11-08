@@ -1,39 +1,61 @@
 {% load thumbnail %}
 {% with user=action.user profile=action.user.profile %}
-    <div class="action">
-        <div class="images">
-            {% if profile.photo %}
-                {% thumbnail user.profile.photo "80x80" crop="100%" as im %}
-                    <a href="{{ user.get_absolute_url }}">
-                        <img src="{{ im.url }}" alt="{{ user.get_full_name }}"
-                        class="item-img">
-                    </a>
-            {% endif %}
-            {% if action.target %}
-                {% with target=action.target %}
-                    {% if target.image %}
-                        {% thumbnail target.image "80x80" crop="100%" as im %}
-                            <a href="{{ target.get_absolute_url }}">
-                                <img src="{{ im.url }}" class="item-img">
-                            </a>
-                    {% endif %}
-                {% endwith %}
-            {% endif %}
+    <div class="col-md-6 col-lg-12">
+        <div class="card">
+          <!-- Card header START -->
+          <div class="card-header d-sm-flex justify-content-between align-items-center border-0">
+            <h5 class="card-title">Friends <span class="badge bg-danger bg-opacity-10 text-danger">230</span></h5>
+            <a class="btn btn-primary-soft btn-sm" href="#!"> See all friends</a>
+          </div>
+          <!-- Card header END -->
+          <!-- Card body START -->
+          <div class="card-body position-relative pt-0">
+            <div class="row g-3">
+
+                <div class="col-6">
+                    <!-- Friends item START -->
+                    <div class="card shadow-none text-center h-100">
+                    <!-- Card body -->
+                        <div class="card-body p-2 pb-0">
+                            {% if profile.photo %}
+                                {% thumbnail user.profile.photo "80x80" crop="100%" as im %}
+                                <div class="avatar avatar-story avatar-xl">
+                                    <a href="{{ user.get_absolute_url }}">
+                                        <img class="avatar-img rounded-circle" src="{{ im.url }}" alt="">
+                                    </a>
+                                </div>
+                            {% endif %}
+                            {% if action.target %}
+                                {% with target=action.target %}
+                                    {% if target.image %}
+                                        {% thumbnail target.image "80x80" crop="100%" as im %}
+                                            <a href="{{ target.get_absolute_url }}">
+                                                <img src="{{ im.url }}" class="item-img">
+                                            </a>
+                                    {% endif %}
+                                {% endwith %}
+                            {% endif %}
+                            <h6 class="card-title mb-1 mt-3"> <a href="{{ user.get_absolute_url }}"> {{ user.first_name }} </a></h6>
+                            <p class="mb-0 small lh-sm">{{ action.created|timesince }}</p>
+                            {{ action.verb }}
+                            {% if action.target %}
+                                {% with target=action.target %}
+                                    <a href="{{ target.get_absolute_url }}" class="mb-0 small lh-sm">{{ target }}</a>
+                                {% endwith %}
+                            {% endif %}
+                        </div>
+                        <!-- Card footer -->
+                        <div class="card-footer p-2 border-0">
+                            <button class="btn btn-sm btn-primary" data-bs-toggle="tooltip" data-bs-placement="top" title="Send message"> <i class="bi bi-chat-left-text"></i> </button>
+                            <button class="btn btn-sm btn-danger" data-bs-toggle="tooltip" data-bs-placement="top" title="Remove friend"> <i class="bi bi-person-x"></i> </button>
+                        </div>
+                    </div>
+                    <!-- Friends item END -->
+                </div>
+
+            </div>
+          </div>
+          <!-- Card body END -->
         </div>
-        <div class="info">
-            <p>
-                <span class="date">{{ action.created|timesince }} ago</span>
-                <br />
-                <a href="{{ user.get_absolute_url }}">
-                    {{ user.first_name }}
-                </a>
-                {{ action.verb }}
-                {% if action.target %}
-                    {% with target=action.target %}
-                        <a href="{{ target.get_absolute_url }}">{{ target }}</a>
-                    {% endwith %}
-                {% endif %}
-            </p>
-        </div>
-    </div>
+      </div>
 {% endwith %}

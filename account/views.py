@@ -87,7 +87,7 @@ def edit(request):
 def user_list(request):
     users = User.objects.filter(is_active=True)
     return render(request,
-                        'account/user/list.html',
+                        'account/dashboard.html',
                         {'section': 'people',
                         'users': users})
 
@@ -97,7 +97,7 @@ def user_detail(request, username):
     username=username,
     is_active=True)
     return render(request,
-                        'account/user/detail.html',
+                        'account/dashboard.html',
                         {'section': 'people',
                         'user': user})
 

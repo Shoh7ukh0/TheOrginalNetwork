@@ -99,7 +99,7 @@ def post_comment(request, post_id):
         # Fikrni ma'lumotlar bazasiga saqlang
     comment.save()
 
-    return render(request, 'blog/post/comment.html', {'post': post, 'form': form, 'comment': comment})
+    return render(request, 'base/index.html', {'post': post, 'form': form, 'comment': comment})
 
 def post_search(request):
     form = SearchForm()

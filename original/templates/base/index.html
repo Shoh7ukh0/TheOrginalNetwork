@@ -291,9 +291,11 @@
 							<li class="nav-item">
 								<a class="nav-link" href="#!"> <i class="bi bi-eye"></i> Views ({{ total_views }})</a>
 							</li>
+							{% with comments.count as total_comments %}
 							<li class="nav-item">
-								<a class="nav-link" href="#!"> <i class="bi bi-chat-fill pe-1"></i>Comments (12)</a>
+								<a class="nav-link" href="#!"> <i class="bi bi-chat-fill pe-1"></i>Comments ({{ total_comments }})</a>
 							</li>
+							{% endwith %}
 							<!-- Card share action START -->
 							<li class="nav-item dropdown ms-sm-auto">
 								<a class="nav-link mb-0" href="#" id="cardShareAction" data-bs-toggle="dropdown" aria-expanded="false">
@@ -321,11 +323,10 @@
 								<a href="#!"> <img class="avatar-img rounded-circle" src="{% thumbnail user.profile.photo 180x180 %}" alt=""> </a>
 							</div>
 							<!-- Comment box  -->
-							<form class="nav nav-item w-100 position-relative">
-								<textarea data-autoresize class="form-control pe-5 bg-light" rows="1" placeholder="Add a comment..."></textarea>
-								<button class="nav-link bg-transparent px-3 position-absolute top-50 end-0 translate-middle-y border-0" type="submit">
-									<i class="bi bi-send-fill"> </i>
-								</button>
+							<form action="{% url 'blog:post_comment' %}" method="post" class="nav nav-item w-100 position-relative">
+								{{ form.as_p }}
+								{% csrf_token %}
+								<i class="bi bi-send-fill"> </i>
 							</form>
 						</div>
 						<!-- Comment wrap START -->
@@ -339,13 +340,17 @@
 									</div>
 									<div class="ms-2">
 										<!-- Comment by -->
+										{% for comment in comments %}
 										<div class="bg-light rounded-start-top-0 p-3 rounded">
 											<div class="d-flex justify-content-between">
-												<h6 class="mb-1"> <a href="#!"> Frances Guerrero </a></h6>
-												<small class="ms-2">5hr</small>
+												<h6 class="mb-1"> <a href="#!"> {{ user.get_full_name }} </a></h6>
+												<small class="ms-2">{{ comment.created }}</small>
 											</div>
-											<p class="small mb-0">Removed demands expense account in outward tedious do. Particular way thoroughly unaffected projection.</p>
+											<p class="small mb-0">{{ comment.body|linebreaks }}</p>
 										</div>
+										{% empty %}
+											<p>There are no comments.</p>
+										{% endfor %}
 										<!-- Comment react -->
 										<ul class="nav nav-divider py-2 small">
 											<li class="nav-item">
@@ -2658,84 +2663,84 @@
 </body>
 {% endblock %}
 {% block domready %}
-  const url = '{% url "user_follow" %}';
-  var options = {
-    method: 'POST',
-    headers: {'X-CSRFToken': csrftoken},
-    mode: 'same-origin'
-  }
+	const url = '{% url "user_follow" %}';
+	var options = {
+		method: 'POST',
+		headers: {'X-CSRFToken': csrftoken},
+		mode: 'same-origin'
+	}
 
-  document.querySelector('a.follow')
-          .addEventListener('click', function(e){
-    e.preventDefault();
-    var followButton = this;
+	document.querySelector('a.follow')
+			.addEventListener('click', function(e){
+		e.preventDefault();
+		var followButton = this;
 
-    // add request body
-    var formData = new FormData();
-    formData.append('id', followButton.dataset.id);
-    formData.append('action', followButton.dataset.action);
-    options['body'] = formData;
+		// add request body
+		var formData = new FormData();
+		formData.append('id', followButton.dataset.id);
+		formData.append('action', followButton.dataset.action);
+		options['body'] = formData;
 
-    // send HTTP request
-    fetch(url, options)
-    .then(response => response.json())
-    .then(data => {
-      if (data['status'] === 'ok')
-      {
-        var previousAction = followButton.dataset.action;
+		// send HTTP request
+		fetch(url, options)
+		.then(response => response.json())
+		.then(data => {
+		if (data['status'] === 'ok')
+		{
+			var previousAction = followButton.dataset.action;
 
-        // toggle button text and data-action
-        var action = previousAction === 'follow' ? 'unfollow' : 'follow';
-        followButton.dataset.action = action;
-        followButton.innerHTML = action;
+			// toggle button text and data-action
+			var action = previousAction === 'follow' ? 'unfollow' : 'follow';
+			followButton.dataset.action = action;
+			followButton.innerHTML = action;
 
-        // update follower count
-        var followerCount = document.querySelector('span.count .total');
-        var totalFollowers = parseInt(followerCount.innerHTML);
-        followerCount.innerHTML = previousAction === 'follow' ? totalFollowers + 1 : totalFollowers - 1;
-      }
-    })
-  });
+			// update follower count
+			var followerCount = document.querySelector('span.count .total');
+			var totalFollowers = parseInt(followerCount.innerHTML);
+			followerCount.innerHTML = previousAction === 'follow' ? totalFollowers + 1 : totalFollowers - 1;
+		}
+		})
+	});
 
 
-  const url = '{% url "images:like" %}';
-  var options = {
-    method: 'POST',
-    headers: {'X-CSRFToken': csrftoken},
-    mode: 'same-origin'
-  }
+	const url = '{% url "images:like" %}';
+	var options = {
+		method: 'POST',
+		headers: {'X-CSRFToken': csrftoken},
+		mode: 'same-origin'
+	}
 
-  document.querySelector('a.like')
-          .addEventListener('click', function(e){
-    e.preventDefault();
-    var likeButton = this;
+	document.querySelector('a.like')
+		.addEventListener('click', function(e){
+			e.preventDefault();
+			var likeButton = this;
 
-    // add request body
-    var formData = new FormData();
-    formData.append('id', likeButton.dataset.id);
-    formData.append('action', likeButton.dataset.action);
-    options['body'] = formData;
+			// add request body
+			var formData = new FormData();
+			formData.append('id', likeButton.dataset.id);
+			formData.append('action', likeButton.dataset.action);
+			options['body'] = formData;
 
-    // send HTTP request
-    fetch(url, options)
-    .then(response => response.json())
-    .then(data => {
-      if (data['status'] === 'ok')
-      {
-        var previousAction = likeButton.dataset.action;
+			// send HTTP request
+			fetch(url, options)
+			.then(response => response.json())
+			.then(data => {
+			if (data['status'] === 'ok')
+			{
+				var previousAction = likeButton.dataset.action;
 
-        // toggle button text and data-action
-        var action = previousAction === 'like' ? 'unlike' : 'like';
-        likeButton.dataset.action = action;
-        likeButton.innerHTML = action;
+				// toggle button text and data-action
+				var action = previousAction === 'like' ? 'unlike' : 'like';
+				likeButton.dataset.action = action;
+				likeButton.innerHTML = action;
 
-        // update like count
-        var likeCount = document.querySelector('span.count .total');
-        var totalLikes = parseInt(likeCount.innerHTML);
-        likeCount.innerHTML = previousAction === 'like' ? totalLikes + 1 : totalLikes - 1;
-      }
-    })
-  });
+				// update like count
+				var likeCount = document.querySelector('span.count .total');
+				var totalLikes = parseInt(likeCount.innerHTML);
+				likeCount.innerHTML = previousAction === 'like' ? totalLikes + 1 : totalLikes - 1;
+			}
+    	})
+ 	});
 {% endblock %}
 <!-- Mirrored from social.webestica.com/ by HTTrack Website Copier/3.x [XR&CO'2014], Thu, 27 Apr 2023 18:07:35 GMT -->
 </html>

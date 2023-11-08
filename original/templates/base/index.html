@@ -323,11 +323,11 @@
 								<a href="#!"> <img class="avatar-img rounded-circle" src="{% thumbnail user.profile.photo 180x180 %}" alt=""> </a>
 							</div>
 							<!-- Comment box  -->
-							<form action="{% url 'blog:post_comment' %}" method="post" class="nav nav-item w-100 position-relative">
+							<form action="{% url 'blog:post_comment' %}" method="post">
 								{{ form.as_p }}
 								{% csrf_token %}
 								<p><input type="submit" value="Add comment"></p>
-							</form>
+							</form>							
 						</div>
 						<!-- Comment wrap START -->
 						<ul class="comment-wrap list-unstyled">

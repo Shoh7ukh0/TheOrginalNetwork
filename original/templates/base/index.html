@@ -265,7 +265,16 @@
 					<!-- Card header END -->
 					<!-- Card body START -->
 					<div class="card-body">
-						<p>{{ image.description|linebreaks }}</p>
+						{% for post in posts %}
+							<p>{{ post.title }}</p>
+							Tags:
+							{% for tag in post.tags.all %}
+								<a href="{% url 'blog:post_list_by_tag' tag.slug %}">
+								{{ tag.name }}
+								</a>
+							{% if not forloop.last %}, {% endif %}
+							{% endfor %}
+						{% endfor %}
 						<!-- Card img -->
 						<img class="card-img" src="{{ image.image.url }}" alt="Post">
 						<!-- Feed react START -->

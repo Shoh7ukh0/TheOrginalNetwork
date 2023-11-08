@@ -37,6 +37,8 @@ INTERNAL_IPS = [
     '127.0.0.1',
 ]
 
+SITE_ID = 1
+
 
 # Application definition
 
@@ -55,6 +57,10 @@ INSTALLED_APPS = [
     'social_django',
     'django_extensions',
     'easy_thumbnails',
+
+    'taggit',
+
+    'django.contrib.sites',
 
     # +998 90 6966996
 ]

@@ -235,13 +235,18 @@
 								</div>
 								<!-- Info -->
 								<div>
+									{% for post in posts %}
 									<div class="nav nav-divider">
-										<h6 class="nav-item card-title mb-0"> <a href="#!"> {% if request.user.is_authenticated %}
-											{{ request.user.first_name|default:request.user.username }} 
-										{% endif %} <i class="bi bi-patch-check-fill text-success small"></i> </a></h6>
-										<span class="nav-item small"> 2hr</span>
+										<h6 class="nav-item card-title mb-0"> 
+											<a href="#!"> 
+												{{ post.author }}
+												<i class="bi bi-patch-check-fill text-success small"></i> 
+											</a>
+										</h6>
+										<span class="nav-item small"> {{ post.publish }}</span>
 									</div>
 									<p class="mb-0 small">Web Developer at Webestica</p>
+									{% endfor %}
 								</div>
 							</div>
 							<!-- Card feed action dropdown START -->
@@ -266,6 +271,7 @@
 					<!-- Card body START -->
 					<div class="card-body">
 						{% for post in posts %}
+							<img class="card-img" src="{{ post.images.url }}" alt="Post">
 							<p>{{ post.title }}</p>
 							Tags:
 							{% for tag in post.tags.all %}
@@ -276,7 +282,6 @@
 							{% endfor %}
 						{% endfor %}
 						<!-- Card img -->
-						<img class="card-img" src="{{ image.image.url }}" alt="Post">
 						<!-- Feed react START -->
 						{% with total_likes=image.users_like.count users_like=image.users_like.all %}
 						<ul class="nav nav-stack py-3 small">

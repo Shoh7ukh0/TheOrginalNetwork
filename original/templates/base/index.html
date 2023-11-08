@@ -272,7 +272,7 @@
 						{% with total_likes=image.users_like.count users_like=image.users_like.all %}
 						<ul class="nav nav-stack py-3 small">
 							<li class="nav-item">
-								<a class="nav-link active" href="#!" data-id="{{ image.id }}" data-action="{% if request.user in users_like %}un{% endif %}like data-bs-container="body" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-html="true" data-bs-custom-class="tooltip-text-start" data-bs-title="{{ user.all_username }}<br> "> <i class="bi bi-hand-thumbs-up-fill pe-1"></i>Liked ({{ total_likes }})</a>
+								<a class="nav-link active" href="#!" data-id="{{ image.id }}" data-action="{% if request.user in users_like %}un{% endif %}like data-bs-container="body" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-html="true" data-bs-custom-class="tooltip-text-start" data-bs-title="{{ user.username }}<br> "> <i class="bi bi-hand-thumbs-up-fill pe-1"></i>Liked ({{ total_likes }})</a>
 							</li>
 							<li class="nav-item">
 								<a class="nav-link" href="#!"> <i class="bi bi-eye"></i> Views ({{ total_views }})</a>

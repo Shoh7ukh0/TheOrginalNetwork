@@ -273,7 +273,6 @@
 						{% for post in posts %}
 							<img class="card-img" src="{{ post.images.url }}" alt="Post">
 							<p>{{ post.title }}</p>
-							Tags:
 							{% for tag in post.tags.all %}
 								<a href="{% url 'blog:post_list_by_tag' tag.slug %}">
 								{{ tag.name }}
@@ -293,9 +292,12 @@
 							</li>
 							{% with comments.count as total_comments %}
 							<li class="nav-item">
-								<a class="nav-link" href="{{ post.get_absolute_url }}"> <i class="bi bi-chat-fill pe-1"></i>Comments ({{ total_comments }})</a>
+								<a class="nav-link" href="{% url 'blog:post_detail' %}"> <i class="bi bi-chat-fill pe-1"></i>Comments ({{ total_comments }})</a>
 							</li>
 							{% endwith %}
+							<li class="nav-item">
+								<a href="#" class="nav-link bg-light py-1 px-2 mb-0" data-bs-toggle="modal" data-bs-target="#modalCreateEvents"> <i class="bi bi-calendar2-event-fill text-danger pe-2"></i>Event </a>
+							</li>
 							<!-- Card share action START -->
 							<li class="nav-item dropdown ms-sm-auto">
 								<a class="nav-link mb-0" href="#" id="cardShareAction" data-bs-toggle="dropdown" aria-expanded="false">
@@ -2407,84 +2409,11 @@
 			<!-- Modal feed header END -->
 			<!-- Modal feed body START -->
 			<div class="modal-body">
-				<!-- Form START -->
-				<form class="row g-4">
-					<!-- Title -->
-					<div class="col-12">
-						<label class="form-label">Title</label>
-						<input type="email" class="form-control" placeholder="Event name here">
-					</div>
-					<!-- Description -->
-					<div class="col-12">
-						<label class="form-label">Description</label>
-						<textarea class="form-control" rows="2" placeholder="Ex: topics, schedule, etc."></textarea>
-					</div>
-					<!-- Date -->
-					<div class="col-sm-4">
-						<label class="form-label">Date</label>
-						<input type="text" class="form-control flatpickr" placeholder="Select date">
-					</div>
-					<!-- Time -->
-					<div class="col-sm-4">
-						<label class="form-label">Time</label>
-						<input type="text" class="form-control flatpickr" data-enableTime="true" data-noCalendar="true" placeholder="Select time">
-					</div>
-					<!-- Duration -->
-					<div class="col-sm-4">
-						<label class="form-label">Duration</label>
-						<input type="email" class="form-control" placeholder="1hr 23m">
-					</div>
-					<!-- Location -->
-					<div class="col-12">
-						<label class="form-label">Location</label>
-						<input type="email" class="form-control" placeholder="Logansport, IN 46947">
-					</div>
-					<!-- Add guests -->
-					<div class="col-12">
-						<label class="form-label">Add guests</label>
-						<input type="email" class="form-control" placeholder="Guest email">
-					</div>
-					<!-- Avatar group START -->
-					<div class="col-12 mt-3">
-						<ul class="avatar-group list-unstyled align-items-center mb-0">
-							<li class="avatar avatar-xs">
-								<img class="avatar-img rounded-circle" src="{% thumbnail user.profile.photo 180x180 %}" alt="avatar">
-							</li>
-							<li class="avatar avatar-xs">
-								<img class="avatar-img rounded-circle" src="{% thumbnail user.profile.photo 180x180 %}" alt="avatar">
-							</li>
-							<li class="avatar avatar-xs">
-								<img class="avatar-img rounded-circle" src="{% thumbnail user.profile.photo 180x180 %}" alt="avatar">
-							</li>
-							<li class="avatar avatar-xs">
-								<img class="avatar-img rounded-circle" src="{% thumbnail user.profile.photo 180x180 %}" alt="avatar">
-							</li>
-							<li class="avatar avatar-xs">
-								<img class="avatar-img rounded-circle" src="{% thumbnail user.profile.photo 180x180 %}" alt="avatar">
-							</li>
-							<li class="avatar avatar-xs">
-								<img class="avatar-img rounded-circle" src="{% thumbnail user.profile.photo 180x180 %}" alt="avatar">
-							</li>
-							<li class="avatar avatar-xs">
-								<img class="avatar-img rounded-circle" src="{% thumbnail user.profile.photo 180x180 %}" alt="avatar">
-							</li>
-							<li class="ms-3">
-								<small> +50 </small>
-							</li>
-						</ul>
-					</div>
-					<!-- Upload Photos or Videos -->
-					<!-- Dropzone photo START -->
-					<div>
-						<label class="form-label">Upload attachment</label>
-						<div class="dropzone dropzone-default card shadow-none" data-dropzone='{"maxFiles":2}'>
-							<div class="dz-message">
-								<i class="bi bi-file-earmark-text display-3"></i>
-								<p>Drop presentation and document here or click to upload.</p>
-							</div>
-						</div>
-					</div>
-					<!-- Dropzone photo END -->
+				<form method="post" action="{% url 'post_comment' post.id %}">
+					{% csrf_token %}
+					<textarea name="body" rows="4" cols="50"></textarea>
+					<br>
+					<input type="submit" value="Add Comment">
 				</form>
 				<!-- Form END -->
 			</div>

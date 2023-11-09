@@ -346,7 +346,7 @@
 												<h6 class="mb-1"> <a href="#!"> {{ user.get_full_name }} </a></h6>
 												<small class="ms-2">{{ comment.created }}</small>
 											</div>
-											<p class="small mb-0">{{ comment.body|linebreaks }}</p>
+											<p class="small mb-0">{{ comment.text|linebreaks }}</p>
 										</div>
 										{% empty %}
 											<p>There are no comments.</p>

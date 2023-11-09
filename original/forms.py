@@ -10,7 +10,7 @@ class EmailPostForm(forms.Form):
 class CommentForm(forms.ModelForm):
     class Meta:
         model = Comment
-        fields = ['body']
+        fields = ['text']
 
 class SearchForm(forms.Form):
     query = forms.CharField()

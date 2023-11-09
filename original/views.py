@@ -97,7 +97,7 @@ def post_comment(request):
         # Fikr bildirish uchun post tayinlang
         comment.post = post
         # Fikrni ma'lumotlar bazasiga saqlang
-    comment.save()
+        comment.save()
 
     return render(request, 'base/index.html', {'post': post, 'form': form, 'comment': comment})
 

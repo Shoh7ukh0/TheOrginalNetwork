@@ -60,7 +60,7 @@ def post_detail(request, year, month, day, post):
                                         .order_by('-same_tags','-publish')[:4]
 
     
-    return render(request,'blog/post/detail.html', {'post': post, 'comments': comments, 'form': form, 'similar_posts': similar_posts})
+    return render(request,'base/post-details.html', {'post': post, 'comments': comments, 'form': form, 'similar_posts': similar_posts})
 
 # Elektiron pochtaga Xabar yuborish
 def post_share(request, post_id):

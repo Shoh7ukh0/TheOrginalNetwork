@@ -2409,12 +2409,16 @@
 			<!-- Modal feed header END -->
 			<!-- Modal feed body START -->
 			<div class="modal-body">
-				<form method="post" action="{% url 'post_comment' post.id %}">
-					{% csrf_token %}
-					<textarea name="body" rows="4" cols="50"></textarea>
-					<br>
-					<input type="submit" value="Add Comment">
-				</form>
+				{% if comment %}
+                    <h2>Your comment has been added.</h2>
+                    <p><a href="{{ post.get_absolute_url }}">Back to the post</a></p>
+                {% else %}
+                    <form action="{% url 'blog:post_comment' %}" method="post">
+                      {{ form.as_p }}
+                      {% csrf_token %}
+                      <p><input type="submit" value="Add comment"></p>
+                  	</form>
+                {% endif %}
 				<!-- Form END -->
 			</div>
 			<!-- Modal feed body END -->

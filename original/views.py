@@ -1,6 +1,6 @@
 from django.shortcuts import render, get_object_or_404
-from django.http import HttpResponse, HttpResponseRedirect
-from .models import Post, Comment
+from django.http import Http404
+from .models import Post
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from django.views.generic import ListView
 from .forms import EmailPostForm, CommentForm, SearchForm
@@ -81,16 +81,21 @@ def post_share(request, post_id):
         form = EmailPostForm()
     return render(request, 'blog/post/share.html', {'post': post, 'form': form, 'sent': sent})
 
-def post_comment(request, post_id):
-    post = get_object_or_404(Post, id=post_id)
+@require_POST
+def post_comment(request):
+    post = get_object_or_404(Post, status=Post.Status.PUBLISHED)
+    comment = None
+    # Izoh e'lon qilindi
+    form = CommentForm(data=request.POST)
+    if form.is_valid():
+        # Ma'lumotlar bazasida saqlamasdan Comment sinfi ob'ektini yarating
+        comment = form.save(commit=False)
+        # Fikr bildirish uchun post tayinlang
+        comment.post = post
+        # Fikrni ma'lumotlar bazasiga saqlang
+        comment.save()
 
-    if request.method == 'POST':
-        body = request.POST.get('body')  # Formdan fikrni olish
-        Comment.objects.create(post=post, body=body)  # Comment modelidan yangi ob'ekt yaratish va saqlash
-        return HttpResponseRedirect(request.path)  # Qaytadan shu sahifaga yo'naltirish
-
-    return HttpResponse("Formasiz komentariya qo'shish uchun POST so'rovi kerak.")
-
+    return render(request, 'base/index.html', {'post': post, 'form': form, 'comment': comment})
 
 def post_search(request):
     form = SearchForm()

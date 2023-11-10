@@ -1,5 +1,10 @@
 from django import forms
-from .models import Comment
+from .models import Comment, Post
+
+class PostForm(forms.ModelForm):
+    class Meta:
+        model = Post
+        fields = ['title', 'slug', 'author', 'images', 'body']
 
 class EmailPostForm(forms.Form):
     name = forms.CharField(max_length=25)

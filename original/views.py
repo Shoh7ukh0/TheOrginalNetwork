@@ -1,44 +1,32 @@
-from django.shortcuts import render, get_object_or_404
-from django.http import Http404
+from django.shortcuts import render, get_object_or_404, redirect
+from django.contrib.auth.decorators import login_required
 from .models import Post
-from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
-from django.views.generic import ListView
-from .forms import EmailPostForm, CommentForm, SearchForm
+from .forms import EmailPostForm, CommentForm, SearchForm, PostForm
 from django.core.mail import send_mail
 from django.views.decorators.http import require_POST
-from taggit.models import Tag
 from django.db.models import Count
 from django.contrib.postgres.search import SearchVector, SearchQuery, SearchRank
 from django.contrib.postgres.search import TrigramSimilarity
 
 # Create your views here.
 
-def post_list(request, tag_slug=None):
-    post_list = Post.published.all()
-    tag = None
-    if tag_slug:
-        tag = get_object_or_404(Tag, slug=tag_slug)
-        post_list = post_list.filter(tags__in=[tag])
+@login_required
+def home(request):
+    posts = Post.objects.all()
+    return render(request, 'base.html', {'posts': posts})
 
-
-    # Har bir sahifada 3 ta post bilan sahifalash
-    paginator = Paginator(post_list, 3)
-    page_number = request.GET.get('page', 1)
-
-    try:
-        posts = paginator.page(page_number)
-
-    except PageNotAnInteger:
-        # Agar sahifa_raqami butun son bo'lmasa, u holda
-        # birinchi sahifani ko'rsatish
-        posts = paginator.page(1)
-
-    except EmptyPage:
-        # Agar sahifa_raqami diapazondan tashqarida bo'lsa
-        # oxirgi sahifani ko'rsatish
-        posts = paginator.page(paginator.num_pages)
-
-    return render(request, 'base/index.html', {'posts': posts, 'tag': tag})
+@login_required
+def create_post(request):
+    if request.method == 'POST':
+        form = PostForm(request.POST, request.FILES)
+        if form.is_valid():
+            post = form.save(commit=False)
+            post.user = request.user
+            post.save()
+            return redirect('home')
+    else:
+        form = PostForm()
+    return render(request, 'base/index.html', {'form': form})
 
 def post_detail(request):
     post = get_object_or_404(Post, status=Post.Status.PUBLISHED)

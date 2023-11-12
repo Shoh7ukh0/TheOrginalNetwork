@@ -274,7 +274,7 @@
 							<img class="card-img" src="{{ post.images.url }}" alt="Post">
 							<p>{{ post.title }}</p>
 							{% for tag in post.tags.all %}
-								<a href="{% url 'blog:post_list_by_tag' tag.slug %}">
+								<a href="">
 								{{ tag.name }}
 								</a>
 							{% if not forloop.last %}, {% endif %}
@@ -292,11 +292,11 @@
 							</li>
 							{% with comments.count as total_comments %}
 							<li class="nav-item">
-								<a class="nav-link" href="{% url 'blog:post_detail' %}"> <i class="bi bi-chat-fill pe-1"></i>Comments ({{ total_comments }})</a>
+								<a class="nav-link" href=""> <i class="bi bi-chat-fill pe-1"></i>Comments ({{ total_comments }})</a>
 							</li>
 							{% endwith %}
 							<li class="nav-item">
-								<a href="#" class="nav-link bg-light py-1 px-2 mb-0" data-bs-toggle="modal" data-bs-target="#modalCreateEvents"> <i class="bi bi-calendar2-event-fill text-danger pe-2"></i>Event </a>
+								<a href="{% url 'blog:create_post' %}" class="nav-link bg-light py-1 px-2 mb-0" data-bs-toggle="modal" data-bs-target="#modalCreateEvents"> <i class="bi bi-calendar2-event-fill text-danger pe-2"></i>Event </a>
 							</li>
 							<!-- Card share action START -->
 							<li class="nav-item dropdown ms-sm-auto">
@@ -2396,7 +2396,6 @@
 	</div>
 </div>
 <!-- Modal create Feed video END -->
-
 <!-- Modal create events START -->
 <div class="modal fade" id="modalCreateEvents" tabindex="-1" aria-labelledby="modalLabelCreateAlbum" aria-hidden="true">
 	<div class="modal-dialog modal-dialog-centered">
@@ -2409,16 +2408,11 @@
 			<!-- Modal feed header END -->
 			<!-- Modal feed body START -->
 			<div class="modal-body">
-				{% if comment %}
-                    <h2>Your comment has been added.</h2>
-                    <p><a href="{{ post.get_absolute_url }}">Back to the post</a></p>
-                {% else %}
-                    <form action="{% url 'blog:post_comment' %}" method="post">
-                      {{ form.as_p }}
-                      {% csrf_token %}
-                      <p><input type="submit" value="Add comment"></p>
-                  	</form>
-                {% endif %}
+                <form enctype="multipart/form-data" method="post">
+                    {{ form.as_p }}
+                    {% csrf_token %}
+                    <p><input type="submit" value="Add comment"></p>
+                </form>
 				<!-- Form END -->
 			</div>
 			<!-- Modal feed body END -->

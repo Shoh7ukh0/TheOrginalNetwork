@@ -10,10 +10,10 @@ from django.contrib.postgres.search import TrigramSimilarity
 
 # Create your views here.
 
-@login_required
+# @login_required
 def home(request):
     posts = Post.objects.all()
-    return render(request, 'base.html', {'posts': posts})
+    return render(request, 'base/index.html', {'posts': posts})
 
 @login_required
 def create_post(request):
@@ -23,33 +23,15 @@ def create_post(request):
             post = form.save(commit=False)
             post.user = request.user
             post.save()
-            return redirect('home')
+            return redirect()
     else:
         form = PostForm()
-    return render(request, 'base/index.html', {'form': form})
-
-def post_detail(request):
-    post = get_object_or_404(Post, status=Post.Status.PUBLISHED)
-    
-    # Ushbu post uchun faol sharhlar ro'yxati
-    comments = post.comments.filter(active=True)
-    # Foydalanuvchi sharhlar shakli
-    form = CommentForm()
-
-    # Список схожих постов
-    post_tags_ids = post.tags.values_list('id', flat=True)
-    similar_posts = Post.published.filter(tags__in=post_tags_ids) \
-                                        .exclude(id=post.id)
-    similar_posts = similar_posts.annotate(same_tags=Count('tags')) \
-                                        .order_by('-same_tags','-publish')[:4]
-
-    
-    return render(request,'base/post-details.html', {'post': post, 'comments': comments, 'form': form, 'similar_posts': similar_posts})
+    return render(request, 'base/create.html', {'form': form})
 
 # Elektiron pochtaga Xabar yuborish
 def post_share(request, post_id):
     # Identifikatori bo'yicha postni oling
-    post = get_object_or_404(Post, id=post_id, status=Post.Status.PUBLISHED)
+    post = get_object_or_404(Post, id=post_id)
     sent = False
 
     if request.method == 'POST':
@@ -69,21 +51,6 @@ def post_share(request, post_id):
         form = EmailPostForm()
     return render(request, 'blog/post/share.html', {'post': post, 'form': form, 'sent': sent})
 
-@require_POST
-def post_comment(request):
-    post = get_object_or_404(Post, status=Post.Status.PUBLISHED)
-    comment = None
-    # Izoh e'lon qilindi
-    form = CommentForm(data=request.POST)
-    if form.is_valid():
-        # Ma'lumotlar bazasida saqlamasdan Comment sinfi ob'ektini yarating
-        comment = form.save(commit=False)
-        # Fikr bildirish uchun post tayinlang
-        comment.post = post
-        # Fikrni ma'lumotlar bazasiga saqlang
-        comment.save()
-
-    return render(request, 'base/index.html', {'post': post, 'form': form, 'comment': comment})
 
 def post_search(request):
     form = SearchForm()

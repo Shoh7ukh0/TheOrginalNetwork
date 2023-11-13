@@ -18,7 +18,7 @@ class LoginView(View):
 
     def get(self, request, *args, **kwargs):
         if request.user.is_authenticated:
-            return redirect('dashboard')
+            return redirect('account:dashboard')
         return render(request, self.template_name)
 
     def post(self, request, *args, **kwargs):

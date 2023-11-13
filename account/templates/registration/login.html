@@ -372,9 +372,9 @@
           <div class="card card-body p-4 p-sm-5 mt-sm-n5 mb-n5">
             <!-- Title -->
             <h2 class="h1 mb-2">Sign in</h2>
-            <p>Don't have an account?<a href="{% url 'register' %}"> Click here to sign up</a></p>
+            <p>Don't have an account?<a href="{% url 'account:register' %}"> Click here to sign up</a></p>
             <!-- Form START -->
-            <form class="mt-4" action="{% url 'login' %}" method="post">
+            <form class="mt-4" action="{% url 'account:login' %}" method="post">
                 {{ form.as_p }}
                 {% csrf_token %}
                 <input type="hidden" name="next" value="{{ next }}" />
@@ -384,7 +384,7 @@
                     <input type="checkbox" class="form-check-input" id="rememberCheck">
                     <label class="form-check-label" for="rememberCheck">Remember me?</label>
                     </div>
-                    <a href="{% url 'password_reset' %}">Forgot password?</a>
+                    <a href="{% url 'account:password_reset' %}">Forgot password?</a>
                 </div>
                 <!-- Button -->
                 <div class="d-grid">

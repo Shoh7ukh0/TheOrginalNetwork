@@ -139,9 +139,10 @@ Header START -->
 				<!-- Nav Search START -->
 				<div class="nav mt-3 mt-lg-0 flex-nowrap align-items-center px-4 px-lg-0">
 					<div class="nav-item w-100">
-						<form class="rounded position-relative">
-							<input class="form-control ps-5 bg-light" type="search" placeholder="Search..." aria-label="Search">
-							<button class="btn bg-transparent px-2 py-0 position-absolute top-50 start-0 translate-middle-y" type="submit"><i class="bi bi-search fs-5"> </i></button>
+						<form method="get" action="{% url 'core:search_user' %}">
+							{% csrf_token %}
+							<input type="text" name="q" placeholder="Search">
+							<button type="submit">Search</button>
 						</form>
 					</div>
 				</div>
@@ -234,7 +235,7 @@ Header START -->
 							<li class="dropdown-submenu dropstart">
 								<a class="dropdown-item dropdown-toggle" href="#">Authentication</a>
 								<ul class="dropdown-menu dropdown-menu-end" data-bs-popper="none">
-									<li> <a class="dropdown-item" href="{% url 'login' %}">Sign in</a> </li>
+									<li> <a class="dropdown-item" href="{% url 'account:login' %}">Sign in</a> </li>
 									<li> <a class="dropdown-item" href="#">Sing up</a> </li>
 									<li> <a class="dropdown-item" href="#">Forgot password</a> </li>
 									<li class="dropdown-divider"></li>
@@ -372,7 +373,7 @@ Header START -->
 									<p class="small m-0">Web Developer</p>
 								</div>
 							</div>
-							<a class="dropdown-item btn btn-primary-soft btn-sm my-2 text-center" href="{% url 'dashboard' %}">View profile</a>
+							<a class="dropdown-item btn btn-primary-soft btn-sm my-2 text-center" href="{% url 'account:dashboard' %}">View profile</a>
 						</li>
 						<!-- Links -->
 						<li><a class="dropdown-item" href="#"><i class="bi bi-gear fa-fw me-2"></i>Settings & Privacy</a></li>
@@ -387,7 +388,7 @@ Header START -->
 							</a> 
 						</li>
 						<li class="dropdown-divider"></li>
-						<li><a class="dropdown-item bg-danger-soft-hover" href="{% url 'login' %}"><i class="bi bi-power fa-fw me-2"></i>Sign Out</a></li>
+						<li><a class="dropdown-item bg-danger-soft-hover" href="{% url 'account:login' %}"><i class="bi bi-power fa-fw me-2"></i>Sign Out</a></li>
 						<li> <hr class="dropdown-divider"></li>
 						<!-- Dark mode options START -->
 						<li>

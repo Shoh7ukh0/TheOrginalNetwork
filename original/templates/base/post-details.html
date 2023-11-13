@@ -63,8 +63,8 @@
                 <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="cardFeedAction">
                   <li>
                     {% if user.is_authenticated %}
-                      <a class="dropdown-item" href="{% url 'core:edit_post' post_id=post.id %}">Edit</a>
-                      <a class="dropdown-item" href="{% url 'core:delete_post' post_id=post.id %}">Delete</a>
+                      <a class="dropdown-item" href="{% url 'original:edit_post' post_id=post.id %}">Edit</a>
+                      <a class="dropdown-item" href="{% url 'original:delete_post' post_id=post.id %}">Delete</a>
                     {% endif %}</li>
                   <li><a class="dropdown-item" href="#"> <i class="bi bi-bookmark fa-fw pe-2"></i>Save post</a></li>
                   <li><a class="dropdown-item" href="#"> <i class="bi bi-person-x fa-fw pe-2"></i>Unfollow lori ferguson </a></li>

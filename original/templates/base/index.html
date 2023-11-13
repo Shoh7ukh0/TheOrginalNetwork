@@ -267,7 +267,6 @@
 					<!-- Card header END -->
 					<!-- Card body START -->
 					<div class="card-body">
-						<p>{{ post.caption }}</p>
 						<!-- Card img -->
 						{% if post.image %}
 							<img class="card-img" src="{{ post.image.url }}" alt="{{ post.caption }}">
@@ -280,6 +279,7 @@
 							</video>
 						</div>
 						{% endif %}
+						<p>{{ post.caption }}</p>
 						<!-- Feed react START -->
 						<ul class="nav nav-stack py-3 small">
 							<li class="nav-item">
@@ -390,6 +390,7 @@
 							Load more comments 
 						</a>
 					</div>
+					<a style="margin-left: 1em;" class="nav-link" href="#!"> <i class="bi bi-eye"></i> Views {{ post.views.count }}</a>
 					<!-- Card footer END -->
 				</div>
 				{% endfor %}

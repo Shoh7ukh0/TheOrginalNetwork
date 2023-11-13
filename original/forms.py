@@ -2,7 +2,7 @@ from django import forms
 from .models import Comment, Post
 from django.forms.models import inlineformset_factory
 
-ModuleFormSet = inlineformset_factory(Post, 
+ModuleFormSet = inlineformset_factory(Post, Comment,
                                       fields=['title', 'body'], 
                                       extra=4, 
                                       can_delete=True)

@@ -40,6 +40,7 @@ class Post(models.Model):
                                                  self.slug])
     
 class Comment(models.Model):
+    title = models.CharField(max_length=250)
     post = models.ForeignKey(Post, on_delete=models.CASCADE, related_name='comments')
     body = models.TextField()
     created = models.DateTimeField(auto_now_add=True)

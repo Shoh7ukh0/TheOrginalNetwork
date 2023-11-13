@@ -9,7 +9,9 @@ from .forms import LoginForm, UserRegistrationForm, UserEditForm, ProfileEditFor
 from .models import Profile
 from actions.utils import create_action
 from actions.models import Action
-from friendships.models import Contact
+from .models import Contact
+from django.contrib.auth.models import User
+from django.utils.decorators import method_decorator
 
 class LoginView(View):
     template_name = 'account/login.html'

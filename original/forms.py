@@ -1,10 +1,11 @@
 from django import forms
 from .models import Comment, Post
+from django.forms.models import inlineformset_factory
 
-class PostForm(forms.ModelForm):
-    class Meta:
-        model = Post
-        fields = ['title', 'slug', 'author', 'images', 'body']
+ModuleFormSet = inlineformset_factory(Post, 
+                                      fields=['title', 'body'], 
+                                      extra=4, 
+                                      can_delete=True)
 
 class EmailPostForm(forms.Form):
     name = forms.CharField(max_length=25)

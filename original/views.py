@@ -46,7 +46,7 @@ class CreatePostView(View):
             post = form.save(commit=False)
             post.user = self.request.user  # Foydalanuvchi obyektini olib olish
             post.save()
-            return redirect('original:post_list')
+            return redirect('core:post_list')
         return render(request, self.template_name, {'form': form})
     
 
@@ -65,7 +65,7 @@ class EditPostView(View):
             edited_post = form.save(commit=False)
             edited_post.user = self.request.user
             edited_post.save()
-            return redirect('original:post_detail', post_id=post.id)
+            return redirect('core:post_detail', post_id=post.id)
         return render(request, self.template_name, {'form': form, 'post': post})
     
 
@@ -99,7 +99,7 @@ class PostDetailView(View):
             comment.user = request.user
             comment.post = post
             comment.save()
-            return redirect('original:post_detail', post_id=post.id)
+            return redirect('core:post_detail', post_id=post.id)
         comments = post.comments.all()
         likes = post.likes.all()
 
@@ -116,7 +116,6 @@ class PostDetailView(View):
         )
 
 
-
 class AddCommentView(View):
     template_name = 'base/post-details.html'
 
@@ -128,7 +127,7 @@ class AddCommentView(View):
             comment.user = self.request.user  # Foydalanuvchi obyektini olib olish
             comment.post = post
             comment.save()
-            return redirect('original:post_detail', post_id=post.id)
+            return redirect('core:post_detail', post_id=post.id)
         return render(request, self.template_name, {'post': post, 'form': form})
 
 
@@ -140,7 +139,7 @@ class LikePostView(View):
             post.likes.remove(request.user)
         else:
             post.likes.add(request.user)
-        return redirect('original:post_detail', post_id=post_id)
+        return redirect('core:post_detail', post_id=post_id)
 
 
 class DeletePostView(View):
@@ -148,4 +147,4 @@ class DeletePostView(View):
     def get(self, request, post_id, *args, **kwargs):
         post = get_object_or_404(Post, id=post_id, user=request.user)
         post.delete()
-        return redirect('original:post_list')
+        return redirect('core:post_list')

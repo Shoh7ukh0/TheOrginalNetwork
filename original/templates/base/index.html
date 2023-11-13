@@ -195,11 +195,11 @@
 					<!-- Share feed toolbar START -->
 					<ul class="nav nav-pills nav-stack small fw-normal">
 						<li class="nav-item">
-							<a class="nav-link bg-light py-1 px-2 mb-0" href="{% url 'core:create_post' %}"> <i class="bi bi-image-fill text-success pe-2"></i>Post Create</a>
+							<a class="nav-link bg-light py-1 px-2 mb-0" href="{% url 'core:create_post' %}"> <i class="bi bi-plus-circle-dotted"></i> Post Create</a>
 						</li>
-						<li class="nav-item">
+						<!-- <li class="nav-item">
 							<a class="nav-link bg-light py-1 px-2 mb-0" href="#!" data-bs-toggle="modal" data-bs-target="#feedActionPhoto"> <i class="bi bi-image-fill text-success pe-2"></i>Photo</a>
-						</li>
+						</li> -->
 						<li class="nav-item">
 							<a class="nav-link bg-light py-1 px-2 mb-0" href="#!" data-bs-toggle="modal" data-bs-target="#feedActionVideo"> <i class="bi bi-camera-reels-fill text-info pe-2"></i>Video</a>
 						</li>
@@ -240,7 +240,7 @@
 								<!-- Info -->
 								<div>
 									<div class="nav nav-divider">
-										<h6 class="nav-item card-title mb-0"> <a href="#!"> {{ post.user.username }} </a></h6>
+										<h6 class="nav-item card-title mb-0"> <a href="{% url 'core:post_detail' post_id=post.id %}"> {{ post.user.username }} </a></h6>
 										<span class="nav-item small"> {{ post.created_at }}</span>
 									</div>
 									<p class="mb-0 small">Web Developer at Webestica</p>
@@ -285,8 +285,8 @@
 							<li class="nav-item">
 								<form method="post" action="{% url 'core:like_post' post_id=post.id %}">
 									{% csrf_token %}
-									<button type="submit">
-										<a class="nav-link active" href="#!" data-bs-container="body" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-html="true" data-bs-custom-class="tooltip-text-start" data-bs-title="Frances Guerrero<br> Lori Stevens<br> Billy Vasquez<br> Judy Nguyen<br> Larry Lawson<br> Amanda Reed<br> Louis Crawford"> <i class="bi bi-hand-thumbs-up-fill pe-1"></i>Liked ({{ post.likes.count }})</a>
+									<button style="border: none; background-color: transparent !important;" type="submit">
+										<a class="nav-link active" href="#!" data-bs-container="body" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-html="true" data-bs-custom-class="tooltip-text-start" data-bs-title="{{ user.username }}<br> "> <i class="bi bi-hand-thumbs-up-fill pe-1"></i>Liked ({{ post.likes.count }})</a>
 									</button>
 								  </form>
 							</li>
@@ -322,19 +322,20 @@
 							<form method="post" action="{% url 'core:add_comment' post_id=post.id %}">
 								{% csrf_token %}
 								{{ form.as_p }}
-								<button type="submit">Add Comment</button>
+								<button style="border: 1px solid rgb(0, 102, 255); background-color: transparent; color: #fff; padding: 5px 15px; border-radius: 5px; margin-left: 22em;" type="submit">Add Comment</button>
 							  </form>
 						</div>
 						<!-- Comment wrap START -->
+						{% for comment in post.comments.all %}
 						<ul class="comment-wrap list-unstyled">
 							<!-- Comment item START -->
 							<li class="comment-item">
 								<div class="d-flex position-relative">
+									
 									<!-- Avatar -->
 									<div class="avatar avatar-xs">
 										<a href="#!"><img class="avatar-img rounded-circle" src="{% thumbnail user.profile.photo 180x180 %}" alt=""></a>
 									</div>
-									{% for comment in post.comments.all %}
 									<div class="ms-2">
 										<!-- Comment by -->
 										<div class="bg-light rounded-start-top-0 p-3 rounded">
@@ -357,22 +358,23 @@
 											</li>
 										</ul>
 									</div>
-									{% endfor %}
+									
 								</div>
 								<!-- Load more replies -->
-								<a href="#!" role="button" class="btn btn-link btn-link-loader btn-sm text-secondary d-flex align-items-center mb-3 ms-5" data-bs-toggle="button" aria-pressed="true">
+								<!-- <a href="#!" role="button" class="btn btn-link btn-link-loader btn-sm text-secondary d-flex align-items-center mb-3 ms-5" data-bs-toggle="button" aria-pressed="true">
 									<div class="spinner-dots me-2">
 										<span class="spinner-dot"></span>
 										<span class="spinner-dot"></span>
 										<span class="spinner-dot"></span>
 									</div>
 									Load more replies 
-								</a>
+								</a> -->
 								<!-- Comment item nested END -->
 							</li>
 							<!-- Comment item END -->
 							
 						</ul>
+						{% endfor %}
 						<!-- Comment wrap END -->
 					</div>
 					<!-- Card body END -->

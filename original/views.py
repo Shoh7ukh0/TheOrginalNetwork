@@ -74,6 +74,9 @@ class PostDetailView(View):
 
     def get(self, request, post_id, *args, **kwargs):
         post = get_object_or_404(Post, id=post_id)
+        post.views += 1  # Ko'rishlar sonini oshirish
+        post.save()
+
         comments = post.comments.all()
         likes = post.likes.all()
         form = CommentForm()
@@ -114,7 +117,6 @@ class PostDetailView(View):
             self.template_name,
             {'post': post, 'comments': comments, 'likes': likes, 'form': form, 'has_image': has_image, 'has_video': has_video}
         )
-
 
 class AddCommentView(View):
     template_name = 'base/post-details.html'

@@ -113,20 +113,16 @@
             <!-- Feed react END -->
 
             <!-- Comment wrap START -->
+            {% for comment in comments %}
             <ul class="comment-wrap list-unstyled">
               <!-- Comment item START -->
               <li class="comment-item">
                 <div class="d-flex position-relative">
-                  <form method="post">
-                    {% csrf_token %}
-                    {{ form.as_p }}
-                    <button type="submit">Add Comment</button>
-                  </form>
                   <!-- Avatar -->
                   <div class="avatar avatar-xs">
                     <a href="#!"><img class="avatar-img rounded-circle" src="{% thumbnail user.profile.photo 180x180 %}" alt=""></a>
                   </div>
-                  {% for comment in comments %}
+                  
                   <div class="ms-2">
                     <!-- Comment by -->
                     <div class="bg-light rounded-start-top-0 p-3 rounded">
@@ -149,11 +145,16 @@
                       </li>
                     </ul>
                   </div>
-                  {% endfor %}
                 </div>
               </li>
               <!-- Comment item END -->
             </ul>
+            {% endfor %}
+            <form method="post">
+              {% csrf_token %}
+              {{ form.as_p }}
+              <button type="submit">Add Comment</button>
+            </form>
             <!-- Comment wrap END -->
             <div class="card-footer border-0 pb-0">
               <!-- Load more comments -->

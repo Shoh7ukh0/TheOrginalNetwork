@@ -1,15 +1,22 @@
 {% extends 'base.html' %}
-
-{% block content %}
-  <section style="background-image: url();" class="container">
-    <div class="content">
-      <h1>Create Post</h1>
-      <form method="post" enctype="multipart/form-data">
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+</head>
+<body>
+  {% block content %}
+  <section style="height: 100vh; background-image: url(../../static/assets/images/background.jpg); background-size: cover;" class="section">
+    <div style="position: relative; top: 5em; left: 22em; backdrop-filter: blur(7px); width: 50%; padding: 20px 50px;" class="content">
+      <h1 style="text-align: center; color: rgb(0, 102, 255);">Create Post</h1>
+      <form style="text-align: center;" method="post" enctype="multipart/form-data">
         {% csrf_token %}
-        {{ form.as_p }}
+        <p>{{ form.as_p }}</p>
         <button type="submit">Create Post</button>
       </form>
     </div>
   </section>
-{% endblock %}
-
+  {% endblock %}
+</body>
+</html>

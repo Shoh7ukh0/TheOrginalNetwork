@@ -27,7 +27,7 @@ SECRET_KEY = 'django-insecure-4#ro1y)@fuy4z4u41)!8y)e#u@lcmgs!dgi0k#g**qv43bje*!
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['mysite.com', 'localhost', '127.0.0.1']
+ALLOWED_HOSTS = ['mysite.com', 'localhost', '127.0.0.1', 'https://thenetwork-4z3l.onrender.com/']
 
 ABSOLUTE_URL_OVERRIDES = {
     'auth.user': lambda u: reverse_lazy('user_detail', args=[u.username])

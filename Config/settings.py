@@ -58,8 +58,6 @@ INSTALLED_APPS = [
     'django_extensions',
     'easy_thumbnails',
 
-    'taggit',
-
     'django.contrib.sites',
 
     # +998 90 6966996

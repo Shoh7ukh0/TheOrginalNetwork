@@ -47,12 +47,11 @@ class ProfileView(View):
         return redirect('account:dashboard', username=username)
 
 class LoginView(View):
-    template_name = 'account/login.html'
+    template_name = 'registration/login.html'  # Ma'lumotnoma HTML fayli
 
     def get(self, request, *args, **kwargs):
-        if request.user.is_authenticated:
-            return redirect('account:dashboard')
-        return render(request, self.template_name)
+        form = LoginForm()
+        return render(request, self.template_name, {'form': form})
 
     def post(self, request, *args, **kwargs):
         form = LoginForm(request.POST)
@@ -62,11 +61,12 @@ class LoginView(View):
             if user is not None:
                 if user.is_active:
                     login(request, user)
-                    return HttpResponse('Authenticate successfully')
+                    return redirect('core:post_list')
                 else:
                     return HttpResponse('Disabled account')
             else:
                 return HttpResponse('Invalid login')
+
         return render(request, self.template_name, {'form': form})
 
 class DashboardView(View):

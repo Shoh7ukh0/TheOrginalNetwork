@@ -18,7 +18,8 @@
             </div>
             <!-- Form START -->
             <form class="mt-4" >
-                {{ user_form.as_p }}
+              {{ user_form.username }}<br/>
+              {{ user_form.first_name }}<br/>
                 {% csrf_token %}
               <!-- Button -->
               <div class="d-grid">

@@ -74,7 +74,7 @@ class PostDetailView(View):
 
     def get(self, request, post_id, *args, **kwargs):
         post = get_object_or_404(Post, id=post_id)
-        post.save()
+        # post.save()  # Bu qatorni o'chiring, chunki bu postni saqlash uchun kerak emas
 
         comments = post.comments.all()
         likes = post.likes.all()
@@ -143,9 +143,14 @@ class LikePostView(View):
         return redirect('core:post_detail', post_id=post_id)
 
 
-class DeletePostView(View):
-    @login_required
-    def get(self, request, post_id, *args, **kwargs):
-        post = get_object_or_404(Post, id=post_id, user=request.user)
-        post.delete()
-        return redirect('core:post_list')
+class DeletePostView(LoginRequiredMixin, DeleteView):
+    model = Post
+    template_name = 'post_confirm_delete.html'
+    success_url = reverse_lazy('core:post_list')  # Success URL ni kerakli sahifaga o'rnating
+
+    def get_object(self, queryset=None):
+        obj = super().get_object()
+        # Tekshirish, o'chirish uchun foydalanuvchining post yaratgani emasmi
+        if obj.user != self.request.user:
+            raise PermissionError("You don't have permission to delete this post.")
+        return obj

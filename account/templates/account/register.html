@@ -17,7 +17,7 @@
               <span class="d-block">Already have an account? <a href="{% url 'account:login' %}">Sign in here</a></span>
             </div>
             <!-- Form START -->
-            <form class="mt-4" >
+            <form class="mt-4" method="post">
                 {{ user_form.username }}<br/>
                 {{ user_form.first_name }}<br/>
                 {{ user_form.email }}<br/>

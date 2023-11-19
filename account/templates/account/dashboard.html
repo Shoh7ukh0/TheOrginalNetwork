@@ -851,10 +851,10 @@
                   <img class="avatar-img rounded-circle" src="{% if user.profile.photo %}{% thumbnail user.profile.photo 180x180 %}{% else %}../static/profile.gif{% endif %}" alt="avatar">
                 </li>
                 <li class="avatar avatar-xs">
-                  <img class="avatar-img rounded-circle" src="{% thumbnail user.profile.photo 180x180 %}" alt="avatar">
+                  <img class="avatar-img rounded-circle" src="{% if user.profile.photo %}{% thumbnail user.profile.photo 180x180 %}{% else %}../static/profile.gif{% endif %}" alt="avatar">
                 </li>
                 <li class="avatar avatar-xs">
-                  <img class="avatar-img rounded-circle" src="{% thumbnail user.profile.photo 180x180 %}" alt="avatar">
+                  <img class="avatar-img rounded-circle" src="{% if user.profile.photo %}{% thumbnail user.profile.photo 180x180 %}{% else %}../static/profile.gif{% endif %}" alt="avatar">
                 </li>
                 <li class="ms-3">
                   <small> +50 </small>

@@ -3,7 +3,8 @@ from .models import Profile
 from django import forms
 
 class LoginForm(forms.Form):
-    username = forms.CharField()
+    username = forms.CharField(widget=forms.TextInput(attrs={'class':'form-control',
+                                                                'placeholder': 'Enter the username'}))
     password = forms.CharField(widget=forms.PasswordInput)
 
 class UserRegistrationForm(forms.ModelForm):

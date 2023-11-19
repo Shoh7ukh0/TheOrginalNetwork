@@ -11,7 +11,8 @@ class LoginForm(forms.Form):
 class UserRegistrationForm(forms.ModelForm):
     password = forms.CharField(label='Password', widget=forms.PasswordInput(attrs={'class':'form-control',
                                                                 'placeholder': 'Enter the username'}))
-    password2 = forms.CharField(label='Repeat password', widget=forms.PasswordInput)
+    password2 = forms.CharField(label='Repeat password', widget=forms.PasswordInput(attrs={'class':'form-control fakepassword',
+                                                                'placeholder': 'Enter the password'}))
 
     class Meta:
         model = User

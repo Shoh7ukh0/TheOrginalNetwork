@@ -81,8 +81,9 @@ class DashboardView(View):
         actions = actions.select_related('user', 'user__profile').prefetch_related('target')[:10]
         return render(request, self.template_name, {'section': 'dashboard', 'actions': actions})
 
-class RegisterView(View):
+class RegistrationView(View):
     template_name = 'account/register.html'
+    success_template_name = 'account/register_done.html'
 
     def get(self, request, *args, **kwargs):
         user_form = UserRegistrationForm()
@@ -96,7 +97,9 @@ class RegisterView(View):
             new_user.save()
             Profile.objects.create(user=new_user)
             create_action(new_user, 'has created an account')
-            return render(request, 'account/register_done.html', {'new_user': new_user})
+
+            return render(request, self.success_template_name, {'new_user': new_user})
+
         return render(request, self.template_name, {'user_form': user_form})
 
 class EditProfileView(View):

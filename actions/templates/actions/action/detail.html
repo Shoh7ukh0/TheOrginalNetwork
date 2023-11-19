@@ -35,7 +35,7 @@
                                     {% endif %}
                                 {% endwith %}
                             {% endif %}
-                            <h6 class="card-title mb-1 mt-3"> <a href="{{ user.get_absolute_url }}"> {{ user.first_name }} </a></h6>
+                            <h6 class="card-title mb-1 mt-3"> <a href=""> {{ user.first_name }} </a></h6>
                             <p class="mb-0 small lh-sm">{{ action.created|timesince }}</p>
                             {{ action.verb }}
                             {% if action.target %}

@@ -84,3 +84,15 @@ class ProfileEditForm(forms.ModelForm):
     class Meta:
         model = Profile
         fields = ['date_of_birth', 'photo']
+
+        widgets = {
+            'date_of_birth': forms.TextInput(
+                attrs={
+                    'class': 'form-control flatpickr',
+                    'value': '12/12/1990'
+                }),
+            'photo': ClearableFileInput(
+                attrs={
+                    'class': 'dropzone dropzone-default card shadow-none',
+                })
+        }

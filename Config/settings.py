@@ -181,7 +181,7 @@ SOCIAL_AUTH_FACEBOOK_SCOPE = ['email']
 
 # >>>>>>>>>>>>>> Google <<<<<<<<<<<<<<<
 
-SOCIAL_AUTH_GOOGLE_OAUTH2_KEY = '316288742019-2o89ajpufmh02a4qu52ot36pr6ijg23t.apps.googleusercontent.com' # ИД клиента Google
+SOCIAL_AUTH_GOOGLE_OAUTH2_KEY = '841079281062-o8b6pulir1e7848c6b6i0iu0g6i0bacr.apps.googleusercontent.com' # ИД клиента Google
 SOCIAL_AUTH_GOOGLE_OAUTH2_SECRET = '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' # Секрет клиента Google
 
 

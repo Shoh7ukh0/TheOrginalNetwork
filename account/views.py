@@ -13,38 +13,35 @@ from .models import Contact
 from django.contrib.auth.models import User
 from django.utils.decorators import method_decorator
 
-@method_decorator(login_required, name='dispatch')
 class ProfileView(View):
     template_name = 'account/dashboard.html'
 
     def get(self, request, username, *args, **kwargs):
         user = get_object_or_404(User, username=username)
-        profile = get_object_or_404(Profile, user=user)
+        profile = get_object_or_404(UserProfile, user=user)
         posts = Post.objects.filter(user=user)
+        followers = Subscription.objects.filter(subscribed_to=user).count()
+        following = Subscription.objects.filter(subscriber=user).count()
+        is_following = Subscription.objects.filter(subscriber=request.user, subscribed_to=user).exists()
+        subscription_form = SubscriptionForm(initial={'subscriber': request.user, 'subscribed_to': user})
 
-        # Qachon ro'yxatdan o'tganligi 24 soat ichida bo'lgan foydalanuvchilarni topamiz
         one_day_ago = timezone.now() - timedelta(days=1)
         new_users = User.objects.filter(date_joined__gte=one_day_ago)
+
+        # Obuna bo'lgan foydalanuvchilar sonini qo'shing
+        subscribers_count = Subscription.objects.filter(subscribed_to=user).count()
 
         context = {
             'profile': profile,
             'posts': posts,
+            'followers': followers,
+            'following': following,
+            'is_following': is_following,
+            'subscription_form': subscription_form,
             'new_users': new_users,
+            'subscribers_count': subscribers_count,  # Obuna bo'lgan foydalanuvchilar soni
         }
         return render(request, self.template_name, context)
-
-    def post(self, request, username, *args, **kwargs):
-        user = get_object_or_404(User, username=username)
-        profile = get_object_or_404(Profile, user=user)
-        form = UserProfileForm(request.POST, request.FILES, instance=profile)
-
-        if form.is_valid():
-            form.save()
-            messages.success(request, 'Profil ma\'lumotlari saqlandi.')
-        else:
-            messages.error(request, 'Xatolik yuz berdi. Iltimos, qaytadan urinib ko\'ring.') 
-
-        return redirect('account:dashboard', username=username)
 
 class LoginView(View):
     template_name = 'registration/login.html'  # Ma'lumotnoma HTML fayli

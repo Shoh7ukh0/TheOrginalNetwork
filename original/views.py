@@ -6,6 +6,37 @@ from .models import Post
 from .forms import PostForm, CommentForm, SearchForm
 from django.contrib.auth.models import User
 
+
+class ToggleSubscriptionView(View):
+    @staticmethod
+    @login_required
+    def get(request, username):
+        subscribed_to_user = get_object_or_404(User, username=username)
+
+        try:
+            # Qidirilgan obuna obyekti
+            subscription = Subscription.objects.get(subscriber=request.user, subscribed_to=subscribed_to_user)
+
+            # Obunani o'chirish
+            subscription.delete()
+        except Subscription.DoesNotExist:
+            # Agar obuna topilmasa, yangi obuna yaratish
+            Subscription.objects.create(subscriber=request.user, subscribed_to=subscribed_to_user)
+
+        return redirect('profile', username=username)
+
+    @staticmethod
+    def post(request, *args, **kwargs):
+        return HttpResponse(status=405)  # HTTP 405 Method Not Allowed
+
+    @staticmethod
+    def put(request, *args, **kwargs):
+        return HttpResponse(status=405)  # HTTP 405 Method Not Allowed
+
+    @staticmethod
+    def delete(request, *args, **kwargs):
+        return HttpResponse(status=405)  # HTTP 405 Method Not Allowed
+
 class SearchUserView(View):
     template_name = 'base/search.html'
 

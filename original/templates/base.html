@@ -139,122 +139,14 @@ Header START -->
 				<!-- Nav Search START -->
 				<div class="nav mt-3 mt-lg-0 flex-nowrap align-items-center px-4 px-lg-0">
 					<div class="nav-item w-100">
-						<form method="get" action="{% url 'core:search_user' %}">
+						<form class="rounded position-relative" method="get" action="{% url 'core:search_user' %}">
 							{% csrf_token %}
-							<input type="text" name="q" placeholder="Search">
-							<button type="submit">Search</button>
+							<input class="form-control ps-5 bg-light" type="text" name="q" placeholder="Search">
+							<button class="btn bg-transparent px-2 py-0 position-absolute top-50 start-0 translate-middle-y" type="submit"><i class="bi bi-search fs-5"> </i></button>
 						</form>
 					</div>
 				</div>
 				<!-- Nav Search END -->
-
-				<ul class="navbar-nav navbar-nav-scroll ms-auto">
-					<!-- Nav item 1 Demos -->
-					<li class="nav-item dropdown">
-						<a class="nav-link active dropdown-toggle" href="#" id="homeMenu" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Demo</a>
-						<ul class="dropdown-menu" aria-labelledby="homeMenu">
-							<li> <a class="dropdown-item active" href="#">Home default</a></li>
-							<li> <a class="dropdown-item" href="#">Home classic</a></li>
-							<li> <a class="dropdown-item" href="#">Home post</a></li>
-							<li> <a class="dropdown-item" href="#">Home video</a></li>
-							<li> <a class="dropdown-item" href="#">Home event</a></li>
-							<li> <a class="dropdown-item" href="#">Landing page</a></li>
-							<li> <a class="dropdown-item" href="#">App download</a></li>
-							<li class="dropdown-divider"></li>
-							<li> 
-								<a class="dropdown-item" href="#" target="_blank">
-									<i class="text-success fa-fw bi bi-cloud-download-fill me-2"></i>Buy Social!
-								</a> 
-							</li>
-						</ul>
-					</li>
-					<!-- Nav item 2 Pages -->
-					<li class="nav-item dropdown">
-						<a class="nav-link dropdown-toggle" href="#" id="pagesMenu" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Pages</a>
-						<ul class="dropdown-menu" aria-labelledby="pagesMenu">
-							<li> <a class="dropdown-item" href="#">Albums</a></li>
-							<li> <a class="dropdown-item" href="#">Celebration</a></li>
-							<li> <a class="dropdown-item" href="#">Messaging</a></li>
-							<!-- Dropdown submenu -->
-							<li class="dropdown-submenu dropend"> 
-								<a class="dropdown-item dropdown-toggle" href="#!">Profile</a>
-								<ul class="dropdown-menu" data-bs-popper="none">
-									<li> <a class="dropdown-item" href="#">Feed</a> </li>
-									<li> <a class="dropdown-item" href="#">About</a> </li>
-									<li> <a class="dropdown-item" href="#">Connections</a> </li>
-									<li> <a class="dropdown-item" href="#">Media</a> </li>
-									<li> <a class="dropdown-item" href="#">Videos</a> </li>
-									<li> <a class="dropdown-item" href="#">Events</a> </li>
-									<li> <a class="dropdown-item" href="#">Activity</a> </li>
-								</ul>
-							</li>
-							<li> <a class="dropdown-item" href="#">Events</a></li>
-							<li> <a class="dropdown-item" href="#">Events 2</a></li>
-							<li> <a class="dropdown-item" href="#">Event details</a></li>
-							<li> <a class="dropdown-item" href="#">Event details 2</a></li>
-							<li> <a class="dropdown-item" href="#">Groups</a></li>
-							<li> <a class="dropdown-item" href="#">Group details</a></li>
-							<li> <a class="dropdown-item" href="#">Post videos</a></li>
-							<li> <a class="dropdown-item" href="#">Post video details</a></li>
-							<li> <a class="dropdown-item" href="#">Post details</a></li>
-							<li> <a class="dropdown-item" href="#">Video details</a></li>
-							<li> <a class="dropdown-item" href="#">Blog</a></li>
-							<li> <a class="dropdown-item" href="#">Blog details</a></li>
-							
-							<!-- Dropdown submenu levels -->
-							<li class="dropdown-divider"></li>
-							<li class="dropdown-submenu dropend">
-								<a class="dropdown-item dropdown-toggle" href="#">Dropdown levels</a>
-								<ul class="dropdown-menu dropdown-menu-end" data-bs-popper="none">
-									<li> <a class="dropdown-item" href="#">Dropdown item</a> </li>
-									<li> <a class="dropdown-item" href="#">Dropdown item</a> </li>
-									<!-- dropdown submenu open left -->
-									<li class="dropdown-submenu dropstart">
-										<a class="dropdown-item dropdown-toggle" href="#">Dropdown (start)</a>
-										<ul class="dropdown-menu dropdown-menu-end" data-bs-popper="none">
-											<li> <a class="dropdown-item" href="#">Dropdown item</a> </li>
-											<li> <a class="dropdown-item" href="#">Dropdown item</a> </li>
-										</ul>
-									</li>
-									<li> <a class="dropdown-item" href="#">Dropdown item</a> </li>
-								</ul>
-							</li>
-						</ul>
-					</li>
-
-					<!-- Nav item 3 Post -->
-					<li class="nav-item dropdown">
-						<a class="nav-link dropdown-toggle" href="#" id="postMenu" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Account </a>
-						<ul class="dropdown-menu" aria-labelledby="postMenu">
-							<li> <a class="dropdown-item" href="#">Create a page</a></li>
-							<li> <a class="dropdown-item" href="#">Settings</a> </li>
-							<li> <a class="dropdown-item" href="#">Notifications</a> </li>
-							<li> <a class="dropdown-item" href="#">Help center</a> </li>
-							<li> <a class="dropdown-item" href="#">Help details</a> </li>
-							<!-- dropdown submenu open left -->
-							<li class="dropdown-submenu dropstart">
-								<a class="dropdown-item dropdown-toggle" href="#">Authentication</a>
-								<ul class="dropdown-menu dropdown-menu-end" data-bs-popper="none">
-									<li> <a class="dropdown-item" href="{% url 'account:login' %}">Sign in</a> </li>
-									<li> <a class="dropdown-item" href="#">Sing up</a> </li>
-									<li> <a class="dropdown-item" href="#">Forgot password</a> </li>
-									<li class="dropdown-divider"></li>
-									<li> <a class="dropdown-item" href="#">Sign in advance</a> </li>
-									<li> <a class="dropdown-item" href="#">Sing up advance</a> </li>
-									<li> <a class="dropdown-item" href="#">Forgot password advance</a> </li>
-								</ul>
-							</li>
-							<li> <a class="dropdown-item" href="#">Error 404</a> </li>
-							<li> <a class="dropdown-item" href="#">Offline</a> </li>
-							<li> <a class="dropdown-item" href="#">Privacy & terms</a> </li>
-						</ul>
-					</li>
-
-					<!-- Nav item 4 Mega menu -->
-					<li class="nav-item">
-						<a class="nav-link" href="#">My network</a>
-					</li>
-				</ul>
 			</div>
 			<!-- Main navbar END -->
 
@@ -354,7 +246,7 @@ Header START -->
 
 				<li class="nav-item ms-2 dropdown">
 					<a class="nav-link btn icon-md p-0" href="#" id="profileDropdown" role="button" data-bs-auto-close="outside" data-bs-display="static" data-bs-toggle="dropdown" aria-expanded="false">
-						<img class="avatar-img rounded-2" src="{% thumbnail user.profile.photo 180x180 %}" alt="">
+						<img class="avatar-img rounded-2" src="{% if user.profile.photo %}{% thumbnail user.profile.photo 180x180 %}{% else %}../static/profile.gif{% endif %}" alt="">
 					</a>
 					<ul class="dropdown-menu dropdown-animation dropdown-menu-end pt-3 small me-md-n3" aria-labelledby="profileDropdown">
 						<!-- Profile info -->
@@ -362,18 +254,24 @@ Header START -->
 							<div class="d-flex align-items-center position-relative">
 								<!-- Avatar -->
 								<div class="avatar me-3">
-									<img class="avatar-img rounded-circle" src="{% thumbnail user.profile.photo 180x180 %}" alt="avatar">
+									<img class="avatar-img rounded-circle" src="{% if user.profile.photo %}{% thumbnail user.profile.photo 180x180 %}{% else %}../static/profile.gif{% endif %}" alt="avatar">
 								</div>
 								<div>
 									<a class="h6 stretched-link" href="#">
 										{% if request.user.is_authenticated %}
-											{{ request.user.first_name|default:request.user.username }} 
+											{{ request.user.first_name|default:request.user.username }}
+										{% else %}
+											Username 
 										{% endif %}
 									</a>
 									<p class="small m-0">Web Developer</p>
 								</div>
 							</div>
-							<a class="dropdown-item btn btn-primary-soft btn-sm my-2 text-center" href="{% url 'account:dashboard' %}">View profile</a>
+							{% if user.username %}
+							<a class="dropdown-item btn btn-primary-soft btn-sm my-2 text-center" href="{% url 'account:dashboard' username=user.username %}">View profile</a>
+							{% else %}
+								<p class="text-center">Profilingiz yuq</p>
+							{% endif %}
 						</li>
 						<!-- Links -->
 						<li><a class="dropdown-item" href="#"><i class="bi bi-gear fa-fw me-2"></i>Settings & Privacy</a></li>
@@ -388,6 +286,8 @@ Header START -->
 							</a> 
 						</li>
 						<li class="dropdown-divider"></li>
+						<li><a class="dropdown-item bg-danger-soft-hover" href="{% url 'account:login' %}"><i class="bi bi-power fa-fw me-2"></i>Sign In</a></li>
+						<li><a class="dropdown-item bg-danger-soft-hover" href="{% url 'account:register' %}"><i class="bi bi-power fa-fw me-2"></i>Sign Up</a></li>
 						<li><a class="dropdown-item bg-danger-soft-hover" href="{% url 'account:login' %}"><i class="bi bi-power fa-fw me-2"></i>Sign Out</a></li>
 						<li> <hr class="dropdown-divider"></li>
 						<!-- Dark mode options START -->

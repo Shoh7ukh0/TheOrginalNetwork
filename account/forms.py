@@ -18,6 +18,25 @@ class UserRegistrationForm(forms.ModelForm):
         model = User
         fields = ['username', 'first_name', 'email']
 
+        widgets = {
+            'username': forms.TextInput(
+                attrs={
+                    'class': 'form-control',
+                    'placeholder': 'Enter new Username'
+                }),
+            'first_name': forms.TextInput(
+                attrs={
+                    'class': 'form-control',
+                    'placeholder': 'Enter the first name'
+                }),
+            'email': forms.EmailInput(
+                attrs={
+                    'class': 'form-control',
+                    'placeholder': 'Enter the email'
+                }
+            )
+        }
+
     def clean_password2(self):
         cd = self.cleaned_data
         if cd['password'] != cd['password2']:

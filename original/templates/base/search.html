@@ -3,8 +3,7 @@
 {% block content %}
 <section style="height: 100vh; background-image: url(../../static/assets/366946-watchtower-in-oled-style-k-wallpaper-hdwallpaper-desktop.jpg); background-repeat: no-repeat; background-size: cover;" class="content">
   {% for user in users %}
-
-  {% if users %}
+    <div class="card-header border-0 pb-0">
     <ul>
       {% for user in users %}
         <li><a href="{% url 'accounts:profile' username=user.username %}">{{ user.username }}</a></li>

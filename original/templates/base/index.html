@@ -86,8 +86,8 @@
 											{% with total_followers=user.followers.count %}
 												<div>
 													<h6 class="mb-0">
-														{% if followers %}
-															{{ followers }}
+														{% if total_followers %}
+															{{ total_followers }}
 														{% else %}
 															<span>0</span>
 														{% endif %}
@@ -100,8 +100,8 @@
 												<!-- User stat item -->
 												<div>
 													<h6 class="mb-0">
-														{% if following %}
-															{{ following }}
+														{% if total_following %}
+															{{ total_following }}
 														{% else %}
 															<span>0</span>
 														{% endif %}
@@ -253,18 +253,15 @@
 									</div>
 									<p class="mb-0 small">Web Developer at Webestica</p>
 								</div>
-								{% if user != request.user %}
-									<form action="{% url 'account:toggle_subscription' username=user.username %}" method="post">
-										{% csrf_token %}
-										<button type="submit">
-											{% if user in request.user.subscriptions.all %}
-												Subscribe
-											{% else %}
-												Unsubscribe
-											{% endif %}
-										</button>
-									</form>
-								{% endif %}
+								{% with total_followers=user.followers.count %}
+									<a style="border: 1px solid rgb(0, 102, 255); background-color: rgb(0, 102, 255); color: #fff; text-align: center; padding: 5px 15px; border-radius: 50px; margin-left: 6em; text-transform: capitalize;" href="#" data-id="{{ user.id }}" data-action="{% if request.user in user.followers.all %}un{% endif %}follow" class="follow button">
+										{% if request.user not in user.followers.all %}
+											Follow
+										{% else %}
+											Unfollow
+										{% endif %}
+									</a>
+								{% endwith %}
 							</div>
 							<!-- Card feed action dropdown START -->
 							<div class="dropdown">

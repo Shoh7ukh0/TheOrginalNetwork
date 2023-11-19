@@ -1,6 +1,6 @@
 from django.contrib.auth.models import User
 from django.forms.widgets import ClearableFileInput
-from .models import Profile, Subscription
+from .models import Profile
 from django import forms
 
 class LoginForm(forms.Form):
@@ -97,10 +97,3 @@ class ProfileEditForm(forms.ModelForm):
                     'class': 'dropzone dropzone-default card shadow-none',
                 })
         }
-
-
-class SubscriptionForm(forms.ModelForm):
-    class Meta:
-        model = Subscription
-        fields = ('subscriber', 'subscribed_to',)
-        widgets = {'subscriber': forms.HiddenInput(), 'subscribed_to': forms.HiddenInput()}

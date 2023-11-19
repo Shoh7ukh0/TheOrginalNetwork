@@ -5,18 +5,15 @@ from django.http import HttpResponse, JsonResponse
 from django.shortcuts import render, redirect, get_object_or_404
 from django.views import View
 from django.views.decorators.http import require_POST
-from .forms import LoginForm, UserRegistrationForm, UserEditForm, ProfileEditForm, SubscriptionForm
+from .forms import LoginForm, UserRegistrationForm, UserEditForm, ProfileEditForm
 from .models import Profile
-from original.models import Post
 from actions.utils import create_action
 from actions.models import Action
-from .models import Contact, Subscription
+from .models import Contact
 from django.contrib.auth.models import User
 from django.utils.decorators import method_decorator
-from datetime import timedelta
-from django.utils import timezone
-from django.contrib import messages
 
+@method_decorator(login_required, name='dispatch')
 class ProfileView(View):
     template_name = 'account/dashboard.html'
 
@@ -24,42 +21,30 @@ class ProfileView(View):
         user = get_object_or_404(User, username=username)
         profile = get_object_or_404(Profile, user=user)
         posts = Post.objects.filter(user=user)
-        followers = Subscription.objects.filter(subscribed_to=user).count()
-        following = Subscription.objects.filter(subscriber=user).count()
-        is_following = Subscription.objects.filter(subscriber=request.user, subscribed_to=user).exists()
-        subscription_form = SubscriptionForm(initial={'subscriber': request.user, 'subscribed_to': user})
 
+        # Qachon ro'yxatdan o'tganligi 24 soat ichida bo'lgan foydalanuvchilarni topamiz
         one_day_ago = timezone.now() - timedelta(days=1)
         new_users = User.objects.filter(date_joined__gte=one_day_ago)
-
-        # Obuna bo'lgan foydalanuvchilar sonini qo'shing
-        subscribers_count = Subscription.objects.filter(subscribed_to=user).count()
 
         context = {
             'profile': profile,
             'posts': posts,
-            'followers': followers,
-            'following': following,
-            'is_following': is_following,
-            'subscription_form': subscription_form,
             'new_users': new_users,
-            'subscribers_count': subscribers_count,  # Obuna bo'lgan foydalanuvchilar soni
         }
         return render(request, self.template_name, context)
 
+    def post(self, request, username, *args, **kwargs):
+        user = get_object_or_404(User, username=username)
+        profile = get_object_or_404(Profile, user=user)
+        form = UserProfileForm(request.POST, request.FILES, instance=profile)
 
-@login_required
-def toggle_subscription(request, username):
-    subscribed_to_user = get_object_or_404(User, username=username)
+        if form.is_valid():
+            form.save()
+            messages.success(request, 'Profil ma\'lumotlari saqlandi.')
+        else:
+            messages.error(request, 'Xatolik yuz berdi. Iltimos, qaytadan urinib ko\'ring.') 
 
-    try:
-        subscription = Subscription.objects.get(subscriber=request.user, subscribed_to=subscribed_to_user)
-        subscription.delete()  # Obunani o'chirish
-    except Subscription.DoesNotExist:
-        Subscription.objects.create(subscriber=request.user, subscribed_to=subscribed_to_user)  # Obuna bo'lish
-
-    return redirect('profile', username=username)
-
+        return redirect('account:dashboard', username=username)
 
 class LoginView(View):
     template_name = 'registration/login.html'  # Ma'lumotnoma HTML fayli

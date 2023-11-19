@@ -74,22 +74,16 @@ class PostDetailView(View):
 
     def get(self, request, post_id, *args, **kwargs):
         post = get_object_or_404(Post, id=post_id)
-        post.save()
+        self.user = request.user  # Agar .user metodda mavjud bo'lsa
 
         comments = post.comments.all()
         likes = post.likes.all()
         form = CommentForm()
 
-        # Check if the image attribute has a value
-        has_image = post.image.url if post.image else None
-
-        # Check if the video attribute has a value
-        has_video = post.video.url if post.video else None
-
         return render(
             request,
             self.template_name,
-            {'post': post, 'comments': comments, 'likes': likes, 'form': form, 'has_image': has_image, 'has_video': has_video}
+            {'post': post, 'comments': comments, 'likes': likes, 'form': form}
         )
 
     @login_required

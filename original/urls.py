@@ -12,4 +12,5 @@ urlpatterns = [
     path('<int:post_id>/edit/', views.EditPostView.as_view(), name='edit_post'),
     path('<int:post_id>/delete/', views.DeletePostView.as_view(), name='delete_post'),
     path('search/', views.SearchUserView.as_view(), name='search_user'),
+    path('toggle_subscription/<str:username>/', views.ToggleSubscriptionView.as_view(), name='toggle_subscription'),
 ]

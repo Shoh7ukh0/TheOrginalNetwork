@@ -43,7 +43,7 @@
               <div class="d-flex align-items-center">
                 <!-- Avatar -->
                 <div class="avatar avatar-story me-2">
-                  <a href="#!"> <img class="avatar-img rounded-circle" src="{% thumbnail user.profile.photo 180x180 %}" alt=""> </a>
+                  <a href="#!"> <img class="avatar-img rounded-circle" src="{% if user.profile.photo %}{% thumbnail user.profile.photo 180x180 %}{% else %}../static/profile.gif{% endif %}" alt=""> </a>
                 </div>
                 <!-- Info -->
                 <div>
@@ -53,6 +53,15 @@
                   </div>
                   <p class="mb-0 small">Web Developer at Webestica</p>
                 </div>
+                {% with total_followers=user.followers.count %}
+									<a style="border: 1px solid rgb(0, 102, 255); background-color: rgb(0, 102, 255); color: #fff; text-align: center; padding: 5px 15px; border-radius: 50px; margin-left: 18em; text-transform: capitalize;" href="#" data-id="{{ user.id }}" data-action="{% if request.user in user.followers.all %}un{% endif %}follow" class="follow button">
+										{% if request.user not in user.followers.all %}
+											Follow
+										{% else %}
+											Unfollow
+										{% endif %}
+									</a>
+								{% endwith %}
               </div>
               <!-- Card feed action dropdown START -->
               <div class="dropdown">
@@ -63,8 +72,8 @@
                 <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="cardFeedAction">
                   <li>
                     {% if user.is_authenticated %}
-                      <a class="dropdown-item" href="{% url 'core:edit_post' post_id=post.id %}">Edit</a>
-                      <a class="dropdown-item" href="{% url 'core:delete_post' post_id=post.id %}">Delete</a>
+                      <a class="dropdown-item" href="{% url 'core:edit_post' post_id=post.id %}"><i class="bi bi-pencil-square"></i>  Edit</a>
+                      <a class="dropdown-item" href="{% url 'core:delete_post' post_id=post.id %}"><i class="bi bi-trash3"></i>  Delete</a>
                     {% endif %}</li>
                   <li><a class="dropdown-item" href="#"> <i class="bi bi-bookmark fa-fw pe-2"></i>Save post</a></li>
                   <li><a class="dropdown-item" href="#"> <i class="bi bi-person-x fa-fw pe-2"></i>Unfollow lori ferguson </a></li>
@@ -77,13 +86,14 @@
               <!-- Card feed action dropdown END -->
             </div>
             <!-- Feed meta Info -->
-            <p>{{ post.caption }}</p>
+            <p>{{ post.caption }}</p><br/>
+            <a href="#">{{ post.hashtag }}</a>
             <!-- Feed react START -->
             <ul class="nav nav-stack flex-wrap small mb-3">
               <li class="nav-item">
                 <form method="post" action="{% url 'core:like_post' post_id=post.id %}">
                   {% csrf_token %}
-                  <button type="submit">
+                  <button style="border: none; background-color: transparent;" type="submit">
                     <a class="nav-link" href="#!"> 
                       <i class="bi bi-hand-thumbs-up-fill pe-1"></i>({{ likes.count }})
                     </a>
@@ -120,7 +130,7 @@
                 <div class="d-flex position-relative">
                   <!-- Avatar -->
                   <div class="avatar avatar-xs">
-                    <a href="#!"><img class="avatar-img rounded-circle" src="{% thumbnail user.profile.photo 180x180 %}" alt=""></a>
+                    <a href="#!"><img class="avatar-img rounded-circle" src="{% if user.profile.photo %}{% thumbnail user.profile.photo 180x180 %}{% else %}../static/profile.gif{% endif %}" alt=""></a>
                   </div>
                   
                   <div class="ms-2">
@@ -152,21 +162,10 @@
             {% endfor %}
             <form method="post">
               {% csrf_token %}
-              {{ form.as_p }}
-              <button type="submit">Add Comment</button>
+              {{ form.text }}<br/>
+              <button class="btn btn-primary" type="submit">Add Comment</button>
             </form>
             <!-- Comment wrap END -->
-            <div class="card-footer border-0 pb-0">
-              <!-- Load more comments -->
-              <a href="#!" role="button" class="btn btn-link btn-link-loader btn-sm text-secondary d-flex align-items-center" data-bs-toggle="button" aria-pressed="true">
-                <div class="spinner-dots me-2">
-                  <span class="spinner-dot"></span>
-                  <span class="spinner-dot"></span>
-                  <span class="spinner-dot"></span>
-                </div>
-                Load more comments 
-              </a>
-            </div>
           </div>
         </div>
       </div>

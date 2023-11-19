@@ -10,5 +10,6 @@ urlpatterns = [
     path('edit-profile/', views.EditProfileView.as_view(), name='edit_profile'),
     path('user-list/', views.UserListView.as_view(), name='user_list'),
     path('user-detail/<str:username>/', views.UserDetailView.as_view(), name='user_detail'),
-    path('user-follow/', views.UserFollowView.as_view(), name='user_follow'),
+    path('users/followers/<username>/', views.followers_list, name='user_followers'),
+    path('users/follow/', views.user_follow, name='user_follow'),
 ]

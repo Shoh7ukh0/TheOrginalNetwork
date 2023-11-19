@@ -144,7 +144,7 @@
                   <div class="d-flex align-items-center">
                     <!-- Avatar -->
                     <div class="avatar avatar-story me-2">
-                      <a href="#!"> <img class="avatar-img rounded-circle" src="{% thumbnail user.profile.photo 180x180 %}" alt=""> </a>
+                      <a href="#!"> <img class="avatar-img rounded-circle" src="{% if user.profile.photo %}{% thumbnail user.profile.photo 180x180 %}{% else %}../static/profile.gif{% endif %}" alt=""> </a>
                     </div>
                     <!-- Info -->
                     <div>
@@ -210,7 +210,7 @@
                 <div class="d-flex mb-3">
                   <!-- Avatar -->
                   <div class="avatar avatar-xs me-2">
-                    <a href="#!"> <img class="avatar-img rounded-circle" src="{% thumbnail user.profile.photo 180x180 %}" alt=""> </a>
+                    <a href="#!"> <img class="avatar-img rounded-circle" src="{% if user.profile.photo %}{% thumbnail user.profile.photo 180x180 %}{% else %}../static/profile.gif{% endif %}" alt=""> </a>
                   </div>
                   <!-- Comment box  -->
                   <form class="position-relative w-100">

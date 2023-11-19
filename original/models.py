@@ -1,5 +1,6 @@
 from django.db import models
 from django.contrib.auth.models import User
+from taggit.managers import TaggableManager
     
 
 class Post(models.Model):
@@ -9,7 +10,7 @@ class Post(models.Model):
     image = models.ImageField(upload_to='posts/images/', blank=True, null=True)
     video = models.FileField(upload_to='posts/videos/', blank=True, null=True)
     likes = models.ManyToManyField(User, related_name='post_likes', blank=True)
-    views = models.PositiveIntegerField(default=0)
+    hashtag = models.CharField(max_length=200)
 
     def __str__(self):
         return f'{self.user.username} - {self.caption[:20]}'

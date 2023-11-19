@@ -285,7 +285,7 @@
                         <div class="d-flex">
                           <!-- Avatar -->
                           <div class="avatar avatar-story avatar-xs">
-                            <a href="#!"><img class="avatar-img rounded-circle" src="{% thumbnail user.profile.photo 180x180 %}" alt=""></a>
+                            <a href="#!"><img class="avatar-img rounded-circle" src="{% if user.profile.photo %}{% thumbnail user.profile.photo 180x180 %}{% else %}../static/profile.gif{% endif %}" alt=""></a>
                           </div>
                           <!-- Comment by -->
                           <div class="ms-2">
@@ -327,7 +327,7 @@
                     <div class="d-flex">
                       <!-- Avatar -->
                       <div class="avatar avatar-xs">
-                      <a href="#!"><img class="avatar-img rounded-circle" src="{% thumbnail user.profile.photo 180x180 %}" alt=""></a>
+                      <a href="#!"><img class="avatar-img rounded-circle" src="{% if user.profile.photo %}{% thumbnail user.profile.photo 180x180 %}{% else %}../static/profile.gif{% endif %}" alt=""></a>
                       </div>
                       <!-- Comment by -->
                       <div class="ms-2">

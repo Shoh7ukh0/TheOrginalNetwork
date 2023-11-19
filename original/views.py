@@ -30,7 +30,7 @@ class PostListView(View):
 
     def get(self, request, tag_slug=None, *args, **kwargs):
         posts = Post.objects.all().order_by('-id')
-        return render(request, self.template_name, {'posts': posts, 'tag': tag})
+        return render(request, self.template_name, {'posts': posts})
 
 
 class CreatePostView(View):

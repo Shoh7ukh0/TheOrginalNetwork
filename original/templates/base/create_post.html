@@ -9,11 +9,14 @@
   {% block content %}
   <section style="height: 100vh; background-image: url(../../static/assets/366946-watchtower-in-oled-style-k-wallpaper-hdwallpaper-desktop.jpg); background-size: cover;" class="section">
     <div style="position: relative; top: 5em; left: 22em; backdrop-filter: blur(7px); width: 50%; padding: 20px 50px;" class="content">
-      <h1 style="text-align: center; color: rgb(0, 102, 255);">Create Post</h1>
+      <h1 style="text-align: center; color: #fff; text-transform: uppercase;">Create Post</h1>
       <form style="text-align: center;" method="post" enctype="multipart/form-data">
         {% csrf_token %}
-        <p>{{ form.as_p }}</p>
-        <button type="submit">Create Post</button>
+        {{ form.caption }}<br/>
+        {{ form.hashtag }}<br/>
+        {{ form.image }}<br/>
+        {{ form.video }}<br/>
+        <button class="btn btn-primary" type="submit">Create Post</button>
       </form>
     </div>
   </section>

@@ -375,7 +375,8 @@
             <p>Don't have an account?<a href="{% url 'account:register' %}"> Click here to sign up</a></p>
             <!-- Form START -->
             <form class="mt-4" action="{% url 'account:login' %}" method="post">
-                {{ form.as_p }}
+                {{ form.username }}<br/>
+                {{ form.password }}<br/>
                 {% csrf_token %}
                 <input type="hidden" name="next" value="{{ next }}" />
                 <!-- Remember me -->
@@ -384,7 +385,7 @@
                     <input type="checkbox" class="form-check-input" id="rememberCheck">
                     <label class="form-check-label" for="rememberCheck">Remember me?</label>
                     </div>
-                    <a href="{% url 'account:password_reset' %}">Forgot password?</a>
+                    <a href="">Forgot password?</a>
                 </div>
                 <!-- Button -->
                 <div class="d-grid">

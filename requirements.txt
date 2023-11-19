@@ -1,12 +1,12 @@
 asgiref==3.7.2
 async-timeout==4.0.3
 certifi==2023.7.22
-cffi==1.16.0
+cffi
 charset-normalizer==2.1.1
 cryptography==41.0.5
 defusedxml==0.8.0rc2
 Deprecated==1.2.14
-Django==4.2.7
+Django
 django-allauth==0.58.2
 django-crispy-forms==2.1
 django-debug-toolbar==4.2.0

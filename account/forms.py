@@ -9,7 +9,8 @@ class LoginForm(forms.Form):
                                                                 'placeholder': 'Enter the password'}))
 
 class UserRegistrationForm(forms.ModelForm):
-    password = forms.CharField(label='Password', widget=forms.PasswordInput)
+    password = forms.CharField(label='Password', widget=forms.PasswordInput(attrs={'class':'form-control',
+                                                                'placeholder': 'Enter the username'}))
     password2 = forms.CharField(label='Repeat password', widget=forms.PasswordInput)
 
     class Meta:

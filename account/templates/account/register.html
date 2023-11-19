@@ -20,6 +20,8 @@
             <form class="mt-4" >
               {{ user_form.username }}<br/>
               {{ user_form.first_name }}<br/>
+              {{ user_form.email }}<br/>
+                {{ user_form.password }}<br/>
                 {% csrf_token %}
               <!-- Button -->
               <div class="d-grid">

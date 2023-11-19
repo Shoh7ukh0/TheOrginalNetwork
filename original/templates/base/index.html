@@ -86,8 +86,8 @@
 											{% with total_followers=user.followers.count %}
 												<div>
 													<h6 class="mb-0">
-														{% if total_followers %}
-															{{ total_followers }}
+														{% if followers %}
+															{{ followers }}
 														{% else %}
 															<span>0</span>
 														{% endif %}
@@ -100,8 +100,8 @@
 												<!-- User stat item -->
 												<div>
 													<h6 class="mb-0">
-														{% if total_following %}
-															{{ total_following }}
+														{% if following %}
+															{{ following }}
 														{% else %}
 															<span>0</span>
 														{% endif %}
@@ -254,13 +254,13 @@
 									<p class="mb-0 small">Web Developer at Webestica</p>
 								</div>
 								{% if user != request.user %}
-									<form action="{% url 'toggle_subscription' username=user.username %}" method="post">
+									<form action="{% url 'account:toggle_subscription' username=user.username %}" method="post">
 										{% csrf_token %}
 										<button type="submit">
 											{% if user in request.user.subscriptions.all %}
-												Unsubscribe
-											{% else %}
 												Subscribe
+											{% else %}
+												Unsubscribe
 											{% endif %}
 										</button>
 									</form>

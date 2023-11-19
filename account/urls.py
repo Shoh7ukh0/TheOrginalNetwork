@@ -11,4 +11,5 @@ urlpatterns = [
     path('user-list/', views.UserListView.as_view(), name='user_list'),
     path('user-detail/<str:username>/', views.UserDetailView.as_view(), name='user_detail'),
     path('user-follow/', views.UserFollowView.as_view(), name='user_follow'),
+    path('toggle_subscription/<str:username>/', views.toggle_subscription, name='toggle_subscription'),
 ]

@@ -5,20 +5,24 @@ from django.http import HttpResponse, JsonResponse
 from django.shortcuts import render, redirect, get_object_or_404
 from django.views import View
 from django.views.decorators.http import require_POST
-from .forms import LoginForm, UserRegistrationForm, UserEditForm, ProfileEditForm
+from .forms import LoginForm, UserRegistrationForm, UserEditForm, ProfileEditForm, SubscriptionForm
 from .models import Profile
+from original.models import Post
 from actions.utils import create_action
 from actions.models import Action
-from .models import Contact
+from .models import Contact, Subscription
 from django.contrib.auth.models import User
 from django.utils.decorators import method_decorator
+from datetime import timedelta
+from django.utils import timezone
+from django.contrib import messages
 
 class ProfileView(View):
     template_name = 'account/dashboard.html'
 
     def get(self, request, username, *args, **kwargs):
         user = get_object_or_404(User, username=username)
-        profile = get_object_or_404(UserProfile, user=user)
+        profile = get_object_or_404(Profile, user=user)
         posts = Post.objects.filter(user=user)
         followers = Subscription.objects.filter(subscribed_to=user).count()
         following = Subscription.objects.filter(subscriber=user).count()
@@ -42,6 +46,20 @@ class ProfileView(View):
             'subscribers_count': subscribers_count,  # Obuna bo'lgan foydalanuvchilar soni
         }
         return render(request, self.template_name, context)
+
+
+@login_required
+def toggle_subscription(request, username):
+    subscribed_to_user = get_object_or_404(User, username=username)
+
+    try:
+        subscription = Subscription.objects.get(subscriber=request.user, subscribed_to=subscribed_to_user)
+        subscription.delete()  # Obunani o'chirish
+    except Subscription.DoesNotExist:
+        Subscription.objects.create(subscriber=request.user, subscribed_to=subscribed_to_user)  # Obuna bo'lish
+
+    return redirect('profile', username=username)
+
 
 class LoginView(View):
     template_name = 'registration/login.html'  # Ma'lumotnoma HTML fayli

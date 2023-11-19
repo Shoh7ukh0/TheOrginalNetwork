@@ -1,6 +1,7 @@
 from django.db import models
 from django.conf import settings
 from django.contrib.auth import get_user_model
+from django.contrib.auth.models import User
 
 # Create your models here.
 
@@ -28,3 +29,15 @@ class Contact(models.Model):
     
 user_model = get_user_model()
 user_model.add_to_class('following', models.ManyToManyField('self', through=Contact, related_name='followers', symmetrical=False))
+
+
+class Subscription(models.Model):
+    subscriber = models.ForeignKey(User, related_name='subscriptions', on_delete=models.CASCADE)
+    subscribed_to = models.ForeignKey(User, related_name='subscribers', on_delete=models.CASCADE)
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        unique_together = ['subscriber', 'subscribed_to']
+
+    def __str__(self):
+        return f'{self.subscriber} -> {self.subscribed_to}'

@@ -748,7 +748,7 @@
          <div class="d-flex mb-3">
           <!-- Avatar -->
           <div class="avatar avatar-xs me-2">
-            <img class="avatar-img rounded-circle" src="{% thumbnail user.profile.photo 180x180 %}" alt="">
+            <img class="avatar-img rounded-circle" src="{% if user.profile.photo %}{% thumbnail user.profile.photo 180x180 %}{% else %}../static/profile.gif{% endif %}" alt="">
           </div>
           <!-- Feed box  -->
           <form class="w-100">
@@ -836,7 +836,7 @@
             <div class="col-12 mt-3">
               <ul class="avatar-group list-unstyled align-items-center mb-0">
                 <li class="avatar avatar-xs">
-                  <img class="avatar-img rounded-circle" src="{% thumbnail user.profile.photo 180x180 %}" alt="avatar">
+                  <img class="avatar-img rounded-circle" src="{% if user.profile.photo %}{% thumbnail user.profile.photo 180x180 %}{% else %}../static/profile.gif{% endif %}" alt="avatar">
                 </li>
                 <li class="avatar avatar-xs">
                   <img class="avatar-img rounded-circle" src="{% thumbnail user.profile.photo 180x180 %}" alt="avatar">

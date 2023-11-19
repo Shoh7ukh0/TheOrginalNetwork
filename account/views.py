@@ -13,6 +13,39 @@ from .models import Contact
 from django.contrib.auth.models import User
 from django.utils.decorators import method_decorator
 
+@method_decorator(login_required, name='dispatch')
+class ProfileView(View):
+    template_name = 'account/dashboard.html'
+
+    def get(self, request, username, *args, **kwargs):
+        user = get_object_or_404(User, username=username)
+        profile = get_object_or_404(Profile, user=user)
+        posts = Post.objects.filter(user=user)
+
+        # Qachon ro'yxatdan o'tganligi 24 soat ichida bo'lgan foydalanuvchilarni topamiz
+        one_day_ago = timezone.now() - timedelta(days=1)
+        new_users = User.objects.filter(date_joined__gte=one_day_ago)
+
+        context = {
+            'profile': profile,
+            'posts': posts,
+            'new_users': new_users,
+        }
+        return render(request, self.template_name, context)
+
+    def post(self, request, username, *args, **kwargs):
+        user = get_object_or_404(User, username=username)
+        profile = get_object_or_404(Profile, user=user)
+        form = UserProfileForm(request.POST, request.FILES, instance=profile)
+
+        if form.is_valid():
+            form.save()
+            messages.success(request, 'Profil ma\'lumotlari saqlandi.')
+        else:
+            messages.error(request, 'Xatolik yuz berdi. Iltimos, qaytadan urinib ko\'ring.') 
+
+        return redirect('account:dashboard', username=username)
+
 class LoginView(View):
     template_name = 'account/login.html'
 

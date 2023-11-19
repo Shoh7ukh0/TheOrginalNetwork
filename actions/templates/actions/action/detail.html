@@ -29,7 +29,7 @@
                                 {% with target=action.target %}
                                     {% if target.image %}
                                         {% thumbnail target.image "80x80" crop="100%" as im %}
-                                            <a href="{{ target.get_absolute_url }}">
+                                            <a href="">
                                                 <img src="{{ im.url }}" class="item-img">
                                             </a>
                                     {% endif %}

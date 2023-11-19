@@ -1,4 +1,5 @@
 from django.contrib.auth.models import User
+from django.forms.widgets import ClearableFileInput
 from .models import Profile
 from django import forms
 

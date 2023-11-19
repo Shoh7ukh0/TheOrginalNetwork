@@ -7,7 +7,7 @@ from .forms import PostForm, CommentForm, SearchForm
 from django.contrib.auth.models import User
 
 class SearchUserView(View):
-    template_name = 'base/index.html'
+    template_name = 'base/search.html'
 
     def get(self, request, *args, **kwargs):
         form = SearchForm(request.GET)
@@ -28,9 +28,9 @@ class SearchUserView(View):
 class PostListView(View):
     template_name = 'base/index.html'
 
-    def get(self, request, *args, **kwargs):
-        posts = Post.objects.all()
-        return render(request, self.template_name, {'posts': posts})
+    def get(self, request, tag_slug=None, *args, **kwargs):
+        posts = Post.objects.all().order_by('-id')
+        return render(request, self.template_name, {'posts': posts, 'tag': tag})
 
 
 class CreatePostView(View):
@@ -74,7 +74,6 @@ class PostDetailView(View):
 
     def get(self, request, post_id, *args, **kwargs):
         post = get_object_or_404(Post, id=post_id)
-        post.views += 1  # Ko'rishlar sonini oshirish
         post.save()
 
         comments = post.comments.all()

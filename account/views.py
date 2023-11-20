@@ -145,13 +145,6 @@ class UserDetailView(View):
         user = get_object_or_404(User, username=username, is_active=True)
         return render(request, self.template_name, {'section': 'people', 'user': user})
 
-# @login_required
-# def followers_list(request, username):
-#     user = CustomUser.objects.filter(username=username).select_related('profile').prefetch_related('followers').first()
-#     if not user:
-#         raise Http404
-#     return render(request, 'accounts/followers.html', {'user': user})
-
 
 @require_POST
 @login_required

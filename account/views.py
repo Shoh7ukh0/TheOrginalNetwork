@@ -69,7 +69,7 @@ class LoginView(View):
                 else:
                     return HttpResponse('Disabled account')
             else:
-                return HttpResponse('core:post_list')
+                return HttpResponse("Hali Ro'yxatdan o'tmagansiz!")
         else:
             form = LoginForm()
 
@@ -130,7 +130,7 @@ class EditProfileView(View):
         return render(request, self.template_name, {'user_form': user_form, 'profile_form': profile_form})
 
 class UserListView(View):
-    template_name = 'account/dashboard.html'
+    template_name = 'account/user/list.html'
 
     @method_decorator(login_required)
     def get(self, request, *args, **kwargs):
@@ -138,39 +138,37 @@ class UserListView(View):
         return render(request, self.template_name, {'section': 'people', 'users': users})
 
 class UserDetailView(View):
-    template_name = 'account/dashboard.html'
+    template_name = 'account/user/detail.html'
 
     @method_decorator(login_required)
     def get(self, request, username, *args, **kwargs):
         user = get_object_or_404(User, username=username, is_active=True)
         return render(request, self.template_name, {'section': 'people', 'user': user})
 
+# @login_required
+# def followers_list(request, username):
+#     user = CustomUser.objects.filter(username=username).select_related('profile').prefetch_related('followers').first()
+#     if not user:
+#         raise Http404
+#     return render(request, 'accounts/followers.html', {'user': user})
+
+
+@require_POST
 @login_required
-def followers_list(request, username):
-    user = CustomUser.objects.filter(username=username).select_related('profile').prefetch_related('followers').first()
-    if not user:
-        raise Http404
-    return render(request, 'accounts/followers.html', {'user': user})
-
-
-@method_decorator(require_POST, name='dispatch')
-@method_decorator(login_required, name='dispatch')
-class UserFollowView(View):
-    def post(self, request, *args, **kwargs):
-        user_id = request.POST.get('id')
-        action = request.POST.get('action')
-        
-        if user_id and action:
-            try:
-                user = User.objects.get(id=user_id)
-                if action == 'follow':
-                    Contact.objects.get_or_create(user_from=request.user, user_to=user)
-                    create_action(request.user, 'is following', user)
-                else:
-                    Contact.objects.filter(user_from=request.user, user_to=user).delete()
-                return JsonResponse({'status': 'ok'})
-            except User.DoesNotExist:
-                return JsonResponse({'status': 'error'})
-        
-        return JsonResponse({'status': 'error'})
-
+def user_follow(request):
+    user_id = request.POST.get('id')
+    action = request.POST.get('action')
+    if user_id and action:
+        try:
+            user = User.objects.get(id=user_id)
+            if action == 'follow':
+                Contact.objects.get_or_create(
+                    user_from=request.user,
+                    user_to=user)
+            else:
+                Contact.objects.filter(user_from=request.user,
+                                        user_to=user).delete()
+            return JsonResponse({'status':'ok'})
+        except User.DoesNotExist:
+            return JsonResponse({'status':'error'})
+    return JsonResponse({'status':'error'})

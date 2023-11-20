@@ -253,15 +253,6 @@
 									</div>
 									<p class="mb-0 small">Web Developer at Webestica</p>
 								</div>
-								<!-- {% with total_followers=user.followers.count %}
-									<a style="border: 1px solid rgb(0, 102, 255); background-color: rgb(0, 102, 255); color: #fff; text-align: center; padding: 5px 15px; border-radius: 50px; margin-left: 6em; text-transform: capitalize;" href="#" data-id="{{ user.id }}" data-action="{% if request.user in user.followers.all %}un{% endif %}follow" class="follow button">
-										{% if request.user not in user.followers.all %}
-											Follow
-										{% else %}
-											Unfollow
-										{% endif %}
-									</a>
-								{% endwith %} -->
 							</div>
 							<!-- Card feed action dropdown START -->
 							<div class="dropdown">
@@ -270,8 +261,19 @@
 								</a>
 								<!-- Card feed action dropdown menu -->
 								<ul class="dropdown-menu dropdown-menu-end" aria-labelledby="cardFeedAction">
+									<li>
+										{% with total_followers=user.followers.count %}
+											<a style=" border: 1px solid rgb(0, 102, 255); background-color: rgb(0, 102, 255); color: #fff; text-align: center; padding: 5px 15px; border-radius: 50px; width: 50%; text-transform: capitalize;" class="dropdown-item follow button" data-id="{{ user.id }}" data-action="{% if request.user in user.followers.all %}un{% endif %}follow" href="#">											
+												{% if request.user not in user.followers.all %}
+													Follow
+												{% else %}
+													Unfollow
+												{% endif %}
+											</a>
+										{% endwith %}
+									</li>
+									<li><hr class="dropdown-divider"></li>
 									<li><a class="dropdown-item" href="#"> <i class="bi bi-bookmark fa-fw pe-2"></i>Save post</a></li>
-									<li><a class="dropdown-item" href="#"> <i class="bi bi-person-x fa-fw pe-2"></i>Unfollow lori ferguson </a></li>
 									<li><a class="dropdown-item" href="#"> <i class="bi bi-x-circle fa-fw pe-2"></i>Hide post</a></li>
 									<li><a class="dropdown-item" href="#"> <i class="bi bi-slash-circle fa-fw pe-2"></i>Block</a></li>
 									<li><hr class="dropdown-divider"></li>
@@ -309,7 +311,10 @@
 								  </form>
 							</li>
 							<li class="nav-item">
-								<a class="nav-link" href="#!"> <i class="bi bi-chat-fill pe-1"></i>Comments ({{ post.comments.count }})</a>
+								<form action="{% url 'core:add_comment' post_id=post.id %}" method="post">
+									{% csrf_token %}
+									<button style="background-color: transparent; border: none; color: #fff;" type="submit"><i class="bi bi-chat-fill pe-1"></i>Comments ({{ post.comments.count }})</button>
+								</form>
 							</li>
 							<!-- Card share action START -->
 							<li class="nav-item dropdown ms-sm-auto">
@@ -330,20 +335,6 @@
 						</ul>
 						<!-- Feed react END -->
 
-						<!-- Add comment -->
-						<div class="d-flex mb-3">
-							<!-- Avatar -->
-							<div class="avatar avatar-xs me-2">
-								<a href="#!"> <img class="avatar-img rounded-circle" src="{% if user.profile.photo %}{% thumbnail user.profile.photo 180x180 %}{% else %}../static/profile.gif{% endif %}" alt=""> </a>
-							</div>
-							<!-- Comment box  -->
-							<form class="nav nav-item w-100 position-relative" method="post" action="{% url 'core:add_comment' post_id=post.id %}">
-								{% csrf_token %}
-								{{ form.text }}
-								<!-- <input data-autoresize class="form-control pe-5 bg-light" rows="1" type="text" name="text"> -->
-								<button class="nav-link bg-transparent px-3 position-absolute top-50 end-0 translate-middle-y border-0" type="submit"><i class="bi bi-send-fill"></i></button>
-							  </form>
-						</div>
 						<!-- Comment wrap START -->
 						{% for comment in post.comments.all %}
 						<ul class="comment-wrap list-unstyled">

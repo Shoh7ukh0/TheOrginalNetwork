@@ -14,7 +14,7 @@ class PostForm(forms.ModelForm):
         widgets = {
             'caption': forms.TextInput(
                 attrs={
-                    'class': 'form-control',
+                    'class': 'form-control pe-4 fs-3 lh-1 border-0',
                     'placeholder': 'Add a Post...'
                 }),
             'hashtag': forms.TextInput(
@@ -22,15 +22,6 @@ class PostForm(forms.ModelForm):
                     'class': 'form-control',
                     'placeholder': 'Add a hashtag...'
                 }),
-            'image': ClearableFileInput(
-                attrs={
-                    'class': 'dropzone dropzone-default card shadow-none'
-                }),
-            'video': ClearableFileInput(
-                attrs={
-                    'class': 'dropzone dropzone-default card shadow-none'
-                }
-            )
         }
 
 class CommentForm(forms.ModelForm):

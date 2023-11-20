@@ -1,4 +1,6 @@
 {% extends 'base.html' %}
+{% load thumbnail %}
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -8,15 +10,57 @@
 <body>
   {% block content %}
   <section style="height: 100vh; background-image: url(../../static/assets/366946-watchtower-in-oled-style-k-wallpaper-hdwallpaper-desktop.jpg); background-size: cover;" class="section">
-    <div style="position: relative; top: 5em; left: 22em; backdrop-filter: blur(7px); width: 50%; padding: 20px 50px;" class="content">
-      <h1 style="text-align: center; color: #fff; text-transform: uppercase;">Create Post</h1>
+    <div style="margin: auto !important; position: relative; top: 25px; backdrop-filter: blur(7px); width: 50%; padding: 20px 50px;">
       <form style="text-align: center;" method="post" enctype="multipart/form-data">
-        {% csrf_token %}
-        {{ form.caption }}<br/>
-        {{ form.hashtag }}<br/>
-        {{ form.image }}<br/>
-        {{ form.video }}<br/>
-        <button class="btn btn-primary" type="submit">Create Post</button>
+        <!-- Modal create Feed video START -->
+        <div id="feedActionVideo" tabindex="-1" aria-labelledby="feedActionVideoLabel" aria-hidden="true">
+          <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+            <!-- Modal feed header START -->
+            <div class="modal-header">
+              <h5 class="modal-title" id="feedActionVideoLabel">Add post</h5>
+            </div>
+            <!-- Modal feed header END -->
+
+              <!-- Modal feed body START -->
+              <div class="modal-body">
+                <!-- Add Feed -->
+                <div class=" mb-3">
+                  <!-- Feed box  -->
+                  <form class="w-100">
+                    {% csrf_token %}
+                    {{ form.caption }}<br/>
+                    {{ form.hashtag }}<br/>
+                  </form>
+                </div>
+
+                <!-- Dropzone photo START -->
+                <div>
+                  <label class="form-label">Upload attachment</label>
+                  <div class="dropzone dropzone-default card shadow-none" data-dropzone='{"maxFiles":2}'>
+                    <div class="dz-message">
+                      <label class="form-label">Upload Images</label>
+                      {{ form.image }}<br/>
+                      <label class="form-label">Upload Video</label>
+                      {{ form.video }}<br/>
+                    </div>
+                  </div>
+                </div>
+                <!-- Dropzone photo END -->
+              </div>
+              <!-- Modal feed body END -->
+
+              <!-- Modal feed footer -->
+              <div style="position: relative; top: 10px;" class="modal-footer">
+                <!-- Button -->
+                <!-- <button type="button" class="btn btn-danger-soft me-2"><i class="bi bi-camera-video-fill pe-1"></i> Live video</button> -->
+                <button type="submit" class="btn btn-success-soft">Post</button>
+              </div>
+              <!-- Modal feed footer -->
+            </div>
+          </div>
+        </div>
+        <!-- Modal create Feed video END -->
       </form>
     </div>
   </section>

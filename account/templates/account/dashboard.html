@@ -192,7 +192,10 @@
                         </form>
                     </li>
                     <li class="nav-item">
-                      <a class="nav-link" href="#!"> <i class="bi bi-chat-fill pe-1"></i>Comments ({{ post.comments.count }})</a>
+                      <form action="{% url 'core:add_comment' post_id=post.id %}" method="post">
+                        {% csrf_token %}
+                        <button style="background-color: transparent; border: none; color: #fff;" type="submit"><i class="bi bi-chat-fill pe-1"></i>Comments ({{ post.comments.count }})</button>
+                      </form>
                     </li>
                     <!-- Card share action START -->
                     <li class="nav-item dropdown ms-sm-auto">
@@ -219,12 +222,6 @@
                     <div class="avatar avatar-xs me-2">
                       <a href="#!"> <img class="avatar-img rounded-circle" src="{% if user.profile.photo %}{% thumbnail user.profile.photo 180x180 %}{% else %}../static/profile.gif{% endif %}" alt=""> </a>
                     </div>
-                    <!-- Comment box  -->
-                    <form method="post" action="{% url 'core:add_comment' post_id=post.id %}">
-                      {% csrf_token %}
-                      {{ form.as_p }}
-                      <button style="border: 1px solid rgb(0, 102, 255); background-color: transparent; color: #fff; padding: 5px 15px; border-radius: 5px; margin-left: 33em;" type="submit">Add Comment</button>
-                      </form>
                   </div>
                   <!-- Comment wrap START -->
                   {% for comment in post.comments.all %}

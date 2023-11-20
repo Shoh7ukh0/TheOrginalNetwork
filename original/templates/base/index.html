@@ -337,10 +337,11 @@
 								<a href="#!"> <img class="avatar-img rounded-circle" src="{% if user.profile.photo %}{% thumbnail user.profile.photo 180x180 %}{% else %}../static/profile.gif{% endif %}" alt=""> </a>
 							</div>
 							<!-- Comment box  -->
-							<form method="post" action="{% url 'core:add_comment' post_id=post.id %}">
+							<form class="nav nav-item w-100 position-relative" method="post" action="{% url 'core:add_comment' post_id=post.id %}">
 								{% csrf_token %}
-								{{ form.as_p }}
-								<button style="border: 1px solid rgb(0, 102, 255); background-color: transparent; color: #fff; padding: 5px 15px; border-radius: 5px; margin-left: 22em;" type="submit">Add Comment</button>
+								{{ form.text }}
+								<!-- <input data-autoresize class="form-control pe-5 bg-light" rows="1" type="text" name="text"> -->
+								<button class="nav-link bg-transparent px-3 position-absolute top-50 end-0 translate-middle-y border-0" type="submit"><i class="bi bi-send-fill"></i></button>
 							  </form>
 						</div>
 						<!-- Comment wrap START -->

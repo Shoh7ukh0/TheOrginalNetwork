@@ -30,7 +30,7 @@
                   <div>
                     <!-- Avatar -->
                     <div class="avatar avatar-xxl mt-n5 mb-3">
-                      <img class="avatar-img rounded-circle border border-white border-3" src="{% if user.profile.photo %}{% thumbnail user.profile.photo 180x180 %}{% else %}../static/profile.gif {% endif %}" alt="">
+                      <img class="avatar-img rounded-circle border border-white border-3" src="{% if user.profile.photo %}{% thumbnail user.profile.photo 180x180 %}{% else %}../../../static/profile.gif {% endif %}" alt="">
                     </div>
                   </div>
                   <div class="ms-sm-4 mt-sm-3">
@@ -95,7 +95,7 @@
               <div class="d-flex mb-3">
                 <!-- Avatar -->
                 <div class="avatar avatar-xs me-2">
-                  <a href="#"> <img class="avatar-img rounded-circle" src="{% thumbnail user.profile.photo 180x180 %}" alt=""> </a>
+                  <a href="#"> <img class="avatar-img rounded-circle" src="{% if user.profile.photo %}{% thumbnail user.profile.photo 180x180 %}{% else %}../../../static/profile.gif {% endif %}" alt=""> </a>
                 </div>
                 <!-- Post input -->
                 <form class="w-100">
@@ -141,7 +141,7 @@
                     <div class="d-flex align-items-center">
                       <!-- Avatar -->
                       <div class="avatar avatar-story me-2">
-                        <a href="#!"> <img class="avatar-img rounded-circle" src="{% if user.profile.photo %}{% thumbnail user.profile.photo 180x180 %}{% else %}../static/profile.gif{% endif %}" alt=""> </a>
+                        <a href="#!"> <img class="avatar-img rounded-circle" src="{% if user.profile.photo %}{% thumbnail user.profile.photo 180x180 %}{% else %}../../../static/profile.gif {% endif %}" alt=""> </a>
                       </div>
                       <!-- Info -->
                       <div>
@@ -223,7 +223,7 @@
                   <div class="d-flex mb-3">
                     <!-- Avatar -->
                     <div class="avatar avatar-xs me-2">
-                      <a href="#!"> <img class="avatar-img rounded-circle" src="{% if user.profile.photo %}{% thumbnail user.profile.photo 180x180 %}{% else %}../static/profile.gif{% endif %}" alt=""> </a>
+                      <a href="#!"> <img class="avatar-img rounded-circle" src="{% if user.profile.photo %}{% thumbnail user.profile.photo 180x180 %}{% else %}../../../static/profile.gif {% endif %}" alt=""> </a>
                     </div>
                     <!-- Comment box  -->
                     <form method="post" action="{% url 'core:add_comment' post_id=post.id %}">
@@ -241,7 +241,7 @@
                         
                         <!-- Avatar -->
                         <div class="avatar avatar-xs">
-                          <a href="#!"><img class="avatar-img rounded-circle" src="{% if user.profile.photo %}{% thumbnail user.profile.photo 180x180 %}{% else %}../static/profile.gif{% endif %}" alt=""></a>
+                          <a href="#!"><img class="avatar-img rounded-circle" src="{% if user.profile.photo %}{% thumbnail user.profile.photo 180x180 %}{% else %}../../../static/profile.gif {% endif %}" alt=""></a>
                         </div>
                         <div class="ms-2">
                           <!-- Comment by -->

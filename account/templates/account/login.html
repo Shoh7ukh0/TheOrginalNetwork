@@ -12,7 +12,8 @@
         <h1>Login - in</h1>
         <p>Please, use the following form to login - in</p>
         <form method="post">
-            {{ form.as_p }}
+            {{ form.username }}<br/>
+            {{ form.password }}<br/>
             {% csrf_token %}
             <p><input type="submit" value="Log in"></p>
         </form>         

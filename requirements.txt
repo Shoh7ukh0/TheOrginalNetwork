@@ -24,7 +24,6 @@ pycparser
 PyJWT
 pyOpenSSL
 python3-openid
-redis
 requests
 requests-oauthlib
 social-auth-app-django
@@ -36,3 +35,4 @@ Werkzeug
 whitenoise
 wrapt
 gunicorn
+django-redis

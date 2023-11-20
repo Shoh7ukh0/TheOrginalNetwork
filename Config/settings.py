@@ -61,6 +61,7 @@ INSTALLED_APPS = [
     'easy_thumbnails',
 
     'taggit',
+    'django_redis',
 
     'django.contrib.sites',
 

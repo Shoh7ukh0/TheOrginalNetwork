@@ -44,13 +44,14 @@ SITE_ID = 1
 # Application definition
 
 INSTALLED_APPS = [
+    'account.apps.AccountConfig',
+
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'account',
     'actions',
     'original',
     'images',
@@ -213,4 +214,4 @@ REDIS_HOST = 'localhost'
 REDIS_PORT = 6379
 REDIS_DB = 0
 
-LOGIN_REDIRECT_URL = '/dashboard/'
+LOGIN_REDIRECT_URL = '/login/'

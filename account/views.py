@@ -69,7 +69,7 @@ class LoginView(View):
                 else:
                     return HttpResponse('Disabled account')
             else:
-                return HttpResponse('Invalid login')
+                return HttpResponse('core:post_list')
 
         return render(request, self.template_name, {'form': form})
 

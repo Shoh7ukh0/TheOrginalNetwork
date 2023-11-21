@@ -5,7 +5,7 @@ from django.contrib.auth import get_user_model
 # Create your models here.
 
 class Profile(models.Model):
-    user = models.OneToOneField(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
+    user = models.OneToOneField(settings.AUTH_USER_MODEL, on_delete=models.PROTECT)
     date_of_birth = models.DateField(blank=True, null=True)
     photo = models.ImageField(upload_to='users/%Y/%m/%d/', blank=True)
     following = models.ManyToManyField('self', through='Contact', related_name='followers', symmetrical=False)

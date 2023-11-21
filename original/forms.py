@@ -20,7 +20,7 @@ class PostForm(forms.ModelForm):
             'hashtag': forms.TextInput(
                 attrs={
                     'class': 'form-control',
-                    'placeholder': 'Hashtag qo'shing...'
+                    'placeholder': "Hashtag qo'shing..."
                 }),
         }
 

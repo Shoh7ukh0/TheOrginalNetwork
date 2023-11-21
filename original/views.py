@@ -5,9 +5,17 @@ from django.shortcuts import get_object_or_404
 from .models import Post
 from .forms import PostForm, CommentForm, SearchForm
 from django.contrib.auth.models import User
+import redis
+from django.conf import settings
+from datetime import datetime, timezone
+
+
+# соединить с redis
+# r = redis.Redis(host=settings.REDIS_HOST, port=settings.REDIS_PORT, db=settings.REDIS_DB)
+
 
 class SearchUserView(View):
-    template_name = 'base/index.html'
+    template_name = 'base/search.html'
 
     def get(self, request, *args, **kwargs):
         form = SearchForm(request.GET)
@@ -28,8 +36,13 @@ class SearchUserView(View):
 class PostListView(View):
     template_name = 'base/index.html'
 
-    def get(self, request, *args, **kwargs):
-        posts = Post.objects.all()
+    def get(self, request, tag_slug=None, *args, **kwargs):
+        posts = Post.objects.all().order_by('-created_at')
+        for post in posts:
+            time_difference = datetime.now(timezone.utc) - post.created_at
+            hours, remainder = divmod(time_difference.seconds, 3600)
+            minutes, _ = divmod(remainder, 60)
+            post.time_since_creation = f"{hours}h {minutes}m ago"
         return render(request, self.template_name, {'posts': posts})
 
 
@@ -74,8 +87,8 @@ class PostDetailView(View):
 
     def get(self, request, post_id, *args, **kwargs):
         post = get_object_or_404(Post, id=post_id)
-        post.views += 1  # Ko'rishlar sonini oshirish
-        post.save()
+        # total_views = r.incr(f'Post:{post.id}:views')
+        # post.save()  # Bu qatorni o'chiring, chunki bu postni saqlash uchun kerak emas
 
         comments = post.comments.all()
         likes = post.likes.all()
@@ -90,7 +103,7 @@ class PostDetailView(View):
         return render(
             request,
             self.template_name,
-            {'post': post, 'comments': comments, 'likes': likes, 'form': form, 'has_image': has_image, 'has_video': has_video}
+            {'post': post, 'comments': comments, 'likes': likes, 'form': form, 'has_image': has_image, 'has_video': has_video, 'total_views': total_views}
         )
 
     @login_required
@@ -115,7 +128,7 @@ class PostDetailView(View):
         return render(
             request,
             self.template_name,
-            {'post': post, 'comments': comments, 'likes': likes, 'form': form, 'has_image': has_image, 'has_video': has_video}
+            {'post': post, 'comments': comments, 'likes': likes, 'form': form, 'has_image': has_image, 'has_video': has_video, 'total_views': total_views}
         )
 
 class AddCommentView(View):

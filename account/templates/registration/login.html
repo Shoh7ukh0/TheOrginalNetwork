@@ -52,7 +52,7 @@
       <div class="row justify-content-center text-center">
         <div class="col-12">
           <!-- Title -->
-          <h1 class="display-4 text-white mb-4 position-relative">Welcome back!</h1>
+          <h1 class="display-4 text-white mb-4 position-relative">Qaytib kelganingizdan xursandmiz!</h1>
           <!-- SVG START -->
           <figure class="m-0 position-relative z-index-9">
             <svg class="col-sm-8 col-lg-4" version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
@@ -371,43 +371,44 @@
           <!-- Sign in form START -->
           <div class="card card-body p-4 p-sm-5 mt-sm-n5 mb-n5">
             <!-- Title -->
-            <h2 class="h1 mb-2">Sign in</h2>
-            <p>Don't have an account?<a href="{% url 'account:register' %}"> Click here to sign up</a></p>
+            <h2 class="h1 mb-2">Tizimga kirish</h2>
+            <p>Hisobingiz yo'qmi?<a href="{% url 'account:register' %}"> Roʻyxatdan oʻtish uchun shu yerni bosing</a></p>
             <!-- Form START -->
             <form class="mt-4" action="{% url 'account:login' %}" method="post">
-                {{ form.as_p }}
+                {{ form.username }}<br/>
+                {{ form.password }}<br/>
                 {% csrf_token %}
                 <input type="hidden" name="next" value="{{ next }}" />
                 <!-- Remember me -->
                 <div class="mb-3 d-sm-flex justify-content-between">
                     <div>
                     <input type="checkbox" class="form-check-input" id="rememberCheck">
-                    <label class="form-check-label" for="rememberCheck">Remember me?</label>
+                    <label class="form-check-label" for="rememberCheck">Meni eslaysizmi?</label>
                     </div>
-                    <a href="{% url 'account:password_reset' %}">Forgot password?</a>
+                    <a href="">Parolni unutdingizmi?</a>
                 </div>
                 <!-- Button -->
                 <div class="d-grid">
-                    <button type="submit" class="btn btn-lg btn-primary-soft" value="Log in">Login</button>
+                    <button type="submit" class="btn btn-lg btn-primary-soft" value="Log in">Tizimga kirish</button>
                 </div> <br>
                 <div>
                   <ul>
                     <li style="padding: 10px 100px; position: relative; left: -15px;" class="btn btn-info">
                       <a style="color: #fff; letter-spacing: 1px;" href="{% url 'social:begin' 'facebook' %}">
                         <i class="bi bi-facebook"></i>
-                        Sign in with Facebook
+                        Facebook bilan kiring
                       </a>
                     </li>
                     <li style="padding: 10px 110px; position: relative; top: 1em; left: -15px;" class="btn btn-danger">
                       <a style="color: #fff; letter-spacing: 1px;" href="{% url 'social:begin' 'google-oauth2' %}">
                         <i class="bi bi-google"></i>
-                        Sign in with Google
+                        Google bilan kiring
                       </a>
                     </li>
                   </ul>
                 </div>
                 <!-- Copyright -->
-                <p style="position: relative; top: 1em;" class="mb-0 mt-3">©2023 <a target="_blank" href="#">Shohrukh Uralov.</a> All rights reserved</p>
+                <p style="position: relative; top: 1em;" class="mb-0 mt-3">©2023 <a target="_blank" href="#">Shohrux O'ralov.</a> Barcha huquqlar himoyalangan</p>
             </form>
             <!-- Form END -->
           </div>
@@ -431,9 +432,9 @@ Footer START -->
         <div class="d-grid d-sm-flex justify-content-center justify-content-sm-between align-items-center mt-3">
           <!-- Nav -->
           <ul class="nav">
-            <li class="nav-item"><a class="nav-link fw-bold ps-0 pe-2" href="#">Terms</a></li>
-            <li class="nav-item"><a class="nav-link fw-bold px-2" href="#">Privacy</a></li>
-            <li class="nav-item"><a class="nav-link fw-bold px-2" href="#">Cookies</a></li>
+            <li class="nav-item"><a class="nav-link fw-bold ps-0 pe-2" href="#">Shartlar</a></li>
+            <li class="nav-item"><a class="nav-link fw-bold px-2" href="#">Maxfiylik</a></li>
+            <li class="nav-item"><a class="nav-link fw-bold px-2" href="#">Cookie-fayllar</a></li>
           </ul>
           <!-- Social icon -->
           <ul class="nav justify-content-center justify-content-sm-end">

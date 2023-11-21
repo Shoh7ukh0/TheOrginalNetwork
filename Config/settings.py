@@ -11,8 +11,18 @@ https://docs.djangoproject.com/en/4.2/ref/settings/
 """
 
 from pathlib import Path
+import os
 
 from django.urls import reverse_lazy
+
+import redis
+
+# Connect to your internal Redis instance using the REDIS_URL environment variable
+# The REDIS_URL is set to the internal Redis URL e.g. redis://red-343245ndffg023:6379
+# r = redis.from_url(os.environ['redis://red-clecoj0lccns73e9reg0:6379'])
+
+# r.set('key', 'redis-py')
+# r.get('key')
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -27,7 +37,12 @@ SECRET_KEY = 'django-insecure-4#ro1y)@fuy4z4u41)!8y)e#u@lcmgs!dgi0k#g**qv43bje*!
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['mysite.com', 'localhost', '127.0.0.1']
+ALLOWED_HOSTS = [
+    'mysite.com', 
+    'localhost', 
+    '127.0.0.1',
+    'thenetwork-4z3l.onrender.com'
+]
 
 ABSOLUTE_URL_OVERRIDES = {
     'auth.user': lambda u: reverse_lazy('user_detail', args=[u.username])
@@ -43,13 +58,14 @@ SITE_ID = 1
 # Application definition
 
 INSTALLED_APPS = [
+    'account.apps.AccountConfig',
+
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'account',
     'actions',
     'original',
     'images',
@@ -59,6 +75,7 @@ INSTALLED_APPS = [
     'easy_thumbnails',
 
     'taggit',
+    'django_redis',
 
     'django.contrib.sites',
 
@@ -67,6 +84,7 @@ INSTALLED_APPS = [
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
+    'whitenoise.middleware.WhiteNoiseMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
@@ -126,6 +144,22 @@ AUTH_PASSWORD_VALIDATORS = [
 ]
 
 
+# Redis Cashe
+# CACHES = {
+#     'default': {
+#         'BACKEND': 'django_redis.cache.RedisCache',
+#         'LOCATION': 'redis://127.0.0.1:6379/1',  # Update with your Redis server information
+#         'OPTIONS': {
+#             'CLIENT_CLASS': 'django_redis.client.DefaultClient',
+#         }
+#     }
+# }
+
+# Use Redis as the default session engine
+SESSION_ENGINE = "django.contrib.sessions.backends.cache"
+SESSION_CACHE_ALIAS = "default"
+
+
 # Internationalization
 # https://docs.djangoproject.com/en/4.2/topics/i18n/
 
@@ -142,6 +176,12 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/4.2/howto/static-files/
 
 STATIC_URL = 'static/'
+
+STATICFILES_DIRS = (
+    os.path.join(BASE_DIR,'static'),
+)
+
+STATIC_ROOT = BASE_DIR / 'staticfiles'
 
 MEDIA_URL = 'media/'
 MEDIA_ROOT = BASE_DIR / 'media'
@@ -183,8 +223,8 @@ SOCIAL_AUTH_FACEBOOK_SCOPE = ['email']
 
 # >>>>>>>>>>>>>> Google <<<<<<<<<<<<<<<
 
-SOCIAL_AUTH_GOOGLE_OAUTH2_KEY = '316288742019-2o89ajpufmh02a4qu52ot36pr6ijg23t.apps.googleusercontent.com' # ИД клиента Google
-SOCIAL_AUTH_GOOGLE_OAUTH2_SECRET = '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' # Секрет клиента Google
+SOCIAL_AUTH_GOOGLE_OAUTH2_KEY = '841079281062-o8b6pulir1e7848c6b6i0iu0g6i0bacr.apps.googleusercontent.com' # ИД клиента Google
+SOCIAL_AUTH_GOOGLE_OAUTH2_SECRET = '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' # Секрет клиента Google
 
 
 SOCIAL_AUTH_PIPELINE = [
@@ -204,3 +244,5 @@ SOCIAL_AUTH_PIPELINE = [
 REDIS_HOST = 'localhost'
 REDIS_PORT = 6379
 REDIS_DB = 0
+
+LOGIN_REDIRECT_URL = '/login/'

@@ -32,7 +32,6 @@ ALLOWED_HOSTS = [
     'mysite.com', 
     'localhost', 
     '127.0.0.1',
-    '127.0.0.1:6379', 
     'thenetwork-4z3l.onrender.com'
 ]
 

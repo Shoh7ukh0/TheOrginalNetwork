@@ -251,7 +251,7 @@
 								<div>
 									<div class="nav nav-divider">
 										<h6 class="nav-item card-title mb-0"> <a href="{% url 'core:post_detail' post_id=post.id %}"> {{ post.user.username }} </a></h6>
-										<span class="nav-item small"> {{ post.created_at }}</span>
+										<span class="nav-item small"> {{ post.time_since_creation }}</span>
 									</div>
 									<p class="mb-0 small">Web Developer at Webestica</p>
 								</div>

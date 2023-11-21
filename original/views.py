@@ -7,6 +7,7 @@ from .forms import PostForm, CommentForm, SearchForm
 from django.contrib.auth.models import User
 import redis
 from django.conf import settings
+from datetime import datetime, timezone
 
 
 # соединить с redis
@@ -36,9 +37,13 @@ class PostListView(View):
     template_name = 'base/index.html'
 
     def get(self, request, tag_slug=None, *args, **kwargs):
-        posts = Post.objects.all().order_by('-id')
-        post_count = posts.count()
-        return render(request, self.template_name, {'posts': posts, 'post_count': post_count})
+        posts = Post.objects.all().order_by('-created_at')
+        for post in posts:
+            time_difference = datetime.now(timezone.utc) - post.created_at
+            hours, remainder = divmod(time_difference.seconds, 3600)
+            minutes, _ = divmod(remainder, 60)
+            post.time_since_creation = f"{hours}h {minutes}m ago"
+        return render(request, self.template_name, {'posts': posts})
 
 
 class CreatePostView(View):

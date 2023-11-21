@@ -3,7 +3,7 @@ from .models import Post, Comment
 from django.forms.widgets import ClearableFileInput
 
 class SearchForm(forms.Form):
-    q = forms.CharField(label='Search', max_length=100)
+    q = forms.CharField(label='Qidirmoq', max_length=100)
 
 
 class PostForm(forms.ModelForm):
@@ -15,12 +15,12 @@ class PostForm(forms.ModelForm):
             'caption': forms.TextInput(
                 attrs={
                     'class': 'form-control pe-4 fs-3 lh-1 border-0',
-                    'placeholder': 'Add a Post...'
+                    'placeholder': 'Post qo‘shish...'
                 }),
             'hashtag': forms.TextInput(
                 attrs={
                     'class': 'form-control',
-                    'placeholder': 'Add a hashtag...'
+                    'placeholder': 'Hashtag qo'shing...'
                 }),
         }
 
@@ -33,6 +33,6 @@ class CommentForm(forms.ModelForm):
             'text': forms.TextInput(
                 attrs={
                     'class': 'form-control pe-5 bg-light',
-                    'placeholder': 'Add a Comment...'
+                    'placeholder': "Fikr qo'shish..."
                 }),
         }

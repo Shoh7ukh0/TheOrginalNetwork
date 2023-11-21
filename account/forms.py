@@ -5,15 +5,15 @@ from django import forms
 
 class LoginForm(forms.Form):
     username = forms.CharField(widget=forms.TextInput(attrs={'class':'form-control',
-                                                                'placeholder': 'Enter the username'}))
+                                                                'placeholder': 'Foydalanuvchi nomini kiriting'}))
     password = forms.CharField(widget=forms.PasswordInput(attrs={'class':'form-control fakepassword',
-                                                                'placeholder': 'Enter the password'}))
+                                                                'placeholder': 'Parolni kiriting'}))
 
 class UserRegistrationForm(forms.ModelForm):
     password = forms.CharField(label='Password', widget=forms.PasswordInput(attrs={'class':'form-control',
-                                                                'placeholder': 'Enter the username'}))
+                                                                'placeholder': 'Yangi parolni kiriting'}))
     password2 = forms.CharField(label='Repeat password', widget=forms.PasswordInput(attrs={'class':'form-control fakepassword',
-                                                                'placeholder': 'Enter the password'}))
+                                                                'placeholder': 'Parolni tasdiqlang'}))
 
     class Meta:
         model = User
@@ -23,17 +23,17 @@ class UserRegistrationForm(forms.ModelForm):
             'username': forms.TextInput(
                 attrs={
                     'class': 'form-control',
-                    'placeholder': 'Enter new Username'
+                    'placeholder': 'Yangi foydalanuvchi nomini kiriting'
                 }),
             'first_name': forms.TextInput(
                 attrs={
                     'class': 'form-control',
-                    'placeholder': 'Enter the first name'
+                    'placeholder': 'Ismni kiriting'
                 }),
             'email': forms.EmailInput(
                 attrs={
                     'class': 'form-control',
-                    'placeholder': 'Enter the email'
+                    'placeholder': 'Elektron pochtani kiriting'
                 }
             )
         }

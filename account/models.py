@@ -16,10 +16,10 @@ class Profile(models.Model):
 class Contact(models.Model):
     user_from = models.ForeignKey('auth.User',
                                   related_name='rel_from_set',
-                                  on_delete=models.CASCADE)
+                                  on_delete=models.PROTECT)
     user_to = models.ForeignKey('auth.User',
                                 related_name='rel_to_set',
-                                on_delete=models.CASCADE)
+                                on_delete=models.PROTECT)
     created = models.DateTimeField(auto_now_add=True)
 
     class Meta:

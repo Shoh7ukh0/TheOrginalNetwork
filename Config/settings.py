@@ -15,6 +15,15 @@ import os
 
 from django.urls import reverse_lazy
 
+import redis
+
+# Connect to your internal Redis instance using the REDIS_URL environment variable
+# The REDIS_URL is set to the internal Redis URL e.g. redis://red-343245ndffg023:6379
+# r = redis.from_url(os.environ['redis://red-clecoj0lccns73e9reg0:6379'])
+
+# r.set('key', 'redis-py')
+# r.get('key')
+
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
@@ -136,15 +145,15 @@ AUTH_PASSWORD_VALIDATORS = [
 
 
 # Redis Cashe
-CACHES = {
-    'default': {
-        'BACKEND': 'django_redis.cache.RedisCache',
-        'LOCATION': 'redis://127.0.0.1:6379/1',  # Update with your Redis server information
-        'OPTIONS': {
-            'CLIENT_CLASS': 'django_redis.client.DefaultClient',
-        }
-    }
-}
+# CACHES = {
+#     'default': {
+#         'BACKEND': 'django_redis.cache.RedisCache',
+#         'LOCATION': 'redis://127.0.0.1:6379/1',  # Update with your Redis server information
+#         'OPTIONS': {
+#             'CLIENT_CLASS': 'django_redis.client.DefaultClient',
+#         }
+#     }
+# }
 
 # Use Redis as the default session engine
 SESSION_ENGINE = "django.contrib.sessions.backends.cache"

@@ -10,7 +10,7 @@ from django.conf import settings
 
 
 # соединить с redis
-r = redis.Redis(host=settings.REDIS_HOST, port=settings.REDIS_PORT, db=settings.REDIS_DB)
+# r = redis.Redis(host=settings.REDIS_HOST, port=settings.REDIS_PORT, db=settings.REDIS_DB)
 
 
 class SearchUserView(View):
@@ -82,7 +82,7 @@ class PostDetailView(View):
 
     def get(self, request, post_id, *args, **kwargs):
         post = get_object_or_404(Post, id=post_id)
-        total_views = r.incr(f'Post:{post.id}:views')
+        # total_views = r.incr(f'Post:{post.id}:views')
         # post.save()  # Bu qatorni o'chiring, chunki bu postni saqlash uchun kerak emas
 
         comments = post.comments.all()

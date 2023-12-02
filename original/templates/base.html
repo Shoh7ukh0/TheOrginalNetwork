@@ -2,7 +2,7 @@
 {% load thumbnail %}
 <!DOCTYPE html>
 <html lang="en">
-	
+
 <!-- Mirrored from social.webestica.com/ by HTTrack Website Copier/3.x [XR&CO'2014], Thu, 27 Apr 2023 18:05:50 GMT -->
 <head>
 	<title>The Original</title>
@@ -18,7 +18,7 @@
 	<!-- Dark mode -->
 	<script>
 		const storedTheme = localStorage.getItem('theme')
- 
+
 		const getPreferredTheme = () => {
 			if (storedTheme) {
 				return storedTheme
@@ -72,7 +72,7 @@
 
 			}
 		})
-		
+
 	</script>
 
 	<!-- Favicon -->
@@ -118,7 +118,7 @@ Header START -->
 	<nav class="navbar navbar-expand-lg">
 		<div class="container">
 			<!-- Logo START -->
-			<a class="navbar-brand" href="#">
+			<a class="navbar-brand" href="{% url 'core:post_list' %}">
 				<img class="light-mode-item navbar-brand-item" src="{% static 'assets/images/logo.svg' %}" alt="logo">
 				<img class="dark-mode-item navbar-brand-item" src="{% static 'assets/images/logo.svg' %}" alt="logo">
 			</a>
@@ -261,7 +261,7 @@ Header START -->
 										{% if request.user.is_authenticated %}
 											{{ request.user.first_name|default:request.user.username }}
 										{% else %}
-											Username 
+											Username
 										{% endif %}
 									</a>
 									<p class="small m-0">Web Developer</p>
@@ -275,15 +275,15 @@ Header START -->
 						</li>
 						<!-- Links -->
 						<li><a class="dropdown-item" href="#"><i class="bi bi-gear fa-fw me-2"></i>Settings & Privacy</a></li>
-						<li> 
+						<li>
 							<a class="dropdown-item" href="" target="_blank">
 								<i class="fa-fw bi bi-life-preserver me-2"></i>Support
-							</a> 
+							</a>
 						</li>
-						<li> 
+						<li>
 							<a class="dropdown-item" href="#" target="_blank">
 								<i class="fa-fw bi bi-card-text me-2"></i>Documentation
-							</a> 
+							</a>
 						</li>
 						<li class="dropdown-divider"></li>
 						<li><a class="dropdown-item bg-danger-soft-hover" href="{% url 'account:login' %}"><i class="bi bi-power fa-fw me-2"></i>Sign In</a></li>
@@ -314,12 +314,12 @@ Header START -->
 									</svg>
 								</button>
 							</div>
-						</li> 
+						</li>
 						<!-- Dark mode options END-->
 					</ul>
 				</li>
 				<!-- Profile START -->
-				
+
 			</ul>
 			<!-- Nav right END -->
 		</div>

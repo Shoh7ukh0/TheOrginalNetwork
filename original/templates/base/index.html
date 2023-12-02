@@ -3,7 +3,7 @@
 {% load thumbnail %}
 <!DOCTYPE html>
 <html lang="en">
-	
+
 <!-- Mirrored from social.webestica.com/ by HTTrack Website Copier/3.x [XR&CO'2014], Thu, 27 Apr 2023 18:05:50 GMT -->
 <head>
 
@@ -33,9 +33,9 @@
 					</button>
 				</div>
 				<!-- Advanced filter responsive toggler END -->
-				
+
 				<!-- Navbar START-->
-				<nav class="navbar navbar-expand-lg mx-0"> 
+				<nav class="navbar navbar-expand-lg mx-0">
 					<div class="offcanvas offcanvas-start" tabindex="-1" id="offcanvasSideNavbar">
 						<!-- Offcanvas header -->
 						<div class="offcanvas-header">
@@ -58,7 +58,7 @@
 										<!-- Info -->
 										<h5 class="mb-0"> <a href="#!">
 											{% if request.user.is_authenticated %}
-												{{ request.user.username|default:user.username }} 
+												{{ request.user.username|default:user.username }}
 											{% else %}
 												Username
 											{% endif %} <i class="bi bi-patch-check-fill text-success small"></i>
@@ -265,7 +265,7 @@
 								<ul class="dropdown-menu dropdown-menu-end" aria-labelledby="cardFeedAction">
 									<li>
 										{% with total_followers=user.followers.count %}
-											<a style=" border: 1px solid rgb(0, 102, 255); background-color: rgb(0, 102, 255); color: #fff; text-align: center; padding: 5px 15px; border-radius: 50px; width: 50%; text-transform: capitalize;" class="dropdown-item follow button" data-id="{{ user.id }}" data-action="{% if request.user in user.followers.all %}un{% endif %}follow" href="#">											
+											<a style=" border: 1px solid rgb(0, 102, 255); background-color: rgb(0, 102, 255); color: #fff; text-align: center; padding: 5px 15px; border-radius: 50px; width: 50%; text-transform: capitalize;" class="dropdown-item follow button" data-id="{{ user.id }}" data-action="{% if request.user in user.followers.all %}un{% endif %}follow" href="#">
 												{% if request.user not in user.followers.all %}
 													Follow
 												{% else %}
@@ -343,7 +343,7 @@
 							<!-- Comment item START -->
 							<li class="comment-item">
 								<div class="d-flex position-relative">
-									
+
 									<!-- Avatar -->
 									<div class="avatar avatar-xs">
 										<a href="#!"><img class="avatar-img rounded-circle" src="{% if user.profile.photo %}{% thumbnail user.profile.photo 180x180 %}{% else %}../static/profile.gif{% endif %}" alt=""></a>
@@ -370,11 +370,11 @@
 											</li>
 										</ul>
 									</div>
-									
+
 								</div>
 							</li>
 							<!-- Comment item END -->
-							
+
 						</ul>
 						{% endfor %}
 						<!-- Comment wrap END -->
@@ -526,7 +526,7 @@
 					</ul>
 				</div>
 				<!-- Chat action END -->
-				
+
 				<!-- Close  -->
 				<a href="#" class="btn btn-secondary-soft-hover py-1 px-2" data-bs-dismiss="offcanvas" aria-label="Close">
 					<i class="fa-solid fa-xmark"></i>
@@ -554,7 +554,7 @@
 					<div class="overflow-hidden">
 						<a class="h6 mb-0 stretched-link" href="#!">
 							{% if request.user.is_authenticated %}
-								{{ request.user.username|default:request.user.username }} 
+								{{ request.user.username|default:request.user.username }}
 							{% endif %} <i class="bi bi-patch-check-fill text-success small"></i> </a>
 						<div class="small text-secondary text-truncate">Frances sent a photo.</div>
 					</div>
@@ -618,7 +618,7 @@
 							<div class="flex-grow-1">
 								<h6 class="mb-0 mt-1">
 									{% if request.user.is_authenticated %}
-										{{ request.user.username|default:request.user.username }} 
+										{{ request.user.username|default:request.user.username }}
 									{% endif %} <i class="bi bi-patch-check-fill text-success small"></i></h6>
 								<div class="small text-secondary"><i class="fa-solid fa-circle text-success me-1"></i>Online</div>
 							</div>
@@ -626,7 +626,7 @@
 						<div class="d-flex">
 						<!-- Call button -->
 						<div class="dropdown">
-							<a class="btn btn-secondary-soft-hover py-1 px-2" href="#" id="chatcoversationDropdown" data-bs-toggle="dropdown" data-bs-auto-close="outside" aria-expanded="false"><i class="bi bi-three-dots-vertical"></i></a>               
+							<a class="btn btn-secondary-soft-hover py-1 px-2" href="#" id="chatcoversationDropdown" data-bs-toggle="dropdown" data-bs-auto-close="outside" aria-expanded="false"><i class="bi bi-three-dots-vertical"></i></a>
 							<ul class="dropdown-menu dropdown-menu-end" aria-labelledby="chatcoversationDropdown">
 								<li><a class="dropdown-item" href="#"><i class="bi bi-camera-video me-2 fw-icon"></i>Video call</a></li>
 								<li><a class="dropdown-item" href="#"><i class="bi bi-telephone me-2 fw-icon"></i>Audio call</a></li>
@@ -639,12 +639,12 @@
 							</ul>
 						</div>
 						<!-- Card action END -->
-						<a class="btn btn-secondary-soft-hover py-1 px-2" data-bs-toggle="collapse" href="#collapseChat" aria-expanded="false" aria-controls="collapseChat"><i class="bi bi-dash-lg"></i></a>        
+						<a class="btn btn-secondary-soft-hover py-1 px-2" data-bs-toggle="collapse" href="#collapseChat" aria-expanded="false" aria-controls="collapseChat"><i class="bi bi-dash-lg"></i></a>
 						<button class="btn btn-secondary-soft-hover py-1 px-2" data-bs-dismiss="toast" aria-label="Close"><i class="fa-solid fa-xmark"></i></button>
 					</div>
 				</div>
 				<!-- Top avatar and status END -->
-					
+
 				</div>
 				<div class="toast-body collapse show" id="collapseChat">
 					<!-- Chat conversation START -->
@@ -768,7 +768,7 @@
 							<div class="flex-grow-1">
 								<h6 class="mb-0 mt-1">
 									{% if request.user.is_authenticated %}
-										{{ request.user.username|default:request.user.username }} 
+										{{ request.user.username|default:request.user.username }}
 									{% endif %} <i class="bi bi-patch-check-fill text-success small"></i></h6>
 								<div class="small text-secondary"><i class="fa-solid fa-circle text-success me-1"></i>Online</div>
 							</div>
@@ -776,7 +776,7 @@
 						<div class="d-flex">
 						<!-- Call button -->
 						<div class="dropdown">
-							<a class="btn btn-secondary-soft-hover py-1 px-2" href="#" id="chatcoversationDropdown2" role="button" data-bs-toggle="dropdown" data-bs-auto-close="outside" aria-expanded="false"><i class="bi bi-three-dots-vertical"></i></a>               
+							<a class="btn btn-secondary-soft-hover py-1 px-2" href="#" id="chatcoversationDropdown2" role="button" data-bs-toggle="dropdown" data-bs-auto-close="outside" aria-expanded="false"><i class="bi bi-three-dots-vertical"></i></a>
 							<ul class="dropdown-menu dropdown-menu-end" aria-labelledby="chatcoversationDropdown2">
 								<li><a class="dropdown-item" href="#"><i class="bi bi-camera-video me-2 fw-icon"></i>Video call</a></li>
 								<li><a class="dropdown-item" href="#"><i class="bi bi-telephone me-2 fw-icon"></i>Audio call</a></li>
@@ -789,12 +789,12 @@
 							</ul>
 						</div>
 						<!-- Card action END -->
-						<a class="btn btn-secondary-soft-hover py-1 px-2" data-bs-toggle="collapse" href="#collapseChat2" role="button" aria-expanded="false" aria-controls="collapseChat2"><i class="bi bi-dash-lg"></i></a>        
+						<a class="btn btn-secondary-soft-hover py-1 px-2" data-bs-toggle="collapse" href="#collapseChat2" role="button" aria-expanded="false" aria-controls="collapseChat2"><i class="bi bi-dash-lg"></i></a>
 						<button class="btn btn-secondary-soft-hover py-1 px-2" data-bs-dismiss="toast" aria-label="Close"><i class="fa-solid fa-xmark"></i></button>
 					</div>
 				</div>
 				<!-- Top avatar and status END -->
-					
+
 				</div>
 				<div class="toast-body collapse show" id="collapseChat2">
 					<!-- Chat conversation START -->
@@ -1088,12 +1088,84 @@
 			<!-- Modal feed header END -->
 			<!-- Modal feed body START -->
 			<div class="modal-body">
-                <form enctype="multipart/form-data" method="post">
-                    {{ form.as_p }}
-                    {% csrf_token %}
-                    <p><input type="submit" value="Add comment"></p>
-                </form>
-				<!-- Form END -->
+                <!-- Form START -->
+				<form class="row g-4">
+					<!-- Title -->
+					<div class="col-12">
+						<label class="form-label">Title</label>
+						<input type="email" class="form-control" placeholder="Event name here">
+					</div>
+					<!-- Description -->
+					<div class="col-12">
+						<label class="form-label">Description</label>
+						<textarea class="form-control" rows="2" placeholder="Ex: topics, schedule, etc."></textarea>
+					</div>
+					<!-- Date -->
+					<div class="col-sm-4">
+						<label class="form-label">Date</label>
+						<input type="text" class="form-control flatpickr" placeholder="Select date">
+					</div>
+					<!-- Time -->
+					<div class="col-sm-4">
+						<label class="form-label">Time</label>
+						<input type="text" class="form-control flatpickr" data-enableTime="true" data-noCalendar="true" placeholder="Select time">
+					</div>
+					<!-- Duration -->
+					<div class="col-sm-4">
+						<label class="form-label">Duration</label>
+						<input type="email" class="form-control" placeholder="1hr 23m">
+					</div>
+					<!-- Location -->
+					<div class="col-12">
+						<label class="form-label">Location</label>
+						<input type="email" class="form-control" placeholder="Logansport, IN 46947">
+					</div>
+					<!-- Add guests -->
+					<div class="col-12">
+						<label class="form-label">Add guests</label>
+						<input type="email" class="form-control" placeholder="Guest email">
+					</div>
+					<!-- Avatar group START -->
+					<div class="col-12 mt-3">
+						<ul class="avatar-group list-unstyled align-items-center mb-0">
+							<li class="avatar avatar-xs">
+								<img class="avatar-img rounded-circle" src="{% static 'assets/images/avatar/01.jpg' %}" alt="avatar">
+							</li>
+							<li class="avatar avatar-xs">
+								<img class="avatar-img rounded-circle" src="{% static 'assets/images/avatar/02.jpg' %}" alt="avatar">
+							</li>
+							<li class="avatar avatar-xs">
+								<img class="avatar-img rounded-circle" src="{% static 'assets/images/avatar/03.jpg' %}" alt="avatar">
+							</li>
+							<li class="avatar avatar-xs">
+								<img class="avatar-img rounded-circle" src="{% static 'assets/images/avatar/04.jpg' %}" alt="avatar">
+							</li>
+							<li class="avatar avatar-xs">
+								<img class="avatar-img rounded-circle" src="{% static 'assets/images/avatar/05.jpg' %}" alt="avatar">
+							</li>
+							<li class="avatar avatar-xs">
+								<img class="avatar-img rounded-circle" src="{% static 'assets/images/avatar/06.jpg' %}" alt="avatar">
+							</li>
+							<li class="avatar avatar-xs">
+								<img class="avatar-img rounded-circle" src="{% static 'assets/images/avatar/07.jpg' %}" alt="avatar">
+							</li>
+							<li class="ms-3">
+								<small> +50 </small>
+							</li>
+						</ul>
+					</div>
+					<!-- Upload Photos or Videos -->
+					<!-- Dropzone photo START -->
+					<div>
+						<label class="form-label">Upload attachment</label>
+						<div class="dropzone dropzone-default card shadow-none" data-dropzone='{"maxFiles":2}'>
+							<div class="dz-message">
+								<i class="bi bi-file-earmark-text display-3"></i>
+								<p>Drop presentation and document here or click to upload.</p>
+							</div>
+						</div>
+					</div>
+					<!-- Dropzone photo END -->
 			</div>
 			<!-- Modal feed body END -->
 			<!-- Modal footer -->

@@ -155,5 +155,9 @@ class DeletePostView(View):
     @method_decorator(login_required)
     def get(self, request, post_id, *args, **kwargs):
         post = get_object_or_404(Post, id=post_id, user=request.user)
+
+        # O'chirilayotgan postga bog'liq Comment obyektlarni o'chirish
+        post.comments.all().delete()
+
         post.delete()
         return redirect('core:post_list')

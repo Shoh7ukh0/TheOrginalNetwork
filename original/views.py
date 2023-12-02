@@ -1,5 +1,6 @@
 from django.shortcuts import render, redirect
 from django.contrib.auth.decorators import login_required
+from django.utils.decorators import method_decorator
 from django.views import View
 from django.shortcuts import get_object_or_404
 from .models import Post
@@ -37,21 +38,14 @@ class PostListView(View):
     template_name = 'base/index.html'
 
     def get(self, request, tag_slug=None, *args, **kwargs):
+        form = PostForm()
         posts = Post.objects.all().order_by('-created_at')
         for post in posts:
             time_difference = datetime.now(timezone.utc) - post.created_at
             hours, remainder = divmod(time_difference.seconds, 3600)
             minutes, _ = divmod(remainder, 60)
             post.time_since_creation = f"{hours}h {minutes}m ago"
-        return render(request, self.template_name, {'posts': posts})
-
-
-class CreatePostView(View):
-    template_name = 'base/create_post.html'
-
-    def get(self, request, *args, **kwargs):
-        form = PostForm()
-        return render(request, self.template_name, {'form': form})
+        return render(request, self.template_name, {'posts': posts, 'form': form})
 
     def post(self, request, *args, **kwargs):
         form = PostForm(request.POST, request.FILES)
@@ -103,7 +97,7 @@ class PostDetailView(View):
         return render(
             request,
             self.template_name,
-            {'post': post, 'comments': comments, 'likes': likes, 'form': form, 'has_image': has_image, 'has_video': has_video, 'total_views': total_views}
+            {'post': post, 'comments': comments, 'likes': likes, 'form': form, 'has_image': has_image, 'has_video': has_video}
         )
 
     @login_required
@@ -128,7 +122,7 @@ class PostDetailView(View):
         return render(
             request,
             self.template_name,
-            {'post': post, 'comments': comments, 'likes': likes, 'form': form, 'has_image': has_image, 'has_video': has_video, 'total_views': total_views}
+            {'post': post, 'comments': comments, 'likes': likes, 'form': form, 'has_image': has_image, 'has_video': has_video}
         )
 
 class AddCommentView(View):
@@ -158,7 +152,7 @@ class LikePostView(View):
 
 
 class DeletePostView(View):
-    @login_required
+    @method_decorator(login_required)
     def get(self, request, post_id, *args, **kwargs):
         post = get_object_or_404(Post, id=post_id, user=request.user)
         post.delete()

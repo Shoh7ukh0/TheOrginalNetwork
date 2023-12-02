@@ -251,7 +251,7 @@
 								<!-- Card feed action dropdown menu -->
 								<ul class="dropdown-menu dropdown-menu-end" aria-labelledby="cardFeedAction">
 									<li>
-										{% with total_followers=user.followers.count %}
+										<!-- {% with total_followers=user.followers.count %}
 											<a style=" border: 1px solid rgb(0, 102, 255); background-color: rgb(0, 102, 255); color: #fff; text-align: center; padding: 5px 15px; border-radius: 50px; width: 50%; text-transform: capitalize;" class="dropdown-item follow button" data-id="{{ user.id }}" data-action="{% if request.user in user.followers.all %}un{% endif %}follow" href="#">
 												{% if request.user not in user.followers.all %}
 													Follow
@@ -259,7 +259,7 @@
 													Unfollow
 												{% endif %}
 											</a>
-										{% endwith %}
+										{% endwith %} -->
 									</li>
 									<li><hr class="dropdown-divider"></li>
 									<li><a class="dropdown-item" href="#"> <i class="bi bi-bookmark fa-fw pe-2"></i>Save post</a></li>
@@ -281,11 +281,11 @@
 						{% endif %}
 
 						{% if post.video %}
-						<div class="player-wrapper overflow-hidden">
-							<video class="player-html" controls crossorigin="anonymous">
-								<source src="{{ post.video.url }}" type="video/mp4">Your browser does not support the video tag.
-							</video>
-						</div>
+							<div class="player-wrapper overflow-hidden">
+								<video class="player-html" controls crossorigin="anonymous">
+									<source src="{{ post.video.url }}" type="video/mp4">Your browser does not support the video tag.
+								</video>
+							</div>
 						{% endif %}
 						<p>{{ post.caption }}</p><br/>
 						<a href="#">{{ post.hashtag }}</a>

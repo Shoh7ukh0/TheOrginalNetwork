@@ -284,7 +284,7 @@
 							<div class="player-wrapper overflow-hidden">
 								<video class="player-html" controls crossorigin="anonymous">
 									<source src="{{ post.video.url }}" type="video/mp4">Your browser does not support the video tag.
-								</video>
+								</video	>
 							</div>
 						{% endif %}
 						<p>{{ post.caption }}</p><br/>
@@ -389,7 +389,7 @@
 							<!-- Card body START -->
 							<div class="card-body">
 								<!-- Connection item START -->
-								{% for user in users %}
+								{% for user in followers %}
 									<div class="hstack gap-2 mb-3">
 										<!-- Avatar -->
 										<div class="avatar">

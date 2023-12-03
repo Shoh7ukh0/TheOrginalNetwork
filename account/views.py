@@ -146,22 +146,29 @@ class UserDetailView(View):
         return render(request, self.template_name, {'section': 'people', 'user': user})
 
 
-@require_POST
-@login_required
-def user_follow(request):
-    user_id = request.POST.get('id')
-    action = request.POST.get('action')
-    if user_id and action:
-        try:
-            user = User.objects.get(id=user_id)
-            if action == 'follow':
-                Contact.objects.get_or_create(
-                    user_from=request.user,
-                    user_to=user)
-            else:
-                Contact.objects.filter(user_from=request.user,
-                                        user_to=user).delete()
-            return JsonResponse({'status':'ok'})
-        except User.DoesNotExist:
-            return JsonResponse({'status':'error'})
-    return JsonResponse({'status':'error'})
+    @method_decorator(login_required, name='dispatch')
+    class UserFollowView(View):
+        def post(self, request, *args, **kwargs):
+            user_id = request.POST.get('id')
+            action = request.POST.get('action')
+
+            if user_id and action:
+                try:
+                    user = get_object_or_404(User, id=user_id)
+                    if action == 'follow':
+                        Contact.objects.get_or_create(
+                            user_from=request.user,
+                            user_to=user
+                        )
+                    else:
+                        Contact.objects.filter(
+                            user_from=request.user,
+                            user_to=user
+                        ).delete()
+
+                    return JsonResponse({'status': 'ok'})
+
+                except User.DoesNotExist:
+                    return JsonResponse({'status': 'error'})
+
+            return JsonResponse({'status': 'error'})

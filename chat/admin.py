@@ -1,5 +1,5 @@
 from django.contrib.admin import ModelAdmin, site
-from core.models import MessageModel
+from .models import MessageModel
 
 
 class MessageModelAdmin(ModelAdmin):

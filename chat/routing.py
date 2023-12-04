@@ -1,4 +1,4 @@
-from core import consumers
+from chat import consumers
 
 from django.conf.urls import url
 

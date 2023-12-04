@@ -118,7 +118,7 @@ WSGI_APPLICATION = 'Config.wsgi.application'
 
 # ASGI_APPLICATION
 
-ASGI_APPLICATION = 'Config.asgi.application'
+ASGI_APPLICATION = 'chat.routing.application'
 
 
 # Database
@@ -281,7 +281,6 @@ try:
 except ImportError:
     pass
 
-ASGI_APPLICATION = 'chat.routing.application'
 CHANNEL_LAYERS = {
     'default': {
         'BACKEND': 'channels_redis.core.RedisChannelLayer',

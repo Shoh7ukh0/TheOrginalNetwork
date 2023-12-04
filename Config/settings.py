@@ -116,10 +116,6 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'Config.wsgi.application'
 
-# ASGI_APPLICATION
-
-ASGI_APPLICATION = 'chat.routing.application'
-
 
 # Database
 # https://docs.djangoproject.com/en/4.2/ref/settings/#databases
@@ -270,7 +266,7 @@ MESSAGES_TO_LOAD = 15
 CHANNEL_LAYERS = {
     "default": {
         "BACKEND": "asgiref.inmemory.ChannelLayer",
-        "ROUTING": "core.routing.channel_routing",
+        "ROUTING": "chat.routing.channel_routing",
     },
 }
 
@@ -281,9 +277,10 @@ try:
 except ImportError:
     pass
 
+ASGI_APPLICATION = 'Config.asgi.application'
 CHANNEL_LAYERS = {
     'default': {
-        'BACKEND': 'channels_redis.core.RedisChannelLayer',
+        'BACKEND': 'channels_redis.chat.RedisChannelLayer',
         'CONFIG': {
             "hosts": [('127.0.0.1', 6379)],
         },

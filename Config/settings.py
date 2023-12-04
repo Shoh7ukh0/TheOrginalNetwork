@@ -69,6 +69,9 @@ INSTALLED_APPS = [
     'actions',
     'original',
     'images',
+    'rest_framework',
+    'channels',
+    'chat',
 
     'social_django',
     'django_extensions',
@@ -112,6 +115,10 @@ TEMPLATES = [
 ]
 
 WSGI_APPLICATION = 'Config.wsgi.application'
+
+# ASGI_APPLICATION
+
+ASGI_APPLICATION = 'Config.asgi.application'
 
 
 # Database
@@ -246,3 +253,40 @@ REDIS_PORT = 6379
 REDIS_DB = 0
 
 LOGIN_REDIRECT_URL = '/login/'
+
+
+REST_FRAMEWORK = {
+    'DEFAULT_PERMISSION_CLASSES': [
+        'rest_framework.permissions.IsAuthenticated'
+    ],
+    'DEFAULT_PAGINATION_CLASS':
+        'rest_framework.pagination.LimitOffsetPagination',
+    'PAGE_SIZE': 100
+}
+
+MESSAGES_TO_LOAD = 15
+
+# In settings.py
+CHANNEL_LAYERS = {
+    "default": {
+        "BACKEND": "asgiref.inmemory.ChannelLayer",
+        "ROUTING": "core.routing.channel_routing",
+    },
+}
+
+
+# Import local_settings.py
+try:
+    from local_settings import *
+except ImportError:
+    pass
+
+ASGI_APPLICATION = 'chat.routing.application'
+CHANNEL_LAYERS = {
+    'default': {
+        'BACKEND': 'channels_redis.core.RedisChannelLayer',
+        'CONFIG': {
+            "hosts": [('127.0.0.1', 6379)],
+        },
+    },
+}

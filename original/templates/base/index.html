@@ -540,9 +540,7 @@
 					<!-- Info -->
 					<div class="overflow-hidden">
 						<a class="h6 mb-0 stretched-link" href="#!">
-							{% if request.user.is_authenticated %}
-								{{ request.user.username|default:request.user.username }}
-							{% endif %} <i class="bi bi-patch-check-fill text-success small"></i> </a>
+							{# Users go here #} <i class="bi bi-patch-check-fill text-success small"></i> </a>
 						<div class="small text-secondary text-truncate">Frances sent a photo.</div>
 					</div>
 					<!-- Chat time -->
@@ -604,9 +602,7 @@
 							</div>
 							<div class="flex-grow-1">
 								<h6 class="mb-0 mt-1">
-									{% if request.user.is_authenticated %}
-										{{ request.user.username|default:request.user.username }}
-									{% endif %} <i class="bi bi-patch-check-fill text-success small"></i></h6>
+									{# Messages go here #} <i class="bi bi-patch-check-fill text-success small"></i></h6>
 								<div class="small text-secondary"><i class="fa-solid fa-circle text-success me-1"></i>Online</div>
 							</div>
 						</div>
@@ -984,8 +980,8 @@
 							<!-- Feed box  -->
 							<form class="w-100">
 								{% csrf_token %}
-								{{ form.caption }}<br>
-								{{ form.hashtag }}<br>
+								{{ form.caption }}
+								{{ form.hashtag }}
 							</form>
 						</div>
 
@@ -995,7 +991,7 @@
 						<div class="dropzone dropzone-default card shadow-none" data-dropzone='{"maxFiles":2}'>
 							<div class="dz-message">
 								<label class="form-label">Photoni yuklash</label>
-								{{ form.image }}<br/>
+								{{ form.image }}
 							</div>
 						</div>
 					</div>
@@ -1039,8 +1035,8 @@
 						<!-- Feed box  -->
 						<form class="w-100">
 							{% csrf_token %}
-							{{ form.caption }}<br/>
-							{{ form.hashtag }}<br/>
+							{{ form.caption }}
+							{{ form.hashtag }}
 						</form>
 					</div>
 
@@ -1050,7 +1046,7 @@
 						<div class="dropzone dropzone-default card shadow-none" data-dropzone='{"maxFiles":2}'>
 							<div class="dz-message">
 								<label class="form-label">Videoni yuklash</label>
-								{{ form.video }}<br/>
+								{{ form.video }}
 							</div>
 						</div>
 					</div>
@@ -1171,7 +1167,10 @@
 	</div>
 </div>
 <!-- Modal create events END -->
-
+<script>
+	let sessionKey = '{{ request.session.session_key }}';
+    let currentUser = '{{ request.user.username }}';
+</script>
 
 </body>
 {% endblock %}

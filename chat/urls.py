@@ -5,9 +5,10 @@ from rest_framework.routers import DefaultRouter
 
 router = DefaultRouter()
 
-urlpatterns = [
-    path(r'api/v1/', include(router.urls)),
+app_name = 'chatapp'
 
-    path('chat/', login_required(
-        TemplateView.as_view(template_name='chat.html')), name='home'),
+urlpatterns = [
+    # path(r'api/v1/', include(router.urls)),
+
+    path('chat/', login_required(TemplateView.as_view(template_name='base/index.html')), name='chat'),
 ]

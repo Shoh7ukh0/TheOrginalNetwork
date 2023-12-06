@@ -71,7 +71,7 @@ INSTALLED_APPS = [
     'images',
     'rest_framework',
     'channels',
-    'chat',
+    'django_private_chat2',
 
     'social_django',
     'django_extensions',

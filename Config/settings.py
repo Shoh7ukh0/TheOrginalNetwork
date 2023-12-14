@@ -66,6 +66,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'core',
     'actions',
     'original',
     'images',
@@ -79,8 +80,6 @@ INSTALLED_APPS = [
     'django_redis',
 
     'django.contrib.sites',
-
-    # +998 90 6966996
 ]
 
 MIDDLEWARE = [

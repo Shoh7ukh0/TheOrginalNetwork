@@ -260,12 +260,12 @@ REST_FRAMEWORK = {
 MESSAGES_TO_LOAD = 15
 
 # In settings.py
-CHANNEL_LAYERS = {
-    "default": {
-        "BACKEND": "asgiref.inmemory.ChannelLayer",
-        "ROUTING": "chat.routing.channel_routing",
-    },
-}
+# CHANNEL_LAYERS = {
+#     "default": {
+#         "BACKEND": "asgiref.inmemory.ChannelLayer",
+#         "ROUTING": "chat.routing.channel_routing",
+#     },
+# }
 
 
 # Import local_settings.py
@@ -277,9 +277,9 @@ except ImportError:
 ASGI_APPLICATION = "Config.asgi.application" 
 CHANNEL_LAYERS = {
     'default': {
-        'BACKEND': 'channels_redis.chat.RedisChannelLayer',
-        'CONFIG': {
-            "hosts": ('127.0.0.1', 6379),
+        "BACKEND": "channels_redis.core.RedisChannelLayer",
+        "CONFIG": {
+            "hosts": [('127.0.0.1', 6379)],
         },
     },
 }

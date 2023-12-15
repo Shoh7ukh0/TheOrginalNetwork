@@ -38,7 +38,13 @@
                     <h1 class="mb-0 h5">
                         {{ user.username }} <i class="bi bi-patch-check-fill text-success small"></i>
                     </h1>
-                    <p>250 ulanishlar</p>
+                    {% with total_followers=user.followers.count %}
+                        {% if total_followers %}
+                          <p>{{ total_followers }} ulanishlar</p>
+                        {% else %}
+													<span>0</span>
+												{% endif %}
+                    {% endwith %}
                   </div>
                   <!-- Button -->
                   <div class="d-flex mt-3 justify-content-center ms-sm-auto">

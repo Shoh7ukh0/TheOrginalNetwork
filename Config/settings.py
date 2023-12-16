@@ -41,7 +41,6 @@ ALLOWED_HOSTS = [
     'mysite.com', 
     'localhost', 
     '127.0.0.1',
-    'thenetwork-4z3l.onrender.com'
 ]
 
 ABSOLUTE_URL_OVERRIDES = {
@@ -260,12 +259,12 @@ REST_FRAMEWORK = {
 MESSAGES_TO_LOAD = 15
 
 # In settings.py
-# CHANNEL_LAYERS = {
-#     "default": {
-#         "BACKEND": "asgiref.inmemory.ChannelLayer",
-#         "ROUTING": "chat.routing.channel_routing",
-#     },
-# }
+CHANNEL_LAYERS = {
+    "default": {
+        "BACKEND": "asgiref.inmemory.ChannelLayer",
+        "ROUTING": "chat.routing.channel_routing",
+    },
+}
 
 
 # Import local_settings.py

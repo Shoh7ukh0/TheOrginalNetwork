@@ -291,9 +291,12 @@ Header START -->
 							</a>
 						</li>
 						<li class="dropdown-divider"></li>
-						<li><a class="dropdown-item bg-danger-soft-hover" href="{% url 'account:login' %}"><i class="bi bi-power fa-fw me-2"></i>Sign In</a></li>
-						<li><a class="dropdown-item bg-danger-soft-hover" href="{% url 'account:register' %}"><i class="bi bi-power fa-fw me-2"></i>Sign Up</a></li>
-						<li><a class="dropdown-item bg-danger-soft-hover" href="{% url 'account:login' %}"><i class="bi bi-power fa-fw me-2"></i>Sign Out</a></li>
+						{% if user.is_authenticated %}
+							<li><a class="dropdown-item bg-danger-soft-hover" href="{% url 'account:login' %}"><i class="bi bi-box-arrow-right"></i> Sign Out</a></li>
+						{% else %}							
+							<li><a class="dropdown-item bg-danger-soft-hover" href="{% url 'account:login' %}"><i class="bi bi-box-arrow-in-right"></i> Sign In</a></li>
+							<li><a class="dropdown-item bg-danger-soft-hover" href="{% url 'account:register' %}"><i class="bi bi-power fa-fw me-2"></i> Sign Up</a></li>
+						{% endif %}
 						<li> <hr class="dropdown-divider"></li>
 						<!-- Dark mode options START -->
 						<li>

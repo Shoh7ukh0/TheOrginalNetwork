@@ -7,13 +7,10 @@
     padding: 10px 10px 0 10px;
     margin: 0 0 0 0;
     height: 500px;
-    overflow-x: hidden;
-    overflow-y: scroll;
 }
 
 .messages .message {
     clear: both;
-    overflow: hidden;
     margin-bottom: 20px;
 }
 

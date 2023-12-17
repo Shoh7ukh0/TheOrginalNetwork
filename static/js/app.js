@@ -25,11 +25,11 @@ function drawMessage(message) {
     const date = new Date(message.timestamp);
     if (message.user === currentUser) position = 'right';
     const messageItem = `
-            <li class="message ${position}">
-                <div class="avatar">${message.user}</div>
-                    <div class="text_wrapper">
-                        <div class="text">${message.body}<br>
-                            <span class="small">${date}</span>
+            <li class="message ${position} border">
+                <div class="avatar">${message.user}</div><br>
+                <div class="text_wrapper">
+                    <div class="text">${message.body}<br>
+                        <span class="small">${date}</span>
                     </div>
                 </div>
             </li>`;

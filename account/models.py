@@ -4,6 +4,10 @@ from django.contrib.auth import get_user_model
 
 # Create your models here.
 
+class ActiveUser(models.Model):
+    username = models.CharField(max_length=125)
+    is_admin = models.BooleanField(default=False)
+
 class Profile(models.Model):
     user = models.OneToOneField(settings.AUTH_USER_MODEL, on_delete=models.PROTECT)
     date_of_birth = models.DateField(blank=True, null=True)

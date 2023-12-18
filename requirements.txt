@@ -40,7 +40,6 @@ django-allauth==0.58.2
 django-crispy-forms==2.1
 django-debug-toolbar==4.2.0
 django-extensions==3.2.3
-django-redis==5.4.0
 django-taggit==3.0.0
 duplicity==0.8.21
 easy-thumbnails==2.8.5

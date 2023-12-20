@@ -8,14 +8,36 @@ function updateUserList() {
     $.getJSON('api/v1/user/', function (data) {
         userList.children('.user').remove();
         for (let i = 0; i < data.length; i++) {
-            const userItem = `<a class="list-group-item user">${data[i]['username']}</a>`;
+            const user = data[i];
+            const userItem = `
+            <div class="mt-4 h-40 user" data-username="${user.username}" data-userid="${user.id}">
+                <div class="chat-tab-list custom-scrollbar">
+                    <ul class="nav flex-column nav-pills nav-pills-soft">
+                        <li data-bs-dismiss="offcanvas">
+                            <a href="" class="nav-link active text-start" data-bs-toggle="pill" role="tab">
+                                <div class="d-flex">
+                                <div class="flex-shrink-0 avatar avatar-story me-2 status-online">
+                                    <img class="avatar-img rounded-circle" src="../../static/assets/images/avatar/10.jpg" alt="">
+                                </div>
+                                <div class="flex-grow-1 d-block">
+                                    <h6 class="mb-0 mt-1">${user.username}</h6>
+                                    <div class="small text-secondary">${user.last_message}</div>
+                                </div>
+                                </div>
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+            </div>`;
             $(userItem).appendTo('#user-list');
         }
+
         $('.user').click(function () {
             userList.children('.active').removeClass('active');
-            let selected = event.target;
-            $(selected).addClass('active');
-            setCurrentRecipient(selected.text);
+            let selected = $(this);
+            selected.addClass('active');
+            const username = selected.data('username');
+            setCurrentRecipient(username);
         });
     });
 }
@@ -25,13 +47,12 @@ function drawMessage(message) {
     const date = new Date(message.timestamp);
     if (message.user === currentUser) position = 'right';
     const messageItem = `
-            <li class="message ${position} border">
-                <div class="avatar">${message.user}</div><br>
+            <li class="message ${position}">
+                <div class="avatar"><img class="avatar-img rounded-circle" src="../../static/assets/images/avatar/10.jpg" alt=""></div><br>
                 <div class="text_wrapper">
-                    <div class="text">${message.body}<br>
-                        <span class="small">${date}</span>
-                    </div>
-                </div>
+                    <p class="text">${message.body}</p>
+                </div><br>
+                <span class="small">${date}</span>
             </li>`;
     $(messageItem).appendTo('#messages');
 }
@@ -110,6 +131,3 @@ $(document).ready(function () {
         getMessageById(e.data);
     };
 });
-
-
-

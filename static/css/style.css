@@ -12,11 +12,12 @@
 .messages .message {
     clear: both;
     margin-bottom: 20px;
+    list-style-type: none;
 }
 
 .messages .message.left .avatar {
-    background-color: #f55946;
     float: left;
+    height: 12vh;
 }
 
 .messages .message.left .text_wrapper {
@@ -34,12 +35,12 @@
 }
 
 .messages .message.right .avatar {
-    background-color: #6877fd;
     float: right;
+    height: 12vh;
 }
 
 .messages .message.right .text_wrapper {
-    background-color: #c7eafc;
+    background-color: #007bff;
     margin-right: 20px;
     float: right;
 }
@@ -50,7 +51,7 @@
 }
 
 .messages .message.right .text {
-    color: #45829b;
+    color: #fff;
 }
 
 .messages .message .avatar {

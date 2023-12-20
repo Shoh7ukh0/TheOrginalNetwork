@@ -4,11 +4,24 @@ let chatButton = $('#btn-send');
 let userList = $('#user-list');
 let messageList = $('#messages');
 
+function countActiveUsers(users) {
+    let activeUserCount = 0;
+    for (let i = 0; i < users.length; i++) {
+        if (users[i].status === 'active') {
+            activeUserCount++;
+        }
+    }
+    return activeUserCount;
+}
 
 function updateUserList() {
     $.getJSON('api/v1/user/', function (data) {
 
         userList.empty();
+
+        const activeUserCount = countActiveUsers(data);
+
+        console.log(`Active User Count: ${activeUserCount}`);
 
         userList.children('.user').remove();
         for (let i = 0; i < data.length; i++) {
@@ -103,50 +116,14 @@ function getMessageById(message) {
     });
 }
 
-function sendMessage(recipient, body, messageType) {
-    const data = {
+function sendMessage(recipient, body) {
+    $.post('/api/v1/message/', {
         recipient: recipient,
-        body: body,
-        type: messageType,
-        // Boshqa qo'shimcha ma'lumotlar kerak bo'lsa, ularni ham qo'shing
-    };
-
-    if (messageType === 'image') {
-        const imageInput = document.getElementById('image-input');
-        const imageFile = imageInput.files[0];
-        data.image = imageFile; // Rasmi POST so'rovnoma qo'shamiz
-    }
-
-    $.ajax({
-        url: '/api/v1/message/',
-        type: 'POST',
-        data: formData,
-        contentType: false,
-        processData: false,
-        enctype: 'multipart/form-data',  // Yangi qo'shimcha
-        success: function(response) {
-            console.log('Message sent successfully:', response);
-        },
-        error: function(error) {
-            console.error('Error sending message:', error);
-        }
+        body: body
+    }).fail(function () {
+        alert('Error! Check console!');
     });
-    
 }
-
-// Xabarlarni yuborish uchun rasm
-$('#send-image').click(function () {
-    const recipient = currentRecipient;
-    const imageInput = document.getElementById('image-input');
-    const imageFile = imageInput.files[0];
-
-    if (imageFile) {
-        sendMessage(recipient, '', 'image');
-    } else {
-        alert('Please select an image!');
-    }
-});
-
 
 function setCurrentRecipient(username) {
     currentRecipient = username;

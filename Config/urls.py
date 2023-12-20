@@ -35,7 +35,7 @@ urlpatterns = [
     path('social-auth/', include('social_django.urls', namespace='social')),
 	path('images/', include('images.urls')),
     path('users/', UsersListView.as_view(), name='users_list'),
-    path('', include('core.urls')),
+    path('', include('core.urls', namespace='chat')),
 ]
 
 if settings.DEBUG:

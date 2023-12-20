@@ -21,17 +21,20 @@
 }
 
 .messages .message.left .text_wrapper {
-    background-color: #ffe6cb;
+    background-color: #29292e;
+    padding: 10px 10px -0px;
     margin-left: 20px;
 }
 
 .messages .message.left .text_wrapper::after, .messages .message.left .text_wrapper::before {
     right: 100%;
-    border-right-color: #ffe6cb;
+    border-right-color: #29292e;
 }
 
 .messages .message.left .text {
-    color: #c48843;
+    color: #fff;
+    position: relative;
+    top: 13px;
 }
 
 .messages .message.right .avatar {
@@ -41,17 +44,20 @@
 
 .messages .message.right .text_wrapper {
     background-color: #007bff;
+    padding: 10px 10px -0px;
     margin-right: 20px;
     float: right;
 }
 
 .messages .message.right .text_wrapper::after, .messages .message.right .text_wrapper::before {
     left: 100%;
-    border-left-color: #c7eafc;
+    border-left-color: #007bff;
 }
 
 .messages .message.right .text {
     color: #fff;
+    position: relative;
+    top: 13px;
 }
 
 .messages .message .avatar {

@@ -50,8 +50,8 @@ function drawMessage(message) {
             <li class="message ${position}">
                 <div class="avatar"><img class="avatar-img rounded-circle" src="../../static/assets/images/avatar/10.jpg" alt=""></div><br>
                 <div class="text_wrapper">
-                    <p class="text">${message.body}</p>
-                </div><br>
+                    <p class="text">${message.body}</p><br>
+                </div>
                 <span class="small">${date}</span>
             </li>`;
     $(messageItem).appendTo('#messages');

@@ -15,6 +15,24 @@
     list-style-type: none;
 }
 
+.messages .message.left .box .bi{
+    color: #007bff;
+    margin-left: 2px;
+    font-size: 18px;
+}
+
+.messages .message.left {
+    width: 70%;
+}
+
+.messages .message.right .box .bi{
+    color: #007bff;
+    position: relative;
+    left: -5px;
+    font-size: 18px;
+    float: right;
+}
+
 .messages .message.left .avatar {
     float: left;
     height: 12vh;
@@ -35,6 +53,15 @@
     color: #fff;
     position: relative;
     top: 13px;
+}
+
+.messages .message.right {
+    margin-left: 15em !important;
+    width: 70%;
+}
+
+.messages .message.right .small {
+    float: right;
 }
 
 .messages .message.right .avatar {

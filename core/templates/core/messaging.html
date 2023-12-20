@@ -49,15 +49,6 @@
             <!-- Offcanvas body -->
             <div class="offcanvas-body p-0">
               <div class="card card-chat-list rounded-end-lg-0 card-body border-end-lg-0 rounded-top-0">
-                
-                <!-- Search chat START -->
-                <form class="position-relative">
-                  <input class="form-control py-2" type="search" placeholder="Search for chats" aria-label="Search">
-                  <button class="btn bg-transparent text-secondary px-2 py-0 position-absolute top-50 end-0 translate-middle-y" type="submit">
-                    <i class="bi bi-search fs-5"></i>
-                  </button>
-                </form>
-                <!-- Search chat END -->
                 <!-- Chat list tab START -->
                 <div class="mt-4 h-100">
                   <div class="chat-tab-list custom-scrollbar">
@@ -144,7 +135,8 @@
             <div class="d-sm-flex align-items-end">
               <textarea id="chat-input" class="form-control mb-sm-0 mb-3" data-autoresize placeholder="Type a message" rows="1"></textarea>
               <button class="btn btn-sm btn-danger-soft ms-sm-2"><i class="fa-solid fa-face-smile fs-6"></i></button>
-              <button class="btn btn-sm btn-secondary-soft ms-2"><i class="fa-solid fa-paperclip fs-6"></i></button>
+              <input type="file" id="image-input" accept="image/jpeg, image/png, image/gif">
+              <button id="send-image">Send Image</button>
               <button id="btn-send" class="btn btn-sm btn-primary ms-2"><i class="fa-solid fa-paper-plane fs-6"></i></button>
             </div>
           </div>

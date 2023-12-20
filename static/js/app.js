@@ -4,8 +4,12 @@ let chatButton = $('#btn-send');
 let userList = $('#user-list');
 let messageList = $('#messages');
 
+
 function updateUserList() {
     $.getJSON('api/v1/user/', function (data) {
+
+        userList.empty();
+
         userList.children('.user').remove();
         for (let i = 0; i < data.length; i++) {
             const user = data[i];
@@ -16,12 +20,12 @@ function updateUserList() {
                         <li data-bs-dismiss="offcanvas">
                             <a href="" class="nav-link active text-start" data-bs-toggle="pill" role="tab">
                                 <div class="d-flex">
-                                <div class="flex-shrink-0 avatar avatar-story me-2 status-online">
+                                <div class="flex-shrink-0 avatar avatar-story me-2">
                                     <img class="avatar-img rounded-circle" src="../../static/assets/images/avatar/10.jpg" alt="">
                                 </div>
                                 <div class="flex-grow-1 d-block">
                                     <h6 class="mb-0 mt-1">${user.username}</h6>
-                                    <div class="small text-secondary">${user.last_message}</div>
+                                    <div class="user-last-message">${user.lastMessage}</div>
                                 </div>
                                 </div>
                             </a>
@@ -30,6 +34,9 @@ function updateUserList() {
                 </div>
             </div>`;
             $(userItem).appendTo('#user-list');
+
+            // Oxirgi xabar malumotini olish
+            getLastMessage(user.username, i);
         }
 
         $('.user').click(function () {
@@ -42,9 +49,21 @@ function updateUserList() {
     });
 }
 
+function getLastMessage(username, index) {
+    $.getJSON(`api/v1/get_last_message/${username}/`, function (data) {
+        const lastMessage = data.body || 'No messages';
+        $(`.user-last-message:eq(${index})`).text(lastMessage);
+    });
+}
+
 function drawMessage(message) {
     let position = 'left';
     const date = new Date(message.timestamp);
+    // Soatni olish
+    const hours = date.getHours();
+    const minutes = date.getMinutes();
+    const formattedTime = `${hours}:${minutes}`
+
     if (message.user === currentUser) position = 'right';
     const messageItem = `
             <li class="message ${position}">
@@ -52,7 +71,12 @@ function drawMessage(message) {
                 <div class="text_wrapper">
                     <p class="text">${message.body}</p><br>
                 </div>
-                <span class="small">${date}</span>
+                <div class="box">
+                    <span class="small">${formattedTime}</span>
+                    <span class="seen-badge">
+                        ${message.is_seen ? '<i class="bi bi-check"></i>' : '<i class="bi bi-check-all"></i>'}
+                    </span>
+                </div>
             </li>`;
     $(messageItem).appendTo('#messages');
 }
@@ -79,14 +103,50 @@ function getMessageById(message) {
     });
 }
 
-function sendMessage(recipient, body) {
-    $.post('/api/v1/message/', {
+function sendMessage(recipient, body, messageType) {
+    const data = {
         recipient: recipient,
-        body: body
-    }).fail(function () {
-        alert('Error! Check console!');
+        body: body,
+        type: messageType,
+        // Boshqa qo'shimcha ma'lumotlar kerak bo'lsa, ularni ham qo'shing
+    };
+
+    if (messageType === 'image') {
+        const imageInput = document.getElementById('image-input');
+        const imageFile = imageInput.files[0];
+        data.image = imageFile; // Rasmi POST so'rovnoma qo'shamiz
+    }
+
+    $.ajax({
+        url: '/api/v1/message/',
+        type: 'POST',
+        data: formData,
+        contentType: false,
+        processData: false,
+        enctype: 'multipart/form-data',  // Yangi qo'shimcha
+        success: function(response) {
+            console.log('Message sent successfully:', response);
+        },
+        error: function(error) {
+            console.error('Error sending message:', error);
+        }
     });
+    
 }
+
+// Xabarlarni yuborish uchun rasm
+$('#send-image').click(function () {
+    const recipient = currentRecipient;
+    const imageInput = document.getElementById('image-input');
+    const imageFile = imageInput.files[0];
+
+    if (imageFile) {
+        sendMessage(recipient, '', 'image');
+    } else {
+        alert('Please select an image!');
+    }
+});
+
 
 function setCurrentRecipient(username) {
     currentRecipient = username;

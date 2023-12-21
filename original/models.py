@@ -22,6 +22,11 @@ class Comment(models.Model):
     post = models.ForeignKey('Post', on_delete=models.PROTECT, related_name='comments')
     text = models.TextField()
     created_at = models.DateTimeField(auto_now_add=True)
+    reply_to = models.ForeignKey('self', null=True, blank=True, on_delete=models.CASCADE)
+    likes = models.ManyToManyField(User, related_name='comment_likes', blank=True)
 
     def __str__(self):
-        return self.text
+        return f'{self.user.username} - {self.text}'
+
+    def get_reply_comments(self):
+        return Comment.objects.filter(reply_to=self)

@@ -3,7 +3,7 @@ from django.contrib.auth.decorators import login_required
 from django.utils.decorators import method_decorator
 from django.views import View
 from django.shortcuts import get_object_or_404
-from .models import Post
+from .models import Post, Comment
 from .forms import PostForm, CommentForm, SearchForm
 from django.contrib.auth.models import User
 import redis
@@ -125,20 +125,68 @@ class PostDetailView(View):
             {'post': post, 'comments': comments, 'likes': likes, 'form': form, 'has_image': has_image, 'has_video': has_video}
         )
 
-class AddCommentView(View):
+
+class PostCommentView(View):
     template_name = 'base/post-details.html'
 
-    def post(self, request, post_id, *args, **kwargs):
+    def get(self, request, post_id):
+        post = get_object_or_404(Post, id=post_id)
+        form = CommentForm()
+        comments = Comment.objects.filter(post=post)
+        return render(request, self.template_name, {'post': post, 'form': form, 'comments': comments})
+
+    def post(self, request, post_id):
         post = get_object_or_404(Post, id=post_id)
         form = CommentForm(request.POST)
+
         if form.is_valid():
             comment = form.save(commit=False)
-            comment.user = self.request.user  # Foydalanuvchi obyektini olib olish
             comment.post = post
+            comment.user = request.user
             comment.save()
-            return redirect('core:post_detail', post_id=post.id)
-        return render(request, self.template_name, {'post': post, 'form': form})
+            return redirect('core:post_detail', post_id=post_id)
 
+        comments = Comment.objects.filter(post=post)
+        return render(request, self.template_name, {'post': post, 'form': form, 'comments': comments})
+
+
+class ReplyCommentView(View):
+    template_name = 'base/post-details.html'
+
+    def get(self, request, post_id, comment_id):
+        post = get_object_or_404(Post, id=post_id)
+        form = CommentForm()
+
+        comments = Comment.objects.filter(post=post)
+        return render(request, self.template_name, {'post': post, 'form': form, 'comments': comments})
+
+    def post(self, request, post_id, comment_id):
+        post = get_object_or_404(Post, id=post_id)
+        form = CommentForm(request.POST)
+
+        if form.is_valid():
+            parent_comment = get_object_or_404(Comment, id=comment_id)
+            comment = form.save(commit=False)
+            comment.post = post
+            comment.user = request.user
+            comment.reply_to = parent_comment
+            comment.save()
+            return redirect('core:post_detail', post_id=post_id)
+
+        comments = Comment.objects.filter(post=post)
+        return render(request, self.template_name, {'post': post, 'form': form, 'comments': comments})
+
+class LikeCommentView(View):
+    def post(self, request, post_id, comment_id):
+        comment = get_object_or_404(Comment, id=comment_id)
+        user = request.user
+
+        if user in comment.likes.all():
+            comment.likes.remove(user)
+        else:
+            comment.likes.add(user)
+
+        return JsonResponse({'likes_count': comment.likes.count()})
 
 
 class LikePostView(View):

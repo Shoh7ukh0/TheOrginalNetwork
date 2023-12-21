@@ -66,7 +66,7 @@
                       <a class="dropdown-item" href="{% url 'core:edit_post' post_id=post.id %}"> <i class="bi bi-pencil-square"></i> Edit</a>
                       <a class="dropdown-item" href="{% url 'core:delete_post' post_id=post.id %}"> <i class="bi bi-trash3"></i> Delete</a>
                     {% endif %}</li>
-                  <li><a class="dropdown-item" href="#"> <i class="bi bi-bookmark fa-fw pe-2"></i>Save post</a></li>
+                  <li><a id="save-post-button" data-post-id="{{ post.id }}" class="dropdown-item" href="#"> <i class="bi bi-bookmark fa-fw pe-2"></i>Save post</a></li>
                   <li><a class="dropdown-item" href="#"> <i class="bi bi-x-circle fa-fw pe-2"></i>Hide post</a></li>
                   <li><a class="dropdown-item" href="#"> <i class="bi bi-slash-circle fa-fw pe-2"></i>Block</a></li>
                   <li><hr class="dropdown-divider"></li>
@@ -233,6 +233,29 @@
           });
       });
   });
+
+  
+
+	document.getElementById('save-post-button').addEventListener('click', function() {
+    var post_id = this.getAttribute('data-post-id');
+    var url = '/save_post/' + post_id + '/';
+
+    fetch(url, {
+        method: 'POST',
+        headers: {
+            'X-CSRFToken': '{{ csrf_token }}',
+        },
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.status === 'ok') {
+            console.log('Post saved successfully');
+        } else {
+            console.error('Failed to save post');
+        }
+    })
+    .catch(error => console.error('Error:', error));
+});
 </script>
 
 </body>

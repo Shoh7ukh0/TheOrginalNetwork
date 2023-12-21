@@ -3,7 +3,7 @@ from django.contrib.auth.decorators import login_required
 from django.utils.decorators import method_decorator
 from django.views import View
 from django.shortcuts import get_object_or_404
-from .models import Post, Comment
+from .models import Post, SavedPost, Comment
 from .forms import PostForm, CommentForm, SearchForm
 from django.contrib.auth.models import User
 import redis
@@ -209,3 +209,15 @@ class DeletePostView(View):
 
         post.delete()
         return redirect('core:post_list')
+
+
+class SavePostView(View):
+    def post(self, request, post_id):
+        post = get_object_or_404(Post, id=post_id)
+        user = request.user
+
+        # Check if the post is already saved
+        if not SavedPost.objects.filter(user=user, post=post).exists():
+            SavedPost.objects.create(user=user, post=post)
+
+        return JsonResponse({'status': 'ok'})

@@ -14,8 +14,13 @@ class Post(models.Model):
 
     def __str__(self):
         return f'{self.user.username} - {self.caption[:20]}'
-
         
+
+class SavedPost(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    post = models.ForeignKey(Post, on_delete=models.CASCADE)
+    saved_at = models.DateTimeField(auto_now_add=True)
+
 
 class Comment(models.Model):
     user = models.ForeignKey(User, on_delete=models.PROTECT)

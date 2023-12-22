@@ -279,7 +279,7 @@
 								<form method="post" action="{% url 'core:like_post' post_id=post.id %}">
 									{% csrf_token %}
 									<button style="border: none; background-color: transparent !important;" type="submit">
-										<a class="nav-link active" href="#!" data-bs-container="body" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-html="true" data-bs-custom-class="tooltip-text-start" data-bs-title="{{ user.username }}<br> "> <i class="bi bi-hand-thumbs-up-fill pe-1"></i>Liked ({{ post.likes.count }})</a>
+										<a class="nav-link active" href="#!" data-bs-container="body" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-html="true" data-bs-custom-class="tooltip-text-start"> <i class="bi bi-hand-thumbs-up-fill pe-1"></i>Liked ({{ post.likes.count }})</a>
 									</button>
 								</form>
 							</li>
@@ -307,6 +307,12 @@
 							<!-- Card share action END -->
 						</ul>
 						<!-- Feed react END -->
+
+						<p>Liked by:
+							{% for user in post.likes.all %}
+								{{ user.username }}{% if not forloop.last %}, {% endif %}
+							{% endfor %}
+						</p>
 
 						<!-- Comment wrap START -->
 						{% for comment in post.comments.all %}
@@ -413,7 +419,7 @@
 							<!-- Card body START -->
 							<div class="card-body">
 								<!-- Connection item START -->
-								{% for user in followers %}
+								{% for user in users %}
 									<div class="hstack gap-2 mb-3">
 										<!-- Avatar -->
 										<div class="avatar">
@@ -423,12 +429,12 @@
 										</div>
 										<!-- Title -->
 										<div class="overflow-hidden">
-											<a class="h6 mb-0" href="">
+											<a class="h6 mb-0" href="{% url 'account:user_detail' username=user.username %}">
 												{{ user.username }}<i class="bi bi-patch-check-fill text-success small"></i> </a>
 											<p class="mb-0 small text-truncate">News anchor</p>
 										</div>
 										<!-- Button -->
-										<a class="btn btn-primary-soft rounded-circle icon-md ms-auto" data-id="{{ user.id }}" data-action="{% if request.user in user.followers.all %}un{% endif %}follow href="#">
+										<a class="btn btn-primary-soft rounded-circle icon-md ms-auto" data-id="{{ user.id }}" data-action="{% if request.user in user.followers.all %}un{% endif %}follow" href="{% url 'account:user_detail' username=user.username %}">
 											{% if request.user not in user.followers.all %}
 												<i class="fa-solid fa-plus"> </i>
 											{% else %}

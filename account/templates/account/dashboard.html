@@ -277,7 +277,11 @@
                       <!-- glightbox Albums left bar END  -->
                     </div>
                     {% else %}
-                      <p style="text-align: center;">Hali sizda rasim posti mavjud emas!</p>
+                      <div style="text-align: center;" class="content">
+                        <i style="font-size: 4em;" class="bi bi-camera"></i>
+                        <p>Hali sizda rasim posti mavjud emas!</p>
+                        <p>Post yaratish uchun <a href="{% url 'core:post_list' %}">bu yerga bosing</a></p>
+                      </div>
                     {% endif %}
                   {% endfor %}
                   <!-- Photo item END -->
@@ -334,7 +338,11 @@
                         <!-- Video END -->
                       </div>
                     {% else %}
-                      <p style="text-align: center;">Hali sizda video posti mavjud emas!</p>
+                      <div style="text-align: center;" class="content">
+                        <i style="font-size: 4em;" class="bi bi-camera-video-off"></i>
+                        <p>Hali sizda video posti mavjud emas!</p>
+                        <p>Post yaratish uchun <a href="{% url 'core:post_list' %}">bu yerga bosing</a></p>
+                      </div>
                     {% endif %}
                   {% endfor %}
                 </div>

@@ -6,16 +6,16 @@ from django.shortcuts import render, redirect, get_object_or_404
 from django.views import View
 from django.views.decorators.http import require_POST
 from .forms import LoginForm, UserRegistrationForm, UserEditForm, ProfileEditForm
-from .models import Profile
+from .models import Profile, Contact
 from original.models import Post
 from datetime import timedelta
 from django.utils import timezone
 from django.contrib import messages
 from actions.utils import create_action
 from actions.models import Action
-from .models import Contact
 from django.contrib.auth.models import User
 from django.utils.decorators import method_decorator
+from django.http import HttpResponseServerError
 
 @method_decorator(login_required, name='dispatch')
 class ProfileView(View):
@@ -82,6 +82,7 @@ class DashboardView(View):
     def get(self, request, *args, **kwargs):
         actions = Action.objects.exclude(user=request.user)
         following_ids = request.user.following.values_list('id', flat=True)
+        
         if following_ids:
             actions = actions.filter(user_id__in=following_ids)
         actions = actions.select_related('user', 'user__profile').prefetch_related('target')[:10]
@@ -179,8 +180,21 @@ def my_profile_about(request):
 def my_profile_activity(request):
     return render(request, 'account/my-profile-activity.html')
 
+
 def my_profile_connections(request):
-    return render(request, 'account/my-profile-connections.html')
+    try:
+        user = request.user
+        friends = Contact.objects.filter(user_from=user)
+        followers = Contact.objects.filter(user_to=user)
+
+        context = {
+            'friends': friends,
+            'followers': followers,
+        }
+
+        return render(request, 'account/my-profile-connections.html', context)
+    except Exception as e:
+        return HttpResponseServerError(f"Error in my_profile_connections view: {e}")
 
 def my_profile_events(request):
     return render(request, 'account/my-profile-events.html')

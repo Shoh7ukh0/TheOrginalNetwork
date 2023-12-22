@@ -246,15 +246,25 @@
             'X-CSRFToken': '{{ csrf_token }}',
         },
     })
-    .then(response => response.json())
-    .then(data => {
-        if (data.status === 'ok') {
-            console.log('Post saved successfully');
-        } else {
-            console.error('Failed to save post');
-        }
+    .then(response => {
+    if (!response.ok) {
+        throw new Error('Network response was not ok');
+    }
+
+    // JSON javobini tekshirish
+    return response.json();
     })
-    .catch(error => console.error('Error:', error));
+    .then(data => {
+        // Boshqa kodlar...
+
+        // data o'zgaruvchisini ishlatib, serverdan olingan ma'lumotlar bilan ishlovchi kodlar
+        console.log('Serverdan olingan ma\'lumotlar:', data);
+    })
+    .catch(error => {
+        // Xatolikni tekshirish
+        console.error('Xatolik:', error.message);
+    });
+
 });
 </script>
 

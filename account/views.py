@@ -184,9 +184,3 @@ def my_profile_connections(request):
 
 def my_profile_events(request):
     return render(request, 'account/my-profile-events.html')
-
-def my_profile_media(request):
-    return render(request, 'account/my-profile-media.html')
-
-def my_profile_videos(request):
-    return render(request, 'account/my-profile-videos.html')

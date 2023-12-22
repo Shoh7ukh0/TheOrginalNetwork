@@ -283,7 +283,7 @@
 									<button style="border: none; background-color: transparent !important;" type="submit">
 										<a class="nav-link active" href="#!" data-bs-container="body" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-html="true" data-bs-custom-class="tooltip-text-start" data-bs-title="{{ user.username }}<br> "> <i class="bi bi-hand-thumbs-up-fill pe-1"></i>Liked ({{ post.likes.count }})</a>
 									</button>
-								  </form>
+								</form>
 							</li>
 							<li class="nav-item">
 								<form action="{% url 'core:add_comment' post_id=post.id %}" method="post">

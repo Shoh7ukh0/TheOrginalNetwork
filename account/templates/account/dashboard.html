@@ -101,8 +101,6 @@
               <!-- Card header START -->
               <div class="card-header d-sm-flex align-items-center justify-content-between border-0 pb-0">
                 <h5 class="card-title">Photos</h5>
-                <!-- Button modal -->
-                <a class="btn btn-sm btn-primary-soft" href="#" data-bs-toggle="modal" data-bs-target="#modalCreateAlbum"> <i class="fa-solid fa-plus pe-1"></i> Create album</a>
               </div>
               <!-- Card header END -->
               <!-- Card body START -->
@@ -278,6 +276,8 @@
                       </div>
                       <!-- glightbox Albums left bar END  -->
                     </div>
+                    {% else %}
+                      <p style="text-align: center;">Hali sizda rasim posti mavjud emas!</p>
                     {% endif %}
                   {% endfor %}
                   <!-- Photo item END -->
@@ -303,14 +303,13 @@
 
                   {% for post in posts %}
                     <!-- Photo item START -->
-                    
+                    {% if post.video %}
                       <div class="col-sm-6 col-md-4">
                         <!-- Video START -->
                         <div class="card p-0 shadow-none border-0 position-relative">
                           <!-- Video image -->
-                          {% if post.video %}
                           <div class="position-relative">
-                            <img class="rounded" src="{{ post.video.url }}" alt="">
+                            <img class="rounded" src="{% static 'assets/images/albums/01.jpg' %}" alt="">
                             <!-- Play icon -->
                             <div class="position-absolute top-0 end-0 p-3">
                               <a class="icon-md bg-danger text-white rounded-circle" data-glightbox href="{{ post.video.url }}"> <i class="bi bi-play-fill fs-5"> </i> </a>
@@ -320,22 +319,23 @@
                               <span class="bg-dark bg-opacity-50 px-2 rounded text-white small">02:20</span>
                             </div>
                           </div>
-                          {% endif %}
                           <!-- Video info -->
                           <div class="card-body px-0 pb-0 pt-2">
                             <ul class="nav nav-stack small">
                               <li class="nav-item">
-                                <a class="nav-link" href="#!"> <i class="bi bi-heart-fill text-danger pe-1"></i>22k </a>
+                                <a class="nav-link" href="#!"> <i class="bi bi-heart-fill text-danger pe-1"></i>{{ post.likes.count }}</a>
                               </li>
                               <li class="nav-item">
-                                <a class="nav-link" href="#!"> <i class="bi bi-chat-left-text-fill pe-1"></i>3k </a>
+                                <a class="nav-link" href="#!"> <i class="bi bi-chat-left-text-fill pe-1"></i>{{ post.comments.count }} </a>
                               </li>
                             </ul>
                           </div>
                         </div>
                         <!-- Video END -->
                       </div>
-                    <!-- {% endif %} -->
+                    {% else %}
+                      <p style="text-align: center;">Hali sizda video posti mavjud emas!</p>
+                    {% endif %}
                   {% endfor %}
                 </div>
               </div>

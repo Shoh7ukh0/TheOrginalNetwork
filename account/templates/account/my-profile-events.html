@@ -1,3 +1,7 @@
+{% extends "base.html" %}
+{% load static %}
+{% load thumbnail %}
+{% block title %}Profile{% endblock %}
 <!DOCTYPE html>
 <html lang="en">
 
@@ -9,7 +13,7 @@
 	<meta name="author" content="Webestica.com">
 	<meta name="description" content="Bootstrap 5 based Social Media Network and Community Theme">
 </head>
-
+{% block content %}
 <body>
 <!-- **************** MAIN CONTENT START **************** -->
 <main>
@@ -396,4 +400,5 @@
 <!-- **************** MAIN CONTENT END **************** -->
 
 </body>
+{% endblock %}
 </html>

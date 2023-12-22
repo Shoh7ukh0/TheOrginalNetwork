@@ -172,3 +172,21 @@ class UserFollowView(View):
                 return JsonResponse({'status': 'error'})
 
         return JsonResponse({'status': 'error'})
+
+def my_profile_about(request):
+    return render(request, 'account/my-profile-about.html')
+
+def my_profile_activity(request):
+    return render(request, 'account/my-profile-activity.html')
+
+def my_profile_connections(request):
+    return render(request, 'account/my-profile-connections.html')
+
+def my_profile_events(request):
+    return render(request, 'account/my-profile-events.html')
+
+def my_profile_media(request):
+    return render(request, 'account/my-profile-media.html')
+
+def my_profile_videos(request):
+    return render(request, 'account/my-profile-videos.html')

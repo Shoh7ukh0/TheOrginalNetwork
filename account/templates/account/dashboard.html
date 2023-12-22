@@ -78,13 +78,13 @@
               <div class="card-footer mt-3 pt-2 pb-0">
                 <!-- Nav profile pages -->
                 <ul class="nav nav-bottom-line align-items-center justify-content-center justify-content-md-start mb-0 border-0">
-                  <li class="nav-item"> <a class="nav-link active" href="my-profile.html"> Xabarlar </a> </li>
-                  <li class="nav-item"> <a class="nav-link" href="my-profile-about.html"> Haqida </a> </li>
-                  <li class="nav-item"> <a class="nav-link" href="my-profile-connections.html"> Ulanishlar <span class="badge bg-success bg-opacity-10 text-success small"> 230</span> </a> </li>
-                  <li class="nav-item"> <a class="nav-link" href="my-profile-media.html"> OAV</a> </li>
-                  <li class="nav-item"> <a class="nav-link" href="my-profile-videos.html"> Videolar</a> </li>
-                  <li class="nav-item"> <a class="nav-link" href="my-profile-events.html"> Voqealar</a> </li>
-                  <li class="nav-item"> <a class="nav-link" href="my-profile-activity.html"> Faoliyat</a> </li>
+                  <li class="nav-item"> <a class="nav-link active" href="#"> Xabarlar </a> </li>
+                  <li class="nav-item"> <a class="nav-link" href="{% url 'account:my_profile_about' %}"> Haqida </a> </li>
+                  <li class="nav-item"> <a class="nav-link" href="{% url 'account:my_profile_connections' %}"> Ulanishlar <span class="badge bg-success bg-opacity-10 text-success small"> 230</span> </a> </li>
+                  <li class="nav-item"> <a class="nav-link" href="{% url 'account:my_profile_media' %}"> OAV</a> </li>
+                  <li class="nav-item"> <a class="nav-link" href="{% url 'account:my_profile_videos' %}"> Videolar</a> </li>
+                  <li class="nav-item"> <a class="nav-link" href="{% url 'account:my_profile_events' %}"> Voqealar</a> </li>
+                  <li class="nav-item"> <a class="nav-link" href="{% url 'account:my_profile_activity' %}"> Faoliyat</a> </li>
                 </ul>
               </div>
             </div>

@@ -13,5 +13,5 @@ urlpatterns = [
     path('<int:post_id>/edit/', views.EditPostView.as_view(), name='edit_post'),
     path('<int:post_id>/delete/', views.DeletePostView.as_view(), name='delete_post'),
     path('search/', views.SearchUserView.as_view(), name='search_user'),
-    path('post/<int:post_id>/hide/', views.HidePostView.as_view(), name='hide_post')
+    path('hide_post/<int:post_id>/', views.hide_post, name='hide_post')
 ]

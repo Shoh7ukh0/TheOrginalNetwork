@@ -4,7 +4,7 @@ from django.utils.decorators import method_decorator
 from django.urls import reverse
 from django.views import View
 from django.shortcuts import get_object_or_404
-from .models import Post, SavedPost, HiddenPost, Comment
+from .models import Post, SavedPost, Comment
 from .forms import PostForm, CommentForm, SearchForm
 from django.contrib.auth.models import User
 import redis
@@ -218,24 +218,14 @@ class DeletePostView(View):
         post.delete()
         return redirect('core:post_list')
 
-class HidePostView(View):
-    def get(self, request, post_id):
-        post = get_object_or_404(Post, id=post_id)
-        user = request.user
+def hide_post(request, post_id):
+    post = get_object_or_404(Post, id=post_id)
 
-        # Check if the post is already hidden
-        hidden_post, created = HiddenPost.objects.get_or_create(user=user, post=post)
+    # Check if the user initiating the hide action is the owner of the post
+    if request.user == post.user:
+        # Toggle the 'hidden' status of the post
+        post.hidden = not post.hidden
+        post.save()
 
-        if created:
-            action = 'hide'
-        else:
-            hidden_post.delete()
-            action = 'unhide'
-
-        # Redirect to the same page or another URL
-        if request.GET.get('from_dashboard'):
-            # Agar dashboarddan keldi bo'lsa, dashboardga qaytaramiz
-            return redirect('core:post_list')
-        else:
-            # Aks holda, post sahifasiga qaytaramiz
-            return redirect(reverse('core:post_list'))
+    # Redirect back to the post detail page or any other page
+    return redirect('core:post_list')

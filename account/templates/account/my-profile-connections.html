@@ -117,14 +117,14 @@
                   <a href="#!"> <img class="avatar-img rounded-circle" src="{% static 'assets/images/avatar/01.jpg' %}" alt=""> </a>
                 </div>
                 <!-- Info -->
+                {% for friend in friends %}
                 <div class="w-100">
-                  {% for friend in friends %}
-                    <div class="d-sm-flex align-items-start">
-                      <h6 class="mb-0"><a href="#!">{{ friend.user_to.username }} </a></h6>
-                      <p class="small ms-sm-2 mb-0">Full Stack Web Developer</p>
+                    <div class="d align-items-start">
+                      <h6 class="mb-0"><a href="#!">{{ friend.user_to.username }}</a></h6>
+                      <p class="small mb-0">Full Stack Web Developer</p>
                     </div>
-                  {% endfor %}
                 </div>
+                {% endfor %}
                 <!-- Button -->
                 <div class="ms-md-auto d-flex">
                   <button class="btn btn-danger-soft btn-sm mb-0 me-2"> Remove </button>

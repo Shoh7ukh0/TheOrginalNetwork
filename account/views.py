@@ -25,6 +25,7 @@ class ProfileView(View):
         user = get_object_or_404(User, username=username)
         profile = get_object_or_404(Profile, user=user)
         posts = Post.objects.filter(user=user)
+        queryset = Profile.objects.filter(user_type=Profile.Status.BLOGER)
 
         # Qachon ro'yxatdan o'tganligi 24 soat ichida bo'lgan foydalanuvchilarni topamiz
         one_day_ago = timezone.now() - timedelta(days=1)
@@ -33,6 +34,7 @@ class ProfileView(View):
         context = {
             'profile': profile,
             'posts': posts,
+            'queryset':queryset,
             'new_users': new_users,
         }
         return render(request, self.template_name, context)

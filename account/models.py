@@ -10,11 +10,22 @@ class ActiveUser(models.Model):
     is_admin = models.BooleanField(default=False)
 
 class Profile(models.Model):
+    class Status(models.TextChoices):
+        BLOGER = 'BG', 'Bloger'
+        SOFTWARE_ENGINEERING = 'SE', 'Software engineering'
+        GRAPHIC_DESIGNER = 'GD', 'Graphic designer'
+        FOOTBALL_PLAYER = 'FP', 'Football player'
+        MUSICIAN = 'MS', 'Musician'
+        SMM_MANAGER = 'SM', 'SMM manager'
+        MARKETOLOGY = 'MA', 'Marketology'
+
     user = models.OneToOneField(settings.AUTH_USER_MODEL, on_delete=models.PROTECT)
     date_of_birth = models.DateField(blank=True, null=True)
+    bio = models.TextField()
     photo = models.ImageField(upload_to='users/%Y/%m/%d/', blank=True)
     following = models.ManyToManyField('self', through='Contact', related_name='followers', symmetrical=False, blank=True)
     disable_chat = models.BooleanField(default=False)
+    user_type = models.CharField(max_length=100, choices=Status.choices, default=Status.BLOGER)
 
     def __str__(self):
         return f'Profile of {self.user.username}'

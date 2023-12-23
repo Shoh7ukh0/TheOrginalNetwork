@@ -403,7 +403,8 @@
 						</div>
 						{% else %}
 							<div style="text-align: center;" class="content">
-								<p>This post is hidden.</p>
+								<i style="font-size: 4em;" class="bi bi-clipboard-x"></i>
+								<p>You have hidden this post so this post will not be visible to you.</p>
 								<div class="d-grid mt-3">
 									<a class="btn btn-sm btn-primary-soft" href="{% url 'core:hide_post' post_id=post.id %}">Unhide Post</a>
 								</div>

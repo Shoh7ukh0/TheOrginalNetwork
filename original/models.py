@@ -1,11 +1,14 @@
 from django.db import models
 from django.contrib.auth.models import User
 from taggit.managers import TaggableManager
+from django.utils.text import slugify
+import uuid
     
 
 class Post(models.Model):
     user = models.ForeignKey(User, on_delete=models.PROTECT)
     caption = models.TextField()
+    slug = models.SlugField(default=uuid.uuid1)
     created_at = models.DateTimeField(auto_now_add=True)
     image = models.ImageField(upload_to='posts/images/', blank=True, null=True)
     video = models.FileField(upload_to='posts/videos/', blank=True, null=True)
@@ -16,6 +19,16 @@ class Post(models.Model):
 
     def __str__(self):
         return f'{self.user.username} - {self.caption[:20]}'
+
+    def save(self, *args, **kwargs):
+        # Auto-generate the slug when saving the post
+        if not self.slug:
+            self.slug = slugify(self.title)  # Use the post title to generate a slug
+        super().save(*args, **kwargs)
+
+    def get_absolute_url(self):
+        # Define the URL for a post
+        return reverse('core:post_detail', kwargs={'slug': self.slug})
         
 
 class SavedPost(models.Model):

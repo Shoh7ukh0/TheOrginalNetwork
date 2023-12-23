@@ -201,6 +201,12 @@ def my_profile_connections(request):
 def my_profile_events(request):
     return render(request, 'account/my-profile-events.html')
 
+def saved_posts(request):
+    user_profile = request.user.profile
+    saved_posts = user_profile.saved_posts.all()
+
+    return render(request, 'account/save_post.html', {'saved_posts': saved_posts})
+
 def save_post(request, post_id):
     post = get_object_or_404(Post, id=post_id)
     user_profile = request.user.profile
@@ -211,4 +217,15 @@ def save_post(request, post_id):
 
     saved_posts = user_profile.saved_posts.all()
 
-    return render(request, 'account/dashboard.html', {'saved_posts': saved_posts})
+    return render(request, 'account/save_post.html', {'saved_posts': saved_posts})
+
+def delete_saved_post(request, post_id):
+    user_profile = request.user.profile
+    post = get_object_or_404(Post, id=post_id)
+
+    # Check if the post is saved by the user
+    if user_profile.saved_posts.filter(id=post_id).exists():
+        # Unsave the post
+        user_profile.saved_posts.remove(post)
+
+    return redirect('core:post_list')

@@ -96,11 +96,14 @@ class PostDetailView(View):
 
         # Check if the video attribute has a value
         has_video = post.video.url if post.video else None
+        # Video davomiyligini sotib olish
+        duration = post.duration.total_seconds() if post.duration else None
+        minutes, seconds = divmod(duration, 60)
 
         return render(
             request,
             self.template_name,
-            {'post': post, 'comments': comments, 'likes': likes, 'form': form, 'has_image': has_image, 'has_video': has_video}
+            {'post': post, 'comments': comments, 'likes': likes, 'form': form, 'has_image': has_image, 'has_video': has_video, 'duration_minutes': minutes, 'duration_seconds': seconds}
         )
 
     @login_required

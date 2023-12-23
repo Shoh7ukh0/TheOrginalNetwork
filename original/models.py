@@ -11,6 +11,7 @@ class Post(models.Model):
     video = models.FileField(upload_to='posts/videos/', blank=True, null=True)
     likes = models.ManyToManyField(User, related_name='post_likes', blank=True)
     hashtag = models.CharField(max_length=200)
+    duration = models.DurationField(null=True, blank=True)
 
     def __str__(self):
         return f'{self.user.username} - {self.caption[:20]}'

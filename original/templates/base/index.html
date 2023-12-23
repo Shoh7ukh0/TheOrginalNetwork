@@ -246,7 +246,7 @@
 								</a>
 								<!-- Card feed action dropdown menu -->
 								<ul class="dropdown-menu dropdown-menu-end" aria-labelledby="cardFeedAction">
-									<li><a class="dropdown-item" href="#"> <i class="bi bi-bookmark fa-fw pe-2"></i>Save post</a></li>
+									<li><a class="dropdown-item" href="{% url 'account:save_post' post_id=post.id %}"> <i class="bi bi-bookmark fa-fw pe-2"></i>Save post</a></li>
 									<li><a class="dropdown-item" href="#"> <i class="bi bi-x-circle fa-fw pe-2"></i>Hide post</a></li>
 									<li><a class="dropdown-item" href="#"> <i class="bi bi-slash-circle fa-fw pe-2"></i>Block</a></li>
 									<li><hr class="dropdown-divider"></li>

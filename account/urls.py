@@ -18,4 +18,6 @@ urlpatterns = [
     path('my_profile_activity/', views.my_profile_activity, name='my_profile_activity'),
     path('my_profile_connections/', views.my_profile_connections, name='my_profile_connections'),
     path('my_profile_events/', views.my_profile_events, name='my_profile_events'),
+
+    path('save_post/<int:post_id>/', views.save_post, name='save_post'),
 ]

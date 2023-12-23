@@ -200,3 +200,15 @@ def my_profile_connections(request):
 
 def my_profile_events(request):
     return render(request, 'account/my-profile-events.html')
+
+def save_post(request, post_id):
+    post = get_object_or_404(Post, id=post_id)
+    user_profile = request.user.profile
+
+    # Check if the post is already saved
+    if not user_profile.saved_posts.filter(id=post_id).exists():
+        user_profile.saved_posts.add(post)
+
+    saved_posts = user_profile.saved_posts.all()
+
+    return render(request, 'account/dashboard.html', {'saved_posts': saved_posts})

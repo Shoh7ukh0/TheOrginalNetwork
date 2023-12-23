@@ -20,6 +20,6 @@ urlpatterns = [
     path('my_profile_events/', views.my_profile_events, name='my_profile_events'),
 
     path('save_post/', views.saved_posts, name='saved_posts'),
-    path('save_post/<int:post_id>/', views.save_post, name='save_post'),
-    path('delete_saved_post/<int:post_id>/', views.delete_saved_post, name='delete_saved_post'),
+    path('save_post/<slug:slug>/', views.save_post, name='save_post'),
+    path('delete_saved_post/<slug:slug>/', views.delete_saved_post, name='delete_saved_post'),
 ]

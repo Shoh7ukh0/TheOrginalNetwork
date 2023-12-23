@@ -207,24 +207,24 @@ def saved_posts(request):
 
     return render(request, 'account/save_post.html', {'saved_posts': saved_posts})
 
-def save_post(request, post_id):
-    post = get_object_or_404(Post, id=post_id)
+def save_post(request, slug):
+    post = get_object_or_404(Post, slug=slug)
     user_profile = request.user.profile
 
     # Check if the post is already saved
-    if not user_profile.saved_posts.filter(id=post_id).exists():
+    if not user_profile.saved_posts.filter(slug=slug).exists():
         user_profile.saved_posts.add(post)
 
     saved_posts = user_profile.saved_posts.all()
 
     return render(request, 'account/save_post.html', {'saved_posts': saved_posts})
 
-def delete_saved_post(request, post_id):
+def delete_saved_post(request, slug):
     user_profile = request.user.profile
-    post = get_object_or_404(Post, id=post_id)
+    post = get_object_or_404(Post, slug=slug)
 
     # Check if the post is saved by the user
-    if user_profile.saved_posts.filter(id=post_id).exists():
+    if user_profile.saved_posts.filter(slug=slug).exists():
         # Unsave the post
         user_profile.saved_posts.remove(post)
 

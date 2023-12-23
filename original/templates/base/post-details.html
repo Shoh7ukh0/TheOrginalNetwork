@@ -63,14 +63,9 @@
                 <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="cardFeedAction">
                   <li>
                     {% if user.is_authenticated %}
-                      <a class="dropdown-item" href="{% url 'core:edit_post' post_id=post.id %}"> <i class="bi bi-pencil-square"></i> Edit</a>
-                      <a class="dropdown-item" href="{% url 'core:delete_post' post_id=post.id %}"> <i class="bi bi-trash3"></i> Delete</a>
+                      <a class="dropdown-item" href="{% url 'core:edit_post' slug=post.slug %}"> <i class="bi bi-pencil-square"></i> Edit</a>
+                      <a class="dropdown-item" href="{% url 'core:delete_post' slug=post.slug %}"> <i class="bi bi-trash3"></i> Delete</a>
                     {% endif %}</li>
-                  <li><a id="save-post-button" data-post-id="{{ post.id }}" class="dropdown-item" href="#"> <i class="bi bi-bookmark fa-fw pe-2"></i>Save post</a></li>
-                  <li><a class="dropdown-item" href="#"> <i class="bi bi-x-circle fa-fw pe-2"></i>Hide post</a></li>
-                  <li><a class="dropdown-item" href="#"> <i class="bi bi-slash-circle fa-fw pe-2"></i>Block</a></li>
-                  <li><hr class="dropdown-divider"></li>
-                  <li><a class="dropdown-item" href="#"> <i class="bi bi-flag fa-fw pe-2"></i>Report post</a></li>
                 </ul>
               </div>
               <!-- Card feed action dropdown END -->
@@ -81,7 +76,7 @@
             <!-- Feed react START -->
             <ul class="nav nav-stack flex-wrap small mb-3">
               <li class="nav-item">
-                <form method="post" action="{% url 'core:like_post' post_id=post.id %}">
+                <form method="post" action="{% url 'core:like_post' slug=post.slug %}">
                   {% csrf_token %}
                   <button style="border: none; background-color: transparent;" type="submit">
                     <a class="nav-link" href="#!"> 
@@ -138,7 +133,7 @@
                         <a class="nav-link like-comment" data-comment-id="{{ comment.id }}" href="#"> Like ({{ comment.likes.count }})</a>
                       </li>
                       <li class="nav-item">
-                        <a class="nav-link" href="{% url 'core:reply_comment' post_id=post.id comment_id=comment.id %}"> Reply</a>
+                        <a class="nav-link" href="{% url 'core:reply_comment' slug=post.slug comment_id=comment.id %}"> Reply</a>
                       </li>
                       <li class="nav-item">
                         <a class="nav-link" href="#"> View 5 replies</a>
@@ -175,7 +170,7 @@
                               <a class="nav-link" href="#!"> Reply</a>
                             </li> -->
                           </ul>
-                          <form action="{% url 'core:reply_comment' post_id=post.id comment_id=comment.id %}" method="post">
+                          <form action="{% url 'core:reply_comment' slug=post.slug comment_id=comment.id %}" method="post">
                             {% csrf_token %}
                             {{ form.text }}
                             <input class="btn btn-primary" type="submit" value="Reply">
@@ -196,7 +191,7 @@
               <button class="btn btn-primary" type="submit">Add Comment</button>
             </form>
             <!-- Comment wrap END -->
-            <!-- <a style="position: relative; top: 10px;" class="nav-link t-1" href="#!"> <i class="bi bi-eye"></i> {{ total_views }}</a> -->
+            <a style="position: relative; top: 10px;" class="nav-link t-1" href="#!"> <i class="bi bi-eye"></i> Views ({{ total_views }})</a>
           </div>
         </div>
       </div>

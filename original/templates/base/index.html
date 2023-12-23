@@ -235,7 +235,7 @@
 										<!-- Info -->
 										<div>
 											<div class="nav nav-divider">
-												<h6 class="nav-item card-title mb-0"> <a href="{% url 'core:post_detail' post_id=post.id %}"> {{ post.user.username }} </a></h6>
+												<h6 class="nav-item card-title mb-0"> <a href="{% url 'core:post_detail' slug=post.slug %}"> {{ post.user.username }} </a></h6>
 												<span class="nav-item small"> {{ post.time_since_creation }}</span>
 											</div>
 											<p class="mb-0 small">Web Developer at Webestica</p>
@@ -248,8 +248,8 @@
 										</a>
 										<!-- Card feed action dropdown menu -->
 										<ul class="dropdown-menu dropdown-menu-end" aria-labelledby="cardFeedAction">
-											<li><a class="dropdown-item" href="{% url 'account:save_post' post_id=post.id %}"> <i class="bi bi-bookmark fa-fw pe-2"></i>Save post</a></li>
-											<li><a class="dropdown-item" href="{% url 'core:hide_post' post_id=post.id %}"> <i class="bi bi-x-circle fa-fw pe-2"></i>Hide post</a></li>
+											<li><a class="dropdown-item" href="{% url 'account:save_post' slug=post.slug %}"> <i class="bi bi-bookmark fa-fw pe-2"></i>Save post</a></li>
+											<li><a class="dropdown-item" href="{% url 'core:hide_post' slug=post.slug %}"> <i class="bi bi-x-circle fa-fw pe-2"></i>Hide post</a></li>
 											<li><a class="dropdown-item" href="#"> <i class="bi bi-slash-circle fa-fw pe-2"></i>Block</a></li>
 											<li><hr class="dropdown-divider"></li>
 											<li><a class="dropdown-item" href="#"> <i class="bi bi-flag fa-fw pe-2"></i>Report post</a></li>
@@ -278,7 +278,7 @@
 								<!-- Feed react START -->
 								<ul class="nav nav-stack py-3 small">
 									<li class="nav-item">
-										<form method="post" action="{% url 'core:like_post' post_id=post.id %}">
+										<form method="post" action="{% url 'core:like_post' slug=post.slug %}">
 											{% csrf_token %}
 											<button style="border: none; background-color: transparent !important;" type="submit">
 												<a class="nav-link active" href="#!" data-bs-container="body" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-html="true" data-bs-custom-class="tooltip-text-start"> <i class="bi bi-hand-thumbs-up-fill pe-1"></i>Liked ({{ post.likes.count }})</a>
@@ -286,7 +286,7 @@
 										</form>
 									</li>
 									<li class="nav-item">
-										<form action="{% url 'core:add_comment' post_id=post.id %}" method="post">
+										<form action="{% url 'core:add_comment' slug=post.slug %}" method="post">
 											{% csrf_token %}
 											<button style="background-color: transparent; border: none; color: #fff;" type="submit"><i class="bi bi-chat-fill pe-1"></i>Comments ({{ post.comments.count }})</button>
 										</form>
@@ -423,7 +423,7 @@
 										<!-- Info -->
 										<div>
 											<div class="nav nav-divider">
-												<h6 class="nav-item card-title mb-0"> <a href="{% url 'core:post_detail' post_id=post.id %}"> {{ post.user.username }} </a></h6>
+												<h6 class="nav-item card-title mb-0"> <a href="{% url 'core:post_detail' slug=post.slug %}"> {{ post.user.username }} </a></h6>
 												<span class="nav-item small"> {{ post.time_since_creation }}</span>
 											</div>
 											<p class="mb-0 small">Web Developer at Webestica</p>
@@ -436,8 +436,8 @@
 										</a>
 										<!-- Card feed action dropdown menu -->
 										<ul class="dropdown-menu dropdown-menu-end" aria-labelledby="cardFeedAction">
-											<li><a class="dropdown-item" href="{% url 'account:save_post' post_id=post.id %}"> <i class="bi bi-bookmark fa-fw pe-2"></i>Save post</a></li>
-											<li><a class="dropdown-item" href="{% url 'core:hide_post' post_id=post.id %}"> <i class="bi bi-x-circle fa-fw pe-2"></i>Hide post</a></li>
+											<li><a class="dropdown-item" href="{% url 'account:save_post' slug=post.slug %}"> <i class="bi bi-bookmark fa-fw pe-2"></i>Save post</a></li>
+											<li><a class="dropdown-item" href="{% url 'core:hide_post' slug=post.slug %}"> <i class="bi bi-x-circle fa-fw pe-2"></i>Hide post</a></li>
 											<li><a class="dropdown-item" href="#"> <i class="bi bi-slash-circle fa-fw pe-2"></i>Block</a></li>
 											<li><hr class="dropdown-divider"></li>
 											<li><a class="dropdown-item" href="#"> <i class="bi bi-flag fa-fw pe-2"></i>Report post</a></li>
@@ -466,7 +466,7 @@
 								<!-- Feed react START -->
 								<ul class="nav nav-stack py-3 small">
 									<li class="nav-item">
-										<form method="post" action="{% url 'core:like_post' post_id=post.id %}">
+										<form method="post" action="{% url 'core:like_post' slug=post.slug %}">
 											{% csrf_token %}
 											<button style="border: none; background-color: transparent !important;" type="submit">
 												<a class="nav-link active" href="#!" data-bs-container="body" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-html="true" data-bs-custom-class="tooltip-text-start"> <i class="bi bi-hand-thumbs-up-fill pe-1"></i>Liked ({{ post.likes.count }})</a>
@@ -474,7 +474,7 @@
 										</form>
 									</li>
 									<li class="nav-item">
-										<form action="{% url 'core:add_comment' post_id=post.id %}" method="post">
+										<form action="{% url 'core:add_comment' slug=post.slug %}" method="post">
 											{% csrf_token %}
 											<button style="background-color: transparent; border: none; color: #fff;" type="submit"><i class="bi bi-chat-fill pe-1"></i>Comments ({{ post.comments.count }})</button>
 										</form>

@@ -12,6 +12,7 @@ class Post(models.Model):
     likes = models.ManyToManyField(User, related_name='post_likes', blank=True)
     hashtag = models.CharField(max_length=200)
     duration = models.DurationField(null=True, blank=True)
+    hidden = models.BooleanField(default=False)
 
     def __str__(self):
         return f'{self.user.username} - {self.caption[:20]}'
@@ -21,12 +22,6 @@ class SavedPost(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     post = models.ForeignKey(Post, on_delete=models.CASCADE)
     saved_at = models.DateTimeField(auto_now_add=True)
-    
-
-class HiddenPost(models.Model):
-    user = models.ForeignKey(User, on_delete=models.CASCADE)
-    post = models.ForeignKey(Post, on_delete=models.CASCADE)
-    timestamp = models.DateTimeField(auto_now_add=True)
 
 
 class Comment(models.Model):

@@ -111,26 +111,26 @@
             <!-- Card body START -->
             <div class="card-body">
               <!-- Connections Item -->
+              {% for friend in friends %}
               <div class="d-md-flex align-items-center mb-4">
                 <!-- Avatar -->
                 <div class="avatar me-3 mb-3 mb-md-0">
-                  <a href="#!"> <img class="avatar-img rounded-circle" src="{% static 'assets/images/avatar/01.jpg' %}" alt=""> </a>
+                  <a href="#!"> <img class="avatar-img rounded-circle" src="{% if user.profile.photo %}{% thumbnail user.profile.photo 180x180 %}{% else %}../static/profile.gif{% endif %}" alt=""> </a>
                 </div>
                 <!-- Info -->
-                {% for friend in friends %}
                 <div class="w-100">
                     <div class="d align-items-start">
                       <h6 class="mb-0"><a href="#!">{{ friend.user_to.username }}</a></h6>
                       <p class="small mb-0">Full Stack Web Developer</p>
                     </div>
                 </div>
-                {% endfor %}
                 <!-- Button -->
                 <div class="ms-md-auto d-flex">
                   <button class="btn btn-danger-soft btn-sm mb-0 me-2"> Remove </button>
                   <button class="btn btn-primary-soft btn-sm mb-0"> Message </button>
                 </div>
               </div>
+              {% endfor %}
               <div class="d-grid">
                 <!-- Load more button START -->
                 <a href="#!" role="button" class="btn btn-sm btn-loader btn-primary-soft" data-bs-toggle="button" aria-pressed="true">

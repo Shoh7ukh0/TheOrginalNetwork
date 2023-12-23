@@ -1,14 +1,16 @@
 from django.shortcuts import render, redirect
 from django.contrib.auth.decorators import login_required
 from django.utils.decorators import method_decorator
+from django.urls import reverse
 from django.views import View
 from django.shortcuts import get_object_or_404
-from .models import Post, SavedPost, Comment
+from .models import Post, SavedPost, HiddenPost, Comment
 from .forms import PostForm, CommentForm, SearchForm
 from django.contrib.auth.models import User
 import redis
 from django.conf import settings
 from datetime import datetime, timezone
+from django.http import JsonResponse
 
 
 # соединить с redis
@@ -216,14 +218,24 @@ class DeletePostView(View):
         post.delete()
         return redirect('core:post_list')
 
-
-class SavePostView(View):
-    def post(self, request, post_id):
+class HidePostView(View):
+    def get(self, request, post_id):
         post = get_object_or_404(Post, id=post_id)
         user = request.user
 
-        # Check if the post is already saved
-        if not SavedPost.objects.filter(user=user, post=post).exists():
-            SavedPost.objects.create(user=user, post=post)
+        # Check if the post is already hidden
+        hidden_post, created = HiddenPost.objects.get_or_create(user=user, post=post)
 
-        return JsonResponse({'status': 'ok'})
+        if created:
+            action = 'hide'
+        else:
+            hidden_post.delete()
+            action = 'unhide'
+
+        # Redirect to the same page or another URL
+        if request.GET.get('from_dashboard'):
+            # Agar dashboarddan keldi bo'lsa, dashboardga qaytaramiz
+            return redirect('core:post_list')
+        else:
+            # Aks holda, post sahifasiga qaytaramiz
+            return redirect(reverse('core:post_list'))

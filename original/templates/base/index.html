@@ -247,7 +247,7 @@
 								<!-- Card feed action dropdown menu -->
 								<ul class="dropdown-menu dropdown-menu-end" aria-labelledby="cardFeedAction">
 									<li><a class="dropdown-item" href="{% url 'account:save_post' post_id=post.id %}"> <i class="bi bi-bookmark fa-fw pe-2"></i>Save post</a></li>
-									<li><a class="dropdown-item" href="#"> <i class="bi bi-x-circle fa-fw pe-2"></i>Hide post</a></li>
+									<li><a class="dropdown-item" href="{% url 'core:hide_post' post_id=post.id %}?from_dashboard=True"> <i class="bi bi-x-circle fa-fw pe-2"></i>Hide post</a></li>
 									<li><a class="dropdown-item" href="#"> <i class="bi bi-slash-circle fa-fw pe-2"></i>Block</a></li>
 									<li><hr class="dropdown-divider"></li>
 									<li><a class="dropdown-item" href="#"> <i class="bi bi-flag fa-fw pe-2"></i>Report post</a></li>
@@ -783,6 +783,21 @@
 <script>
 	let sessionKey = '{{ request.session.session_key }}';
     let currentUser = '{{ request.user.username }}';
+</script>
+<script>
+    // Assuming you have a button or link to hide/unhide posts
+    document.getElementById('hidePostButton').addEventListener('click', function() {
+        // Replace this with the actual post ID and update the URL accordingly
+        var postID = 1;
+
+        fetch(`/hide_post/${postID}/`)
+            .then(response => response.json())
+            .then(data => {
+                console.log(data);
+                // Handle the response accordingly, update the UI, etc.
+            })
+            .catch(error => console.error('Error:', error));
+    });
 </script>
 
 </body>

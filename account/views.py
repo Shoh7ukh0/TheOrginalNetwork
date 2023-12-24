@@ -179,9 +179,6 @@ class UserFollowView(View):
 def my_profile_about(request):
     return render(request, 'account/my-profile-about.html')
 
-def my_profile_activity(request):
-    return render(request, 'account/my-profile-activity.html')
-
 
 def my_profile_connections(request):
     try:
@@ -197,9 +194,6 @@ def my_profile_connections(request):
         return render(request, 'account/my-profile-connections.html', context)
     except Exception as e:
         return HttpResponseServerError(f"Error in my_profile_connections view: {e}")
-
-def my_profile_events(request):
-    return render(request, 'account/my-profile-events.html')
 
 def saved_posts(request):
     user_profile = request.user.profile

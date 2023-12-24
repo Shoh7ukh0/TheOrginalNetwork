@@ -406,7 +406,7 @@
 								<i style="font-size: 4em;" class="bi bi-clipboard-x"></i>
 								<p>You have hidden this post so this post will not be visible to you.</p>
 								<div class="d-grid mt-3">
-									<a class="btn btn-sm btn-primary-soft" href="{% url 'core:hide_post' post_id=post.id %}">Unhide Post</a>
+									<a class="btn btn-sm btn-primary-soft" href="{% url 'core:hide_post' slug=post.slug %}">Unhide Post</a>
 								</div>
 							</div>
 						{% endif %}
@@ -979,9 +979,9 @@
     // Assuming you have a button or link to hide/unhide posts
     document.getElementById('hidePostButton').addEventListener('click', function() {
         // Replace this with the actual post ID and update the URL accordingly
-        var postID = 1;
+        var postSlug = slug=post.slug;
 
-        fetch(`/hide_post/${postID}/`)
+        fetch(`/hide_post/${postSlug}/`)
             .then(response => response.json())
             .then(data => {
                 console.log(data);

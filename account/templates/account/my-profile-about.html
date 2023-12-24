@@ -53,7 +53,7 @@
                 <!-- Button -->
                 <div class="d-flex mt-3 justify-content-center ms-sm-auto">
                   <button class="btn btn-danger-soft me-2" type="button"> 
-                    <a href="{% url 'account:edit_profile' %}"><i class="bi bi-pencil-fill pe-1"></i> Profilni tahrirlash </a> 
+                    <a href="{% url 'edit_profile' %}"><i class="bi bi-pencil-fill pe-1"></i> Profilni tahrirlash </a> 
                   </button>
                   <div class="dropdown">
                     <!-- Card share action menu -->
@@ -82,9 +82,9 @@
             <div class="card-footer mt-3 pt-2 pb-0">
               <!-- Nav profile pages -->
               <ul class="nav nav-bottom-line align-items-center justify-content-center justify-content-md-start mb-0 border-0">
-                  <li class="nav-item"> <a class="nav-link active" href="{% url 'account:dashboard' username=user.username %}"> Xabarlar </a> </li>
-                  <li class="nav-item"> <a class="nav-link" href="{% url 'account:my_profile_about' %}"> Haqida </a> </li>
-                  <li class="nav-item"> <a class="nav-link" href="{% url 'account:my_profile_connections' %}"> Ulanishlar <span class="badge bg-success bg-opacity-10 text-success small"> 
+                  <li class="nav-item"> <a class="nav-link active" href="{% url 'dashboard' username=user.username %}"> Xabarlar </a> </li>
+                  <li class="nav-item"> <a class="nav-link" href="{% url 'my_profile_about' %}"> Haqida </a> </li>
+                  <li class="nav-item"> <a class="nav-link" href="{% url 'my_profile_connections' %}"> Ulanishlar <span class="badge bg-success bg-opacity-10 text-success small"> 
                       {% with total_followers=user.followers.count %}
                         {% if total_followers %}
                           {{ total_followers }}
@@ -94,8 +94,8 @@
                       {% endwith %}
                     </span> </a> 
                   </li>
-                  <li class="nav-item"> <a class="nav-link" href="{% url 'account:my_profile_events' %}"> Voqealar</a> </li>
-                  <li class="nav-item"> <a class="nav-link" href="{% url 'account:my_profile_activity' %}"> Faoliyat</a> </li>
+                  <li class="nav-item"> <a class="nav-link" href="{% url 'my_profile_events' %}"> Voqealar</a> </li>
+                  <li class="nav-item"> <a class="nav-link" href="{% url 'my_profile_activity' %}"> Faoliyat</a> </li>
               </ul>
             </div>
           </div>

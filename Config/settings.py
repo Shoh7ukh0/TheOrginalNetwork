@@ -191,7 +191,7 @@ MEDIA_ROOT = BASE_DIR / 'media'
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 
-EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 
 LOGIN_REDIRECT_URL = 'dashboard'
 LOGIN_URL = 'login'
@@ -201,8 +201,8 @@ LOGOUT_URL = 'logout'
 EMAIL_HOST = 'smtp.gmail.com'
 EMAIL_PORT = '587'
 EMAIL_USE_TLS = True
-EMAIL_HOST_USER = 'avalondokoni@gmail.com'
-EMAIL_HOST_PASSWORD = 'fqkpmhyluxwcoain'
+EMAIL_HOST_USER = 'shohruxoralov9@gmail.com'
+EMAIL_HOST_PASSWORD = 'otybzizqbbmprbsd'
 
 
 PASSWORD_HASHERS = [
@@ -216,7 +216,7 @@ PASSWORD_HASHERS = [
 
 AUTHENTICATION_BACKENDS = [
     'django.contrib.auth.backends.ModelBackend',
-    # 'account.authentication.EmailAuthBackend',
+    'account.authentication.EmailAuthBackend',
     'social_core.backends.facebook.FacebookOAuth2',
     'social_core.backends.google.GoogleOAuth2',
 ]

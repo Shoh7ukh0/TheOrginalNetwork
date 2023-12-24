@@ -14,7 +14,7 @@
           <div>          
             <div class="nav nav-divider">
               {% if user.username %}
-                <h6 class="nav-item card-title mb-0"> <a href="{% url 'account:dashboard' username=user.username %}"> {{ user.username }} </a></h6>
+                <h6 class="nav-item card-title mb-0"> <a href="{% url 'dashboard' username=user.username %}"> {{ user.username }} </a></h6>
               {% else %}
                 <p class="text-center">Profilingiz yuq</p>
               {% endif %}

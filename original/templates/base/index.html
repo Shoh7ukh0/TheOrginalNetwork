@@ -144,7 +144,7 @@
 								<!-- Card footer -->
 								<div class="card-footer text-center py-2">
 									{% if user.username %}
-									<a class="btn btn-link btn-sm" href="{% url 'account:dashboard' username=user.username %}">View Profile </a>
+									<a class="btn btn-link btn-sm" href="{% url 'dashboard' username=user.username %}">View Profile </a>
 									{% else %}
 										<p class="text-center">Profilingiz yuq</p>
 									{% endif %}
@@ -248,7 +248,7 @@
 										</a>
 										<!-- Card feed action dropdown menu -->
 										<ul class="dropdown-menu dropdown-menu-end" aria-labelledby="cardFeedAction">
-											<li><a class="dropdown-item" href="{% url 'account:save_post' slug=post.slug %}"> <i class="bi bi-bookmark fa-fw pe-2"></i>Save post</a></li>
+											<li><a class="dropdown-item" href="{% url 'save_post' slug=post.slug %}"> <i class="bi bi-bookmark fa-fw pe-2"></i>Save post</a></li>
 											<li><a class="dropdown-item" href="{% url 'core:hide_post' slug=post.slug %}"> <i class="bi bi-x-circle fa-fw pe-2"></i>Hide post</a></li>
 											<li><a class="dropdown-item" href="#"> <i class="bi bi-slash-circle fa-fw pe-2"></i>Block</a></li>
 											<li><hr class="dropdown-divider"></li>
@@ -436,7 +436,7 @@
 										</a>
 										<!-- Card feed action dropdown menu -->
 										<ul class="dropdown-menu dropdown-menu-end" aria-labelledby="cardFeedAction">
-											<li><a class="dropdown-item" href="{% url 'account:save_post' slug=post.slug %}"> <i class="bi bi-bookmark fa-fw pe-2"></i>Save post</a></li>
+											<li><a class="dropdown-item" href="{% url 'save_post' slug=post.slug %}"> <i class="bi bi-bookmark fa-fw pe-2"></i>Save post</a></li>
 											<li><a class="dropdown-item" href="{% url 'core:hide_post' slug=post.slug %}"> <i class="bi bi-x-circle fa-fw pe-2"></i>Hide post</a></li>
 											<li><a class="dropdown-item" href="#"> <i class="bi bi-slash-circle fa-fw pe-2"></i>Block</a></li>
 											<li><hr class="dropdown-divider"></li>
@@ -620,12 +620,12 @@
 										</div>
 										<!-- Title -->
 										<div class="overflow-hidden">
-											<a class="h6 mb-0" href="{% url 'account:user_detail' username=user.username %}">
+											<a class="h6 mb-0" href="{% url 'user_detail' username=user.username %}">
 												{{ user.username }}<i class="bi bi-patch-check-fill text-success small"></i> </a>
 											<p class="mb-0 small text-truncate">News anchor</p>
 										</div>
 										<!-- Button -->
-										<a class="btn btn-primary-soft rounded-circle icon-md ms-auto" data-id="{{ user.id }}" data-action="{% if request.user in user.followers.all %}un{% endif %}follow" href="{% url 'account:user_detail' username=user.username %}">
+										<a class="btn btn-primary-soft rounded-circle icon-md ms-auto" data-id="{{ user.id }}" data-action="{% if request.user in user.followers.all %}un{% endif %}follow" href="{% url 'user_detail' username=user.username %}">
 											{% if request.user not in user.followers.all %}
 												<i class="fa-solid fa-plus"> </i>
 											{% else %}
@@ -994,7 +994,7 @@
 </body>
 {% endblock %}
 {% block domready %}
-	const url = '{% url "account:user_follow" %}';
+	const url = '{% url "user_follow" %}';
 	var options = {
 		method: 'POST',
 		headers: {'X-CSRFToken': csrftoken},

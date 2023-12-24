@@ -372,9 +372,9 @@
           <div class="card card-body p-4 p-sm-5 mt-sm-n5 mb-n5">
             <!-- Title -->
             <h2 class="h1 mb-2">Tizimga kirish</h2>
-            <p>Hisobingiz yo'qmi?<a href="{% url 'account:register' %}"> Roʻyxatdan oʻtish uchun shu yerni bosing</a></p>
+            <p>Hisobingiz yo'qmi?<a href="{% url 'register' %}"> Roʻyxatdan oʻtish uchun shu yerni bosing</a></p>
             <!-- Form START -->
-            <form class="mt-4" action="{% url 'account:login' %}" method="post">
+            <form class="mt-4" action="{% url 'login' %}" method="post">
                 {{ form.username }}<br/>
                 {{ form.password }}<br/>
                 {% csrf_token %}
@@ -385,7 +385,7 @@
                     <input type="checkbox" class="form-check-input" id="rememberCheck">
                     <label class="form-check-label" for="rememberCheck">Meni eslaysizmi?</label>
                     </div>
-                    <a href="{% url 'account:password_reset' %}">Parolni unutdingizmi?</a>
+                    <a href="{% url 'password_reset' %}">Parolni unutdingizmi?</a>
                 </div>
                 <!-- Button -->
                 <div class="d-grid">

@@ -1,7 +1,8 @@
 from django.urls import path, include
 from . import views
+from django.contrib.auth import views as auth_views
 
-app_name = 'account'
+
 
 urlpatterns = [
     path('', include('django.contrib.auth.urls')),
@@ -22,4 +23,13 @@ urlpatterns = [
     path('save_post/', views.saved_posts, name='saved_posts'),
     path('save_post/<slug:slug>/', views.save_post, name='save_post'),
     path('delete_saved_post/<slug:slug>/', views.delete_saved_post, name='delete_saved_post'),
+
+    # path('login/', auth_views.LoginView.as_view(), name='login'),
+    # path('logout/', auth_views.LogoutView.as_view(), name='logout'),
+    # # url-адреса смены пароля
+    # path('password-change/', auth_views.PasswordChangeView.as_view(), name='password_change'),
+    # path('password-change/done/', auth_views.PasswordChangeDoneView.as_view(), name='password_change_done'),
+    # # url-адреса сброса пароля
+    # path('password-reset/', auth_views.PasswordResetView.as_view(), name='password_reset'),
+    # path('password-reset/done/', auth_views.PasswordResetDoneView.as_view(), name='password_reset_done')
 ]

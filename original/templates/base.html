@@ -158,7 +158,7 @@ Header START -->
 			<!-- Nav right START -->
 			<ul class="nav flex-nowrap align-items-center ms-sm-3 list-unstyled">
 				<li class="nav-item ms-2">
-					<a class="nav-link icon-md btn btn-light p-0" href="{% url 'account:user_list' %}">
+					<a class="nav-link icon-md btn btn-light p-0" href="{% url 'user_list' %}">
 						<i class="bi bi-person fs-6"> </i>
 					</a>
 				</li>
@@ -273,13 +273,13 @@ Header START -->
 								</div>
 							</div>
 							{% if user.username %}
-							<a class="dropdown-item btn btn-primary-soft btn-sm my-2 text-center" href="{% url 'account:dashboard' username=user.username %}">View profile</a>
+							<a class="dropdown-item btn btn-primary-soft btn-sm my-2 text-center" href="{% url 'dashboard' username=user.username %}">View profile</a>
 							{% else %}
 								<p class="text-center">Profilingiz yuq</p>
 							{% endif %}
 						</li>
 						<!-- Links -->
-						<li><a class="dropdown-item" href="{% url 'account:edit_profile' %}"><i class="bi bi-gear fa-fw me-2"></i>Settings & Privacy</a></li>
+						<li><a class="dropdown-item" href="{% url 'edit_profile' %}"><i class="bi bi-gear fa-fw me-2"></i>Settings & Privacy</a></li>
 						<li>
 							<a class="dropdown-item" href="#" target="_blank">
 								<i class="fa-fw bi bi-card-text me-2"></i>Documentation
@@ -287,10 +287,10 @@ Header START -->
 						</li>
 						<li class="dropdown-divider"></li>
 						{% if user.is_authenticated %}
-							<li><a class="dropdown-item bg-danger-soft-hover" href="{% url 'account:login' %}"><i class="bi bi-box-arrow-right"></i> Sign Out</a></li>
+							<li><a class="dropdown-item bg-danger-soft-hover" href="{% url 'login' %}"><i class="bi bi-box-arrow-right"></i> Sign Out</a></li>
 						{% else %}							
-							<li><a class="dropdown-item bg-danger-soft-hover" href="{% url 'account:login' %}"><i class="bi bi-box-arrow-in-right"></i> Sign In</a></li>
-							<li><a class="dropdown-item bg-danger-soft-hover" href="{% url 'account:register' %}"><i class="bi bi-power fa-fw me-2"></i> Sign Up</a></li>
+							<li><a class="dropdown-item bg-danger-soft-hover" href="{% url 'login' %}"><i class="bi bi-box-arrow-in-right"></i> Sign In</a></li>
+							<li><a class="dropdown-item bg-danger-soft-hover" href="{% url 'register' %}"><i class="bi bi-power fa-fw me-2"></i> Sign Up</a></li>
 						{% endif %}
 						<li> <hr class="dropdown-divider"></li>
 						<!-- Dark mode options START -->

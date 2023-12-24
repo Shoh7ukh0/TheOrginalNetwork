@@ -50,7 +50,7 @@ class ProfileView(View):
         else:
             messages.error(request, 'Xatolik yuz berdi. Iltimos, qaytadan urinib ko\'ring.') 
 
-        return redirect('account:dashboard', username=username)
+        return redirect('dashboard', username=username)
 
 class LoginView(View):
     template_name = 'registration/login.html'  # Ma'lumotnoma HTML fayli

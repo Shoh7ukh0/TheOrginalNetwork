@@ -229,3 +229,14 @@ def hide_post(request, slug):
 
     # Redirect back to the post detail page or any other page
     return redirect('core:post_list')
+
+class CopyLinkView(View):
+    def get(self, request, slug, *args, **kwargs):
+        post = get_object_or_404(Post, slug=slug)
+
+        # Assuming you have a function to get the absolute URL of the post
+        post_url = post.get_absolute_url()
+
+        # You can also use request.build_absolute_uri(post.get_absolute_url()) if needed
+
+        return JsonResponse({'post_url': post_url})

@@ -300,7 +300,7 @@
 										<ul class="dropdown-menu dropdown-menu-end" aria-labelledby="cardShareAction">
 											<li><a class="dropdown-item" href="#"> <i class="bi bi-envelope fa-fw pe-2"></i>Send via Direct Message</a></li>
 											<li><a class="dropdown-item" href="#"> <i class="bi bi-bookmark-check fa-fw pe-2"></i>Bookmark </a></li>
-											<li><a class="dropdown-item" href="#"> <i class="bi bi-link fa-fw pe-2"></i>Copy link to post</a></li>
+											<li><a class="dropdown-item" id="copyLinkBtn" href=""> <i class="bi bi-link fa-fw pe-2"></i>Copy link to post</a></li>
 											<li><a class="dropdown-item" href="#"> <i class="bi bi-share fa-fw pe-2"></i>Share post via …</a></li>
 											<li><hr class="dropdown-divider"></li>
 											<li><a class="dropdown-item" href="#"> <i class="bi bi-pencil-square fa-fw pe-2"></i>Share to News Feed</a></li>
@@ -621,7 +621,7 @@
 										<!-- Title -->
 										<div class="overflow-hidden">
 											<a class="h6 mb-0" href="{% url 'user_detail' username=user.username %}">
-												{{ user.username }}<i class="bi bi-patch-check-fill text-success small"></i> </a>
+												{{ user.username }} <i class="bi bi-patch-check-fill text-success small"></i> </a>
 											<p class="mb-0 small text-truncate">News anchor</p>
 										</div>
 										<!-- Button -->
@@ -979,9 +979,9 @@
     // Assuming you have a button or link to hide/unhide posts
     document.getElementById('hidePostButton').addEventListener('click', function() {
         // Replace this with the actual post ID and update the URL accordingly
-        var postSlug = slug=post.slug;
+        var postID = 1;
 
-        fetch(`/hide_post/${postSlug}/`)
+        fetch(`/hide_post/${postID}/`)
             .then(response => response.json())
             .then(data => {
                 console.log(data);
@@ -989,6 +989,17 @@
             })
             .catch(error => console.error('Error:', error));
     });
+
+	document.getElementById('copyLinkBtn').addEventListener('click', function() {
+        // Assuming you are using Fetch API for the AJAX request
+        fetch(`/original/${postSlug}/copy-link/`)
+			.then(response => response.json())
+			.then(data => {
+				console.log(data);
+				// Handle the response accordingly
+			})
+			.catch(error => console.error('Error:', error));
+		});
 </script>
 
 </body>

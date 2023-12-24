@@ -15,7 +15,7 @@ function countActiveUsers(users) {
 }
 
 function updateUserList() {
-    $.getJSON('api/v1/user/', function (data) {
+    $.getJSON('/api/v1/user/', function (data) {
 
         userList.empty();
 
@@ -63,7 +63,7 @@ function updateUserList() {
 }
 
 function getLastMessage(username, index) {
-    $.getJSON(`api/v1/get_last_message/${username}/`, function (data) {
+    $.getJSON(`/api/v1/get_last_message/${username}/`, function (data) {
         const lastMessage = data.body || 'No messages';
         $(`.user-last-message:eq(${index})`).text(lastMessage);
     });

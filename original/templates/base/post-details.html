@@ -97,7 +97,7 @@
                 <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="cardShareAction">
                   <li><a class="dropdown-item" href="#"> <i class="bi bi-envelope fa-fw pe-2"></i>Send via Direct Message</a></li>
                   <li><a class="dropdown-item" href="#"> <i class="bi bi-bookmark-check fa-fw pe-2"></i>Bookmark </a></li>
-                  <li><a class="dropdown-item" href="#"> <i class="bi bi-link fa-fw pe-2"></i>Copy link to post</a></li>
+                  <li><a class="dropdown-item" id="copyLinkBtn" href=""> <i class="bi bi-link fa-fw pe-2"></i>Copy link to post</a></li>
                   <li><a class="dropdown-item" href="#"> <i class="bi bi-share fa-fw pe-2"></i>Share post via …</a></li>
                   <li><hr class="dropdown-divider"></li>
                   <li><a class="dropdown-item" href="#"> <i class="bi bi-pencil-square fa-fw pe-2"></i>Share to News Feed</a></li>
@@ -261,6 +261,17 @@
     });
 
 });
+
+document.getElementById('copyLinkBtn').addEventListener('click', function() {
+        // Assuming you are using Fetch API for the AJAX request
+        fetch(`/original/${postSlug}/copy-link/`)
+			.then(response => response.json())
+			.then(data => {
+				console.log(data);
+				// Handle the response accordingly
+			})
+			.catch(error => console.error('Error:', error));
+		});
 </script>
 
 </body>

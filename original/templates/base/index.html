@@ -604,36 +604,43 @@
 						<div class="card">
 							<!-- Card header START -->
 							<div class="card-header pb-0 border-0">
-								<h5 class="card-title mb-0">Who to follow</h5>
+								<h5 class="card-title mb-0">Subscribers</h5>
 							</div>
 							<!-- Card header END -->
 							<!-- Card body START -->
 							<div class="card-body">
 								<!-- Connection item START -->
-								{% for user in users %}
-									<div class="hstack gap-2 mb-3">
-										<!-- Avatar -->
-										<div class="avatar">
-											<a href="">
-												<img class="avatar-img rounded-circle" src="{% if user.profile.photo %}{% thumbnail user.profile.photo 180x180 %}{% else %}../static/profile.gif{% endif %}" alt="">
+								{% if friends %}
+									{% for friend in friends %}
+										<div class="hstack gap-2 mb-3">
+											<!-- Avatar -->
+											<div class="avatar">
+												<a href="">
+													<img class="avatar-img rounded-circle" src="{% if user.profile.photo %}{% thumbnail user.profile.photo 180x180 %}{% else %}../static/profile.gif{% endif %}" alt="">
+												</a>
+											</div>
+											<!-- Title -->
+											<div class="overflow-hidden">
+												<a class="h6 mb-0" href="{% url 'user_detail' username=user.username %}">
+													{{ friend.user_to.username }} <i class="bi bi-patch-check-fill text-success small"></i> </a>
+												<p class="mb-0 small text-truncate">News anchor</p>
+											</div>
+											<!-- Button -->
+											<a class="btn btn-primary-soft rounded-circle icon-md ms-auto" data-id="{{ user.id }}" data-action="{% if request.user in user.followers.all %}un{% endif %}follow" href="{% url 'user_detail' username=user.username %}">
+												{% if request.user not in user.followers.all %}
+													<i class="fa-solid fa-plus"> </i>
+												{% else %}
+													<i class="bi bi-person-check-fill"> </i>
+												{% endif %}
 											</a>
 										</div>
-										<!-- Title -->
-										<div class="overflow-hidden">
-											<a class="h6 mb-0" href="{% url 'user_detail' username=user.username %}">
-												{{ user.username }} <i class="bi bi-patch-check-fill text-success small"></i> </a>
-											<p class="mb-0 small text-truncate">News anchor</p>
-										</div>
-										<!-- Button -->
-										<a class="btn btn-primary-soft rounded-circle icon-md ms-auto" data-id="{{ user.id }}" data-action="{% if request.user in user.followers.all %}un{% endif %}follow" href="{% url 'user_detail' username=user.username %}">
-											{% if request.user not in user.followers.all %}
-												<i class="fa-solid fa-plus"> </i>
-											{% else %}
-												<i class="bi bi-person-check-fill"> </i>
-											{% endif %}
-										</a>
+									{% endfor %}
+								{% else %}
+									<div style="text-align: center;" class="content">
+										<i style="font-size: 3em;" class="bi bi-person-check-fill"> </i>
+										<p>You still have loads of subscribers</p>
 									</div>
-								{% endfor %}
+								{% endif %}
 								<!-- Connection item END -->
 
 								<!-- View more button -->

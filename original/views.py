@@ -11,6 +11,8 @@ import redis
 from django.conf import settings
 from datetime import datetime, timezone
 from django.http import JsonResponse
+from django.http import HttpResponseServerError
+from account.models import Contact
 
 
 # соединить с redis
@@ -44,13 +46,18 @@ class PostListView(View):
         posts = Post.objects.all().order_by('-created_at')
         user_post_count = Post.objects.filter(user=request.user).count()
         users = User.objects.filter(is_active=True)
+
+        user = request.user
+        friends = Contact.objects.filter(user_from=user)
+        followers = Contact.objects.filter(user_to=user)
         
         for post in posts:
             time_difference = datetime.now(timezone.utc) - post.created_at
             hours, remainder = divmod(time_difference.seconds, 3600)
             minutes, _ = divmod(remainder, 60)
             post.time_since_creation = f"{hours}h {minutes}m ago"
-        return render(request, self.template_name, {'section': 'people', 'users': users, 'posts': posts, 'user_post_count': user_post_count, 'form': form})
+
+        return render(request, self.template_name, {'section': 'people', 'users': users, 'posts': posts, 'user_post_count': user_post_count, 'form': form, 'friends': friends, 'followers': followers})
 
     def post(self, request, *args, **kwargs):
         form = PostForm(request.POST, request.FILES)

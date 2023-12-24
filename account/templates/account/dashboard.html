@@ -105,183 +105,184 @@
               <div class="card-body">
                 <!-- Photos of you tab START -->
                 <div class="row g-3">
-                  
-                  {% for post in posts %}
-                    <!-- Photo item START -->
-                    {% if post.image %}
-                    <div class="col-sm-6 col-md-4 col-lg-3">
-                      <!-- Photo -->
-                      <a href="{{ post.image.url }}" data-gallery="image-popup" data-glightbox="description: .custom-desc2; descPosition: left;">
-                        <img class="rounded img-fluid" src="{{ post.image.url }}" alt="{{ post.caption }}">
-                      </a>
-                      <!-- likes -->
-                      <ul class="nav nav-stack py-2 small">
-                        <li class="nav-item">
-                          <a class="nav-link" href="#!"> <i class="bi bi-heart-fill text-danger pe-1"></i>{{ post.likes.count }} </a>
-                        </li>
-                        <li class="nav-item">
-                          <a class="nav-link" href="#!"> <i class="bi bi-chat-left-text-fill pe-1"></i>{{ post.comments.count }} </a>
-                        </li>
-                      </ul>
-                      
-                      <!-- glightbox Albums left bar START -->
-                      <div class="glightbox-desc custom-desc2">
-                        <div class="d-flex align-items-center justify-content-between">
-                          <div class="d-flex align-items-center">
-                            <!-- Avatar -->
-                            <div class="avatar me-2">
-                              <img class="avatar-img rounded-circle" src="{% if user.profile.photo %}{% thumbnail user.profile.photo 180x180 %}{% else %}../../../static/profile.gif {% endif %}" alt="">
-                            </div>
-                            <!-- Info -->
-                            <div>
-                              <div class="nav nav-divider">
-                                <h6 class="nav-item card-title mb-0">{{ post.user.username }}</h6>
-                                <span class="nav-item small"> {{ post.time_since_creation }}</span>
-                              </div>
-                              <p class="mb-0 small">Web Developer at Webestica</p>
-                            </div>
-                          </div>
-                          <!-- Card feed action dropdown START -->
-                          <div class="dropdown">
-                            <a href="#" class="text-secondary btn btn-secondary-soft-hover py-1 px-2" id="cardFeedAction" data-bs-toggle="dropdown" aria-expanded="false">
-                              <i class="bi bi-three-dots"></i>
-                            </a>
-                            <!-- Card feed action dropdown menu -->
-                            <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="cardFeedAction">
-                              <li><a class="dropdown-item" href="#"> <i class="bi bi-bookmark fa-fw pe-2"></i>Save post</a></li>
-                              <li><a class="dropdown-item" href="#"> <i class="bi bi-x-circle fa-fw pe-2"></i>Hide post</a></li>
-                              <li><a class="dropdown-item" href="#"> <i class="bi bi-slash-circle fa-fw pe-2"></i>Block</a></li>
-                              <li><hr class="dropdown-divider"></li>
-                              <li><a class="dropdown-item" href="#"> <i class="bi bi-flag fa-fw pe-2"></i>Report post</a></li>
-                            </ul>
-                          </div>
-                          <!-- Card feed action dropdown END -->
-                        </div>
-                        <p class="mt-3 mb-0">{{ post.caption }} <a href="#">{{ post.hashtag }}</a> </p>
-                        <ul class="nav nav-stack py-3 small">
+                  {% if posts %}
+                    {% for post in posts %}
+                      <!-- Photo item START -->
+                      {% if post.image %}
+                      <div class="col-sm-6 col-md-4 col-lg-3">
+                        <!-- Photo -->
+                        <a href="{{ post.image.url }}" data-gallery="image-popup" data-glightbox="description: .custom-desc2; descPosition: left;">
+                          <img class="rounded img-fluid" src="{{ post.image.url }}" alt="{{ post.caption }}">
+                        </a>
+                        <!-- likes -->
+                        <ul class="nav nav-stack py-2 small">
                           <li class="nav-item">
-                            <form method="post" action="{% url 'core:like_post' post_id=post.id %}">
-                              {% csrf_token %}
-                              <button style="border: none; background-color: transparent !important;" type="submit">
-                                <a class="nav-link active" href="#!" data-bs-container="body" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-html="true" data-bs-custom-class="tooltip-text-start" data-bs-title="{{ user.username }}<br> "> <i class="bi bi-hand-thumbs-up-fill pe-1"></i>Liked ({{ post.likes.count }})</a>
-                              </button>
-                            </form>
+                            <a class="nav-link" href="#!"> <i class="bi bi-heart-fill text-danger pe-1"></i>{{ post.likes.count }} </a>
                           </li>
                           <li class="nav-item">
-                            <form action="{% url 'core:add_comment' post_id=post.id %}" method="post">
-                              {% csrf_token %}
-                              <button style="background-color: transparent; border: none; color: #fff;" type="submit"><i class="bi bi-chat-fill pe-1"></i>Comments ({{ post.comments.count }})</button>
-                            </form>
+                            <a class="nav-link" href="#!"> <i class="bi bi-chat-left-text-fill pe-1"></i>{{ post.comments.count }} </a>
                           </li>
-                          <!-- Card share action START -->
-                          <li class="nav-item dropdown ms-auto">
-                            <a class="nav-link mb-0" href="#" id="cardShareAction" data-bs-toggle="dropdown" aria-expanded="false">
-                              <i class="bi bi-reply-fill fa-flip-horizontal pe-1"></i>Share (3)
-                            </a>
-                            <!-- Card share action dropdown menu -->
-                            <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="cardShareAction">
-                              <li><a class="dropdown-item" href="#"> <i class="bi bi-envelope fa-fw pe-2"></i>Send via Direct Message</a></li>
-                              <li><a class="dropdown-item" href="#"> <i class="bi bi-bookmark-check fa-fw pe-2"></i>Bookmark </a></li>
-                              <li><a class="dropdown-item" href="#"> <i class="bi bi-link fa-fw pe-2"></i>Copy link to post</a></li>
-                              <li><a class="dropdown-item" href="#"> <i class="bi bi-share fa-fw pe-2"></i>Share post via …</a></li>
-                              <li><hr class="dropdown-divider"></li>
-                              <li><a class="dropdown-item" href="#"> <i class="bi bi-pencil-square fa-fw pe-2"></i>Share to News Feed</a></li>
-                            </ul>
-                          </li>
-                          <!-- Card share action END -->
                         </ul>
-                        <!-- Comment wrap START -->
-                        {% for comment in post.comments.all %}
-                        <ul class="comment-wrap list-unstyled">
-                          <!-- Comment item START -->
-                          <li class="comment-item">
-                            <div class="d-flex position-relative">
-
+                        
+                        <!-- glightbox Albums left bar START -->
+                        <div class="glightbox-desc custom-desc2">
+                          <div class="d-flex align-items-center justify-content-between">
+                            <div class="d-flex align-items-center">
                               <!-- Avatar -->
-                              <div class="avatar avatar-xs">
-                                <a href="#!"><img class="avatar-img rounded-circle" src="{% if user.profile.photo %}{% thumbnail user.profile.photo 180x180 %}{% else %}../static/profile.gif{% endif %}" alt=""></a>
+                              <div class="avatar me-2">
+                                <img class="avatar-img rounded-circle" src="{% if user.profile.photo %}{% thumbnail user.profile.photo 180x180 %}{% else %}../../../static/profile.gif {% endif %}" alt="">
                               </div>
-                              <div class="ms-2">
-                                <!-- Comment by -->
-                                <div class="bg-light rounded-start-top-0 p-3 rounded">
-                                  <div class="d-flex justify-content-between">
-                                    <h6 class="mb-1"> <a href="#!"> {{ comment.user.username }} </a></h6>
-                                    <small class="ms-2">{{ comment.created_at }}</small>
-                                  </div>
-                                  <p class="small mb-0">{{ comment.text }}</p>
+                              <!-- Info -->
+                              <div>
+                                <div class="nav nav-divider">
+                                  <h6 class="nav-item card-title mb-0">{{ post.user.username }}</h6>
+                                  <span class="nav-item small"> {{ post.time_since_creation }}</span>
                                 </div>
-                                <!-- Comment react -->
-                                <ul class="nav nav-divider py-2 small">
-                                  <li class="nav-item">
-                                    <a class="nav-link" href="#!"> Like (3)</a>
-                                  </li>
-                                  <li class="nav-item">
-                                    <a class="nav-link" href="#!"> Reply</a>
-                                  </li>
-                                  <li class="nav-item">
-                                    <a class="nav-link" href="#!"> View 5 replies</a>
-                                  </li>
-                                </ul>
+                                <p class="mb-0 small">Web Developer at Webestica</p>
                               </div>
-
                             </div>
-                            <!-- Reply Comments -->
-                            {% for reply_comment in comment.get_reply_comments %}
-                            <!-- Comment item nested START -->
-                            <ul class="comment-item-nested list-unstyled">
-                              <!-- Comment item START -->
-                              <li class="comment-item">
-                                <div class="d-flex">
-                                  <!-- Avatar -->
-                                  <div class="avatar avatar-xs">
-                                    <a href="#!"><img class="avatar-img rounded-circle" src="{% if user.profile.photo %}{% thumbnail user.profile.photo 180x180 %}{% else %}../static/profile.gif{% endif %}" alt=""></a>
-                                  </div>
-                                  <!-- Comment by -->
-                                  <div class="ms-2">
-                                    <div class="bg-light p-3 rounded">
-                                      <div class="d-flex justify-content-between">
-                                        <h6 class="mb-1"> <a href="#!"> {{ comment.user.username }} </a> </h6>
-                                        <small class="ms-2">{{ comment.created_at }}</small>
-                                      </div>
-                                      <p class="small mb-0">{{ reply_comment.text }}</p>
-                                    </div>
-                                    <!-- Comment react -->
-                                    <ul class="nav nav-divider py-2 small">
-                                      <li class="nav-item">
-                                        <a class="nav-link" href=""> Like ({{ reply_comment.likes.count }})</a>
-                                      </li>
-                                      <!-- <li class="nav-item">
-                                        <a class="nav-link" href="#!"> Reply</a>
-                                      </li> -->
-                                    </ul>
-                                    <form action="{% url 'core:reply_comment' post_id=post.id comment_id=comment.id %}" method="post">
-                                      {% csrf_token %}
-                                      {{ form.text }}
-                                      <input class="btn btn-primary" type="submit" value="Reply">
-                                    </form>
-                                  </div>
-                                </div>
-                              </li>
-                              <!-- Comment item END -->
-                            </ul>
-                            {% endfor %}
-                          </li>
-                          <!-- Comment item END -->
+                            <!-- Card feed action dropdown START -->
+                            <div class="dropdown">
+                              <a href="#" class="text-secondary btn btn-secondary-soft-hover py-1 px-2" id="cardFeedAction" data-bs-toggle="dropdown" aria-expanded="false">
+                                <i class="bi bi-three-dots"></i>
+                              </a>
+                              <!-- Card feed action dropdown menu -->
+                              <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="cardFeedAction">
+                                <li><a class="dropdown-item" href="#"> <i class="bi bi-bookmark fa-fw pe-2"></i>Save post</a></li>
+                                <li><a class="dropdown-item" href="#"> <i class="bi bi-x-circle fa-fw pe-2"></i>Hide post</a></li>
+                                <li><a class="dropdown-item" href="#"> <i class="bi bi-slash-circle fa-fw pe-2"></i>Block</a></li>
+                                <li><hr class="dropdown-divider"></li>
+                                <li><a class="dropdown-item" href="#"> <i class="bi bi-flag fa-fw pe-2"></i>Report post</a></li>
+                              </ul>
+                            </div>
+                            <!-- Card feed action dropdown END -->
+                          </div>
+                          <p class="mt-3 mb-0">{{ post.caption }} <a href="#">{{ post.hashtag }}</a> </p>
+                          <ul class="nav nav-stack py-3 small">
+                            <li class="nav-item">
+                              <form method="post" action="{% url 'core:like_post' post_id=post.id %}">
+                                {% csrf_token %}
+                                <button style="border: none; background-color: transparent !important;" type="submit">
+                                  <a class="nav-link active" href="#!" data-bs-container="body" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-html="true" data-bs-custom-class="tooltip-text-start" data-bs-title="{{ user.username }}<br> "> <i class="bi bi-hand-thumbs-up-fill pe-1"></i>Liked ({{ post.likes.count }})</a>
+                                </button>
+                              </form>
+                            </li>
+                            <li class="nav-item">
+                              <form action="{% url 'core:add_comment' post_id=post.id %}" method="post">
+                                {% csrf_token %}
+                                <button style="background-color: transparent; border: none; color: #fff;" type="submit"><i class="bi bi-chat-fill pe-1"></i>Comments ({{ post.comments.count }})</button>
+                              </form>
+                            </li>
+                            <!-- Card share action START -->
+                            <li class="nav-item dropdown ms-auto">
+                              <a class="nav-link mb-0" href="#" id="cardShareAction" data-bs-toggle="dropdown" aria-expanded="false">
+                                <i class="bi bi-reply-fill fa-flip-horizontal pe-1"></i>Share (3)
+                              </a>
+                              <!-- Card share action dropdown menu -->
+                              <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="cardShareAction">
+                                <li><a class="dropdown-item" href="#"> <i class="bi bi-envelope fa-fw pe-2"></i>Send via Direct Message</a></li>
+                                <li><a class="dropdown-item" href="#"> <i class="bi bi-bookmark-check fa-fw pe-2"></i>Bookmark </a></li>
+                                <li><a class="dropdown-item" href="#"> <i class="bi bi-link fa-fw pe-2"></i>Copy link to post</a></li>
+                                <li><a class="dropdown-item" href="#"> <i class="bi bi-share fa-fw pe-2"></i>Share post via …</a></li>
+                                <li><hr class="dropdown-divider"></li>
+                                <li><a class="dropdown-item" href="#"> <i class="bi bi-pencil-square fa-fw pe-2"></i>Share to News Feed</a></li>
+                              </ul>
+                            </li>
+                            <!-- Card share action END -->
+                          </ul>
+                          <!-- Comment wrap START -->
+                          {% for comment in post.comments.all %}
+                          <ul class="comment-wrap list-unstyled">
+                            <!-- Comment item START -->
+                            <li class="comment-item">
+                              <div class="d-flex position-relative">
 
-                        </ul>
-                        {% endfor %}
-                        <!-- Comment wrap END -->
+                                <!-- Avatar -->
+                                <div class="avatar avatar-xs">
+                                  <a href="#!"><img class="avatar-img rounded-circle" src="{% if user.profile.photo %}{% thumbnail user.profile.photo 180x180 %}{% else %}../static/profile.gif{% endif %}" alt=""></a>
+                                </div>
+                                <div class="ms-2">
+                                  <!-- Comment by -->
+                                  <div class="bg-light rounded-start-top-0 p-3 rounded">
+                                    <div class="d-flex justify-content-between">
+                                      <h6 class="mb-1"> <a href="#!"> {{ comment.user.username }} </a></h6>
+                                      <small class="ms-2">{{ comment.created_at }}</small>
+                                    </div>
+                                    <p class="small mb-0">{{ comment.text }}</p>
+                                  </div>
+                                  <!-- Comment react -->
+                                  <ul class="nav nav-divider py-2 small">
+                                    <li class="nav-item">
+                                      <a class="nav-link" href="#!"> Like (3)</a>
+                                    </li>
+                                    <li class="nav-item">
+                                      <a class="nav-link" href="#!"> Reply</a>
+                                    </li>
+                                    <li class="nav-item">
+                                      <a class="nav-link" href="#!"> View 5 replies</a>
+                                    </li>
+                                  </ul>
+                                </div>
+
+                              </div>
+                              <!-- Reply Comments -->
+                              {% for reply_comment in comment.get_reply_comments %}
+                              <!-- Comment item nested START -->
+                              <ul class="comment-item-nested list-unstyled">
+                                <!-- Comment item START -->
+                                <li class="comment-item">
+                                  <div class="d-flex">
+                                    <!-- Avatar -->
+                                    <div class="avatar avatar-xs">
+                                      <a href="#!"><img class="avatar-img rounded-circle" src="{% if user.profile.photo %}{% thumbnail user.profile.photo 180x180 %}{% else %}../static/profile.gif{% endif %}" alt=""></a>
+                                    </div>
+                                    <!-- Comment by -->
+                                    <div class="ms-2">
+                                      <div class="bg-light p-3 rounded">
+                                        <div class="d-flex justify-content-between">
+                                          <h6 class="mb-1"> <a href="#!"> {{ comment.user.username }} </a> </h6>
+                                          <small class="ms-2">{{ comment.created_at }}</small>
+                                        </div>
+                                        <p class="small mb-0">{{ reply_comment.text }}</p>
+                                      </div>
+                                      <!-- Comment react -->
+                                      <ul class="nav nav-divider py-2 small">
+                                        <li class="nav-item">
+                                          <a class="nav-link" href=""> Like ({{ reply_comment.likes.count }})</a>
+                                        </li>
+                                        <!-- <li class="nav-item">
+                                          <a class="nav-link" href="#!"> Reply</a>
+                                        </li> -->
+                                      </ul>
+                                      <form action="{% url 'core:reply_comment' post_id=post.id comment_id=comment.id %}" method="post">
+                                        {% csrf_token %}
+                                        {{ form.text }}
+                                        <input class="btn btn-primary" type="submit" value="Reply">
+                                      </form>
+                                    </div>
+                                  </div>
+                                </li>
+                                <!-- Comment item END -->
+                              </ul>
+                              {% endfor %}
+                            </li>
+                            <!-- Comment item END -->
+
+                          </ul>
+                          {% endfor %}
+                          <!-- Comment wrap END -->
+                        </div>
+                        <!-- glightbox Albums left bar END  -->
                       </div>
-                      <!-- glightbox Albums left bar END  -->
+                      {% endif %}
+                    {% endfor %}
+                  {% else %}
+                    <div style="text-align: center;" class="content">
+                      <i style="font-size: 4em;" class="bi bi-camera"></i>
+                      <p>Hali sizda rasim posti mavjud emas!</p>
+                      <p>Post yaratish uchun <a href="{% url 'core:post_list' %}">bu yerga bosing</a></p>
                     </div>
-                    {% else %}
-                      <div style="text-align: center;" class="content">
-                        <i style="font-size: 4em;" class="bi bi-camera"></i>
-                        <p>Hali sizda rasim posti mavjud emas!</p>
-                        <p>Post yaratish uchun <a href="{% url 'core:post_list' %}">bu yerga bosing</a></p>
-                      </div>
-                    {% endif %}
-                  {% endfor %}
+                  {% endif %}
                   <!-- Photo item END -->
                 </div>
                 <!-- Photos of you tab END -->
@@ -302,47 +303,48 @@
               <div class="card-body">
                 <!-- Video of you tab START -->
                 <div class="row g-3">
-
-                  {% for post in posts %}
-                    <!-- Photo item START -->
-                    {% if post.video %}
-                      <div class="col-sm-6 col-md-4">
-                        <!-- Video START -->
-                        <div class="card p-0 shadow-none border-0 position-relative">
-                          <!-- Video image -->
-                          <div class="position-relative">
-                            <img class="rounded" src="{% static 'assets/images/albums/01.jpg' %}" alt="">
-                            <!-- Play icon -->
-                            <div class="position-absolute top-0 end-0 p-3">
-                              <a class="icon-md bg-danger text-white rounded-circle" data-glightbox href="{{ post.video.url }}"> <i class="bi bi-play-fill fs-5"> </i> </a>
+                  {% if posts %}
+                    {% for post in posts %}
+                      <!-- Photo item START -->
+                      {% if post.video %}
+                        <div class="col-sm-6 col-md-4">
+                          <!-- Video START -->
+                          <div class="card p-0 shadow-none border-0 position-relative">
+                            <!-- Video image -->
+                            <div class="position-relative">
+                              <img class="rounded" src="{% static 'assets/images/albums/01.jpg' %}" alt="">
+                              <!-- Play icon -->
+                              <div class="position-absolute top-0 end-0 p-3">
+                                <a class="icon-md bg-danger text-white rounded-circle" data-glightbox href="{{ post.video.url }}"> <i class="bi bi-play-fill fs-5"> </i> </a>
+                              </div>
+                              <!-- Duration -->
+                              <div class="position-absolute bottom-0 start-0 p-3 d-flex w-100">
+                                <span class="bg-dark bg-opacity-50 px-2 rounded text-white small">02:20</span>
+                              </div>
                             </div>
-                            <!-- Duration -->
-                            <div class="position-absolute bottom-0 start-0 p-3 d-flex w-100">
-                              <span class="bg-dark bg-opacity-50 px-2 rounded text-white small">02:20</span>
+                            <!-- Video info -->
+                            <div class="card-body px-0 pb-0 pt-2">
+                              <ul class="nav nav-stack small">
+                                <li class="nav-item">
+                                  <a class="nav-link" href="#!"> <i class="bi bi-heart-fill text-danger pe-1"></i>{{ post.likes.count }}</a>
+                                </li>
+                                <li class="nav-item">
+                                  <a class="nav-link" href="#!"> <i class="bi bi-chat-left-text-fill pe-1"></i>{{ post.comments.count }} </a>
+                                </li>
+                              </ul>
                             </div>
                           </div>
-                          <!-- Video info -->
-                          <div class="card-body px-0 pb-0 pt-2">
-                            <ul class="nav nav-stack small">
-                              <li class="nav-item">
-                                <a class="nav-link" href="#!"> <i class="bi bi-heart-fill text-danger pe-1"></i>{{ post.likes.count }}</a>
-                              </li>
-                              <li class="nav-item">
-                                <a class="nav-link" href="#!"> <i class="bi bi-chat-left-text-fill pe-1"></i>{{ post.comments.count }} </a>
-                              </li>
-                            </ul>
-                          </div>
+                          <!-- Video END -->
                         </div>
-                        <!-- Video END -->
-                      </div>
-                    {% else %}
-                      <div style="text-align: center;" class="content">
-                        <i style="font-size: 4em;" class="bi bi-camera-video-off"></i>
-                        <p>Hali sizda video posti mavjud emas!</p>
-                        <p>Post yaratish uchun <a href="{% url 'core:post_list' %}">bu yerga bosing</a></p>
-                      </div>
-                    {% endif %}
-                  {% endfor %}
+                      {% endif %}
+                    {% endfor %}
+                  {% else %}
+                    <div style="text-align: center;" class="content">
+                      <i style="font-size: 4em;" class="bi bi-camera-video-off"></i>
+                      <p>Hali sizda video posti mavjud emas!</p>
+                      <p>Post yaratish uchun <a href="{% url 'core:post_list' %}">bu yerga bosing</a></p>
+                    </div>
+                  {% endif %}
                 </div>
               </div>
             <!-- Video of you tab END -->

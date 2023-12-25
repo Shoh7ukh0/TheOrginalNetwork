@@ -15,8 +15,4 @@ urlpatterns = [
     path('search/', views.SearchUserView.as_view(), name='search_user'),
     path('hide_post/<slug:slug>/', views.hide_post, name='hide_post'),
     path('original/<slug:slug>/copy-link/', views.CopyLinkView.as_view(), name='copy_link'),
-
-    path('help/', views.help, name='help'),
-    path('help_details/', views.help_details, name='help_details'),
-    path('privacy/', views.privacy, name='privacy'),
 ]

@@ -22,6 +22,10 @@ urlpatterns = [
     path('save_post/<slug:slug>/', views.save_post, name='save_post'),
     path('delete_saved_post/<slug:slug>/', views.delete_saved_post, name='delete_saved_post'),
 
+    path('help/', views.help, name='help'),
+    path('help_details/', views.help_details, name='help_details'),
+    path('privacy/', views.privacy, name='privacy'),
+
     # # url-адреса смены пароля
     path('password-reset/', auth_views.PasswordResetView.as_view(), name='password_reset'),
     path('password-reset/done/', auth_views.PasswordResetDoneView.as_view(), name='password_reset_done'),

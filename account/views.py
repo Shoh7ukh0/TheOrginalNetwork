@@ -223,3 +223,13 @@ def delete_saved_post(request, slug):
         user_profile.saved_posts.remove(post)
 
     return redirect('core:post_list')
+
+
+def help(request):
+    return render(request, 'account/help.html')
+
+def help_details(request):
+    return render(request, 'account/help-details.html')
+
+def privacy(request):
+    return render(request, 'account/privacy-and-terms.html')

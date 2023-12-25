@@ -247,12 +247,3 @@ class CopyLinkView(View):
         # You can also use request.build_absolute_uri(post.get_absolute_url()) if needed
 
         return JsonResponse({'post_url': post_url})
-
-def help(request):
-    return render(request, 'base/help.html')
-
-def help_details(request):
-    return render(request, 'base/help-details.html')
-
-def privacy(request):
-    return render(request, 'base/privacy-and-terms.html')

@@ -48,8 +48,8 @@ class PostListView(View):
         users = User.objects.filter(is_active=True)
 
         user = request.user
-        friends = Contact.objects.filter(user_from=user)
-        followers = Contact.objects.filter(user_to=user)
+        friends = Contact.objects.filter(user_to=user)
+        followers = Contact.objects.filter(user_from=user)
         
         for post in posts:
             time_difference = datetime.now(timezone.utc) - post.created_at

@@ -76,7 +76,7 @@ class UserEditForm(forms.ModelForm):
 class ProfileEditForm(forms.ModelForm):
     class Meta:
         model = Profile
-        fields = ['date_of_birth', 'photo']
+        fields = ['date_of_birth', 'bio', 'photo', 'user_type']
 
         widgets = {
             'date_of_birth': forms.TextInput(
@@ -84,6 +84,13 @@ class ProfileEditForm(forms.ModelForm):
                     'class': 'form-control flatpickr',
                     'value': '12/12/1990'
                 }),
+
+            'bio': forms.Textarea(
+                attrs={
+                    'class': 'form-control', 'rows': 3,
+                    'placeholder': "Description (Required)"
+                }),
+
             'photo': ClearableFileInput(
                 attrs={
                     'class': 'dropzone dropzone-default card shadow-none',

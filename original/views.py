@@ -12,8 +12,7 @@ from django.conf import settings
 from datetime import datetime, timezone
 from django.http import JsonResponse
 from django.http import HttpResponseServerError
-from account.models import Contact
-
+from account.models import Contact, Profile
 
 # соединить с redis
 r = redis.Redis(host=settings.REDIS_HOST, port=settings.REDIS_PORT, db=settings.REDIS_DB)
@@ -41,7 +40,11 @@ class SearchUserView(View):
 class PostListView(View):
     template_name = 'base/index.html'
 
-    def get(self, request, tag_slug=None, *args, **kwargs):
+    def get(self, request, username, tag_slug=None, *args, **kwargs):
+        user = get_object_or_404(User, username=username)
+        profile = get_object_or_404(Profile, user=user)
+        queryset = Profile.objects.filter(user_type=Profile.Status.BLOGER)
+
         form = PostForm()
         posts = Post.objects.all().order_by('-created_at')
         user_post_count = Post.objects.filter(user=request.user).count()
@@ -57,15 +60,29 @@ class PostListView(View):
             minutes, _ = divmod(remainder, 60)
             post.time_since_creation = f"{hours}h {minutes}m ago"
 
-        return render(request, self.template_name, {'section': 'people', 'users': users, 'posts': posts, 'user_post_count': user_post_count, 'form': form, 'friends': friends, 'followers': followers})
+        context = {
+            'profile': profile,
+            'queryset': queryset,
+            'section': 'people', 
+            'users': users, 
+            'posts': posts, 
+            'user_post_count': user_post_count, 
+            'form': form, 
+            'friends': friends, 
+            'followers': followers
+        }
+
+        return render(request, self.template_name, context)
 
     def post(self, request, *args, **kwargs):
-        form = PostForm(request.POST, request.FILES)
+        user = get_object_or_404(User, username=username)
+        profile = get_object_or_404(Profile, user=user)
+        form = PostForm(request.POST, request.FILES, instance=profile)
         if form.is_valid():
             post = form.save(commit=False)
             post.user = self.request.user  # Foydalanuvchi obyektini olib olish
             post.save()
-            return redirect('core:post_list')
+            return redirect('core:post_list', username=user.username)
         return render(request, self.template_name, {'form': form})
     
 
@@ -84,7 +101,7 @@ class EditPostView(View):
             edited_post = form.save(commit=False)
             edited_post.user = self.request.user
             edited_post.save()
-            return redirect('core:post_detail', slug=slug)
+            return redirect('core:post_detail', username=user.username, slug=slug)
         return render(request, self.template_name, {'form': form, 'post': post})
     
 
@@ -124,7 +141,7 @@ class PostDetailView(View):
             comment.user = request.user
             comment.post = post
             comment.save()
-            return redirect('core:post_detail', slug=post.slug)
+            return redirect('core:post_detail', username=user.username, slug=post.slug)
         comments = post.comments.all()
         likes = post.likes.all()
 
@@ -159,7 +176,7 @@ class PostCommentView(View):
             comment.post = post
             comment.user = request.user
             comment.save()
-            return redirect('core:post_detail', slug=slug)
+            return redirect('core:post_detail', username=user.username, slug=slug)
 
         comments = Comment.objects.filter(post=post)
         return render(request, self.template_name, {'post': post, 'form': form, 'comments': comments})
@@ -186,7 +203,7 @@ class ReplyCommentView(View):
             comment.user = request.user
             comment.reply_to = parent_comment
             comment.save()
-            return redirect('core:post_detail', slug=slug)
+            return redirect('core:post_detail', username=user.username, slug=slug)
 
         comments = Comment.objects.filter(post=post)
         return render(request, self.template_name, {'post': post, 'form': form, 'comments': comments})
@@ -211,7 +228,7 @@ class LikePostView(View):
             post.likes.remove(request.user)
         else:
             post.likes.add(request.user)
-        return redirect('core:post_detail', slug=post.slug)
+        return redirect('core:post_detail', username=user.username, slug=post.slug)
 
 
 class DeletePostView(View):
@@ -223,7 +240,7 @@ class DeletePostView(View):
         post.comments.all().delete()
 
         post.delete()
-        return redirect('core:post_list')
+        return redirect('core:post_list', username=user.username)
 
 def hide_post(request, slug):
     post = get_object_or_404(Post, slug=slug)
@@ -235,7 +252,7 @@ def hide_post(request, slug):
         post.save()
 
     # Redirect back to the post detail page or any other page
-    return redirect('core:post_list')
+    return redirect('core:post_list', username=user.username)
 
 class CopyLinkView(View):
     def get(self, request, slug, *args, **kwargs):

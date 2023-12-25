@@ -7,7 +7,7 @@
                 {% csrf_token %}
                 {{ form.as_p }}
                 <div style="text-align: right;" class="button">
-                    <a class="btn btn-sm btn-danger mb-0" href="{% url 'core:post_detail' post.id %}">Cancel</a>
+                    <a class="btn btn-sm btn-danger mb-0" href="{% url 'core:post_detail' username=user.username slug=post.slug %}">Cancel</a>
                     <button class="btn btn-sm btn-primary mb-0" type="submit">Save Changes</button>
                 </div>
             </form>

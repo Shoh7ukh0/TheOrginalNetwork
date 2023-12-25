@@ -67,7 +67,7 @@ class LoginView(View):
             if user is not None:
                 if user.is_active:
                     login(request, user)
-                    return redirect('core:post_list')
+                    return redirect('core:post_list', username=user.username)
                 else:
                     return HttpResponse('Disabled account')
             else:
@@ -222,7 +222,7 @@ def delete_saved_post(request, slug):
         # Unsave the post
         user_profile.saved_posts.remove(post)
 
-    return redirect('core:post_list')
+    return redirect('core:post_list', username=user.username)
 
 
 def help(request):

@@ -12,13 +12,13 @@ class ActiveUser(models.Model):
 
 class Profile(models.Model):
     class Status(models.TextChoices):
-        BLOGER = 'BG', 'Bloger'
-        SOFTWARE_ENGINEERING = 'SE', 'Software engineering'
-        GRAPHIC_DESIGNER = 'GD', 'Graphic designer'
-        FOOTBALL_PLAYER = 'FP', 'Football player'
-        MUSICIAN = 'MS', 'Musician'
-        SMM_MANAGER = 'SM', 'SMM manager'
-        MARKETOLOGY = 'MA', 'Marketology'
+        BLOGER = 'Bloger'
+        SOFTWARE_ENGINEERING = 'Software engineering'
+        GRAPHIC_DESIGNER = 'Graphic designer'
+        FOOTBALL_PLAYER = 'Football player'
+        MUSICIAN = 'Musician'
+        SMM_MANAGER = 'SMM manager'
+        MARKETOLOGY = 'Marketology'
 
     user = models.OneToOneField(settings.AUTH_USER_MODEL, on_delete=models.PROTECT)
     date_of_birth = models.DateField(blank=True, null=True)

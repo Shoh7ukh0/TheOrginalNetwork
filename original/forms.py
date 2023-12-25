@@ -9,7 +9,7 @@ class SearchForm(forms.Form):
 class PostForm(forms.ModelForm):
     class Meta:
         model = Post
-        fields = ['caption', 'hashtag', 'image', 'video']
+        fields = ['caption', 'hashtags', 'image', 'video']
     
         widgets = {
             'caption': forms.TextInput(
@@ -17,7 +17,7 @@ class PostForm(forms.ModelForm):
                     'class': 'form-control pe-4 fs-3 lh-1 border-0',
                     'placeholder': 'Post qo‘shish...'
                 }),
-            'hashtag': forms.TextInput(
+            'hashtags': forms.TextInput(
                 attrs={
                     'class': 'form-control',
                     'placeholder': "Hashtag qo'shing..."

@@ -268,7 +268,7 @@
 									</div>
 								{% endif %}
 								<p>{{ post.caption }}</p><br/>
-								<a href="#">{{ post.hashtag }}</a>
+								<a href="{% url 'core:post_detail' slug=post.slug %}">{% for hashtag in post.hashtags.all %}#{{ hashtag.name }} {% endfor %}</a>
 								<!-- Feed react START -->
 								<ul class="nav nav-stack py-3 small">
 									<li class="nav-item">

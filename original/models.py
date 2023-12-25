@@ -2,17 +2,23 @@ from django.db import models
 from django.contrib.auth.models import User
 from taggit.managers import TaggableManager
 from django.utils.text import slugify
+
+class HashTag(models.Model):
+    name = models.CharField(max_length=255, unique=True)
+
+    def __str__(self):
+        return self.name
     
 
 class Post(models.Model):
     user = models.ForeignKey(User, on_delete=models.PROTECT)
     caption = models.TextField()
-    slug = models.SlugField(unique=True)
+    slug = models.SlugField(unique=True, max_length=200)
     created_at = models.DateTimeField(auto_now_add=True)
     image = models.ImageField(upload_to='posts/images/', blank=True, null=True)
     video = models.FileField(upload_to='posts/videos/', blank=True, null=True)
     likes = models.ManyToManyField(User, related_name='post_likes', blank=True)
-    hashtag = models.CharField(max_length=200)
+    hashtags = models.ManyToManyField(HashTag, related_name='posts', blank=True)
     duration = models.DurationField(null=True, blank=True)
     hidden = models.BooleanField(default=False)
 

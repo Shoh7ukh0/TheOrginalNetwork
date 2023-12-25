@@ -72,7 +72,7 @@
             </div>
             <!-- Feed meta Info -->
             <p>{{ post.caption }}</p><br/>
-            <a href="#">{{ post.hashtag }}</a>
+            <a href="#">{% for hashtag in post.hashtags.all %}#{{ hashtag.name }} {% endfor %}</a>
             <!-- Feed react START -->
             <ul class="nav nav-stack flex-wrap small mb-3">
               <li class="nav-item">

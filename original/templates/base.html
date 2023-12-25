@@ -114,7 +114,17 @@
 
 </head>
 <body>
-
+<!-- Pre loader -->
+<div class="preloader">
+	<div class="preloader-item">
+		<!-- Logo START -->
+		<a class="navbar-brand" href="{% url 'core:post_list' %}">
+			<img class="light-mode-item navbar-brand-item" src="{% static 'assets/images/logo.svg' %}" alt="logo">
+			<img class="dark-mode-item navbar-brand-item" src="{% static 'assets/images/logo.svg' %}" alt="logo">
+		</a>
+		<!-- Logo END -->
+	</div>
+</div>
 <!-- =======================
 Header START -->
 <header class="navbar-light fixed-top header-static bg-mode">

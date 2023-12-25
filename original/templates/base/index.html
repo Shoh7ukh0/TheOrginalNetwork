@@ -117,10 +117,10 @@
 									<!-- Side Nav START -->
 									<ul class="nav nav-link-secondary flex-column fw-bold gap-2">
 										<li class="nav-item">
-											<a class="nav-link" href="my-profile.html"> <img class="me-2 h-20px fa-fw" src="{% static 'assets/images/icon/home-outline-filled.svg' %}" alt=""><span>Feed </span></a>
+											<a class="nav-link" href="{% url 'dashboard' username=user.username %}"> <img class="me-2 h-20px fa-fw" src="{% static 'assets/images/icon/home-outline-filled.svg' %}" alt=""><span>Feed </span></a>
 										</li>
 										<li class="nav-item">
-											<a class="nav-link" href="my-profile-connections.html"> <img class="me-2 h-20px fa-fw" src="{% static 'assets/images/icon/person-outline-filled.svg' %}" alt=""><span>Connections </span></a>
+											<a class="nav-link" href="{% url 'my_profile_connections' %}"> <img class="me-2 h-20px fa-fw" src="{% static 'assets/images/icon/person-outline-filled.svg' %}" alt=""><span>Connections </span></a>
 										</li>
 										<li class="nav-item">
 											<a class="nav-link" href="blog.html"> <img class="me-2 h-20px fa-fw" src="{% static 'assets/images/icon/earth-outline-filled.svg' %}" alt=""><span>Latest News </span></a>
@@ -135,7 +135,7 @@
 											<a class="nav-link" href="notifications.html"> <img class="me-2 h-20px fa-fw" src="{% static 'assets/images/icon/notification-outlined-filled.svg' %}" alt=""><span>Notifications </span></a>
 										</li>
 										<li class="nav-item">
-											<a class="nav-link" href="settings.html"> <img class="me-2 h-20px fa-fw" src="{% static 'assets/images/icon/cog-outline-filled.svg' %}" alt=""><span>Settings </span></a>
+											<a class="nav-link" href="{% url 'edit_profile' %}"> <img class="me-2 h-20px fa-fw" src="{% static 'assets/images/icon/cog-outline-filled.svg' %}" alt=""><span>Settings </span></a>
 										</li>
 									</ul>
 									<!-- Side Nav END -->
@@ -155,16 +155,13 @@
 							<!-- Helper link START -->
 							<ul class="nav small mt-4 justify-content-center lh-1">
 								<li class="nav-item">
-									<a class="nav-link" href="my-profile-about.html">About</a>
+									<a class="nav-link" href="{% url 'my_profile_about' %}">About</a>
 								</li>
 								<li class="nav-item">
-									<a class="nav-link" href="settings.html">Settings</a>
+									<a class="nav-link" href="{% url 'edit_profile' %}">Settings</a>
 								</li>
 								<li class="nav-item">
 									<a class="nav-link" target="_blank" href="https://support.webestica.com/login">Support </a>
-								</li>
-								<li class="nav-item">
-									<a class="nav-link" target="_blank" href="docs/index.html">Docs </a>
 								</li>
 								<li class="nav-item">
 									<a class="nav-link" href="help.html">Help</a>

@@ -15,4 +15,6 @@ urlpatterns = [
     path('search/', views.SearchUserView.as_view(), name='search_user'),
     path('hide_post/<slug:slug>/', views.hide_post, name='hide_post'),
     path('original/<slug:slug>/copy-link/', views.CopyLinkView.as_view(), name='copy_link'),
+
+    path('share_post/<slug:slug>/', views.share_post, name='share_post')
 ]

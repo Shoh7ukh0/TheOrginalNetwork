@@ -264,3 +264,8 @@ class CopyLinkView(View):
         # You can also use request.build_absolute_uri(post.get_absolute_url()) if needed
 
         return JsonResponse({'post_url': post_url})
+
+def share_post(request, slug):
+    post = get_object_or_404(Post, slug=slug)
+    share_url = request.build_absolute_uri(post.get_absolute_url())
+    return render(request, 'base/share_post.html', {'share_url': share_url})

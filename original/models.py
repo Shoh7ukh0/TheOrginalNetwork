@@ -21,6 +21,7 @@ class Post(models.Model):
     hashtags = models.ManyToManyField(HashTag, related_name='posts', blank=True)
     duration = models.DurationField(null=True, blank=True)
     hidden = models.BooleanField(default=False)
+    location = models.CharField(max_length=255, blank=True, null=True)
 
     def __str__(self):
         return f'{self.user.username} - {self.caption[:20]}'

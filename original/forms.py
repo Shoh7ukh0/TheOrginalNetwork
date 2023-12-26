@@ -9,18 +9,24 @@ class SearchForm(forms.Form):
 class PostForm(forms.ModelForm):
     class Meta:
         model = Post
-        fields = ['caption', 'hashtags', 'image', 'video']
+        fields = ['caption', 'hashtags', 'image', 'video', 'location']
     
         widgets = {
             'caption': forms.TextInput(
                 attrs={
-                    'class': 'form-control pe-4 fs-3 lh-1 border-0',
-                    'placeholder': 'Post qo‘shish...'
+                    'class': 'form-control pe-4 border-0',
+                    'rows': 2,
+                    'placeholder': 'Postizga sarlavha yozing...'
                 }),
             'hashtags': forms.TextInput(
                 attrs={
                     'class': 'form-control',
                     'placeholder': "Hashtag qo'shing..."
+                }),
+            'location': forms.TextInput(
+                attrs={
+                    'class': 'form-control',
+                    'placeholder': "Locatsiya qo'shing..."
                 }),
         }
 

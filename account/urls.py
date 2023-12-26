@@ -20,7 +20,7 @@ urlpatterns = [
 
     path('save_post/', views.saved_posts, name='saved_posts'),
     path('save_post/<slug:slug>/', views.save_post, name='save_post'),
-    path('delete_saved_post/<slug:slug>/', views.delete_saved_post, name='delete_saved_post'),
+    path('delete_saved_post/<str:username>/<slug:slug>/', views.delete_saved_post, name='delete_saved_post'),
 
     path('help/', views.help, name='help'),
     path('help_details/', views.help_details, name='help_details'),

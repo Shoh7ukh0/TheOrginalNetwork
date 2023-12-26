@@ -183,8 +183,8 @@ def my_profile_about(request):
 def my_profile_connections(request):
     try:
         user = request.user
-        friends = Contact.objects.filter(user_from=user)
-        followers = Contact.objects.filter(user_to=user)
+        friends = Contact.objects.filter(user_to=user)
+        followers = Contact.objects.filter(user_from=user)
 
         context = {
             'friends': friends,
@@ -213,7 +213,8 @@ def save_post(request, slug):
 
     return render(request, 'account/save_post.html', {'saved_posts': saved_posts})
 
-def delete_saved_post(request, slug):
+def delete_saved_post(request, username, slug):
+    user = get_object_or_404(User, username=username)
     user_profile = request.user.profile
     post = get_object_or_404(Post, slug=slug)
 

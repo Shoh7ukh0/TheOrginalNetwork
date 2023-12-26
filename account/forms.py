@@ -87,7 +87,8 @@ class ProfileEditForm(forms.ModelForm):
 
             'bio': forms.Textarea(
                 attrs={
-                    'class': 'form-control', 'rows': 3,
+                    'class': 'form-control', 
+                    'rows': 3,
                     'placeholder': "Description (Required)"
                 }),
 

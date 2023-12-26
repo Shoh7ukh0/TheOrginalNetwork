@@ -240,7 +240,7 @@
 												<h6 class="nav-item card-title mb-0"> <a href="{% url 'core:post_detail' username=user.username slug=post.slug %}"> {{ post.user.username }} </a></h6>
 												<span class="nav-item small"> {{ post.time_since_creation }}</span>
 											</div>
-											<p class="mb-0 small">{{ profile.location }}</p>
+											<p class="mb-0 small">{{ post.location }}</p>
 										</div>
 									</div>
 									<!-- Card feed action dropdown START -->
@@ -428,7 +428,7 @@
 												<h6 class="nav-item card-title mb-0"> <a href="{% url 'core:post_detail' username=user.username slug=post.slug %}"> {{ post.user.username }} </a></h6>
 												<span class="nav-item small"> {{ post.time_since_creation }}</span>
 											</div>
-											<p class="mb-0 small">{{ profile.location }}</p>
+											<p class="mb-0 small">{{ post.location }}</p>
 										</div>
 									</div>
 									<!-- Card feed action dropdown START -->
@@ -647,7 +647,7 @@
 
 								<!-- View more button -->
 								<div class="d-grid mt-3">
-									<a class="btn btn-sm btn-primary-soft" href="#!">View more</a>
+									<a class="btn btn-sm btn-primary-soft" href="{% url 'my_profile_connections' %}">View more</a>
 								</div>
 							</div>
 							<!-- Card body END -->
@@ -785,16 +785,13 @@
 					<!-- Modal feed body START -->
 					<div class="modal-body">
 						<!-- Add Feed -->
-						<div class="d-flex mb-3">
-							<!-- Avatar -->
-							<div class="avatar avatar-xs me-2">
-								<img class="avatar-img rounded-circle" src="{% if user.profile.photo %}{% thumbnail user.profile.photo 180x180 %}{% else %}../static/profile.gif{% endif %}" alt="">
-							</div>
+						<div class="mb-3">
 							<!-- Feed box  -->
 							<form class="w-100">
 								{% csrf_token %}
-								{{ form.caption }}
-								{{ form.hashtag }}
+								{{ form.caption }}<br>
+								{{ form.hashtags }}<br>
+								{{ form.location }}<br>
 							</form>
 						</div>
 
@@ -840,16 +837,13 @@
 				<!-- Modal feed body START -->
 				<div class="modal-body">
 					<!-- Add Feed -->
-					<div class="d-flex mb-3">
-						<!-- Avatar -->
-						<div class="avatar avatar-xs me-2">
-							<img class="avatar-img rounded-circle" src="{% if user.profile.photo %}{% thumbnail user.profile.photo 180x180 %}{% else %}../static/profile.gif{% endif %}" alt="">
-						</div>
+					<div class="mb-3">
 						<!-- Feed box  -->
 						<form class="w-100">
 							{% csrf_token %}
-							{{ form.caption }}
-							{{ form.hashtag }}
+							{{ form.caption }}<br>
+							{{ form.hashtags }}<br>
+							{{ form.location }}<br>
 						</form>
 					</div>
 

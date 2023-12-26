@@ -69,7 +69,7 @@
                 <!-- List profile -->
                 <ul class="list-inline mb-0 text-center text-sm-start mt-3 mt-sm-0">
                   <li class="list-inline-item"><i class="bi bi-briefcase me-1"></i> {{ profile.user_type }}</li>
-                  <li class="list-inline-item"><i class="bi bi-geo-alt me-1"></i> Nyu-Xempshir</li>
+                  <li class="list-inline-item"><i class="bi bi-geo-alt me-1"></i> {{ profile.location }}</li>
                   <li class="list-inline-item"><i class="bi bi-calendar2-plus me-1"></i> 2019-yil 26-noyabrda qo‘shilgan</li>
                 </ul>
               </div>
@@ -138,7 +138,7 @@
                                   <h6 class="nav-item card-title mb-0">{{ post.user.username }}</h6>
                                   <span class="nav-item small"> {{ post.time_since_creation }}</span>
                                 </div>
-                                <p class="mb-0 small">{{ profile.user_type }}</p>
+                                <p class="mb-0 small">{{ profile.location }}</p>
                               </div>
                             </div>
                             <!-- Card feed action dropdown START -->

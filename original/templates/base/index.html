@@ -240,7 +240,7 @@
 												<h6 class="nav-item card-title mb-0"> <a href="{% url 'core:post_detail' username=user.username slug=post.slug %}"> {{ post.user.username }} </a></h6>
 												<span class="nav-item small"> {{ post.time_since_creation }}</span>
 											</div>
-											<p class="mb-0 small">{{ profile.user_type }}</p>
+											<p class="mb-0 small">{{ profile.location }}</p>
 										</div>
 									</div>
 									<!-- Card feed action dropdown START -->
@@ -428,7 +428,7 @@
 												<h6 class="nav-item card-title mb-0"> <a href="{% url 'core:post_detail' username=user.username slug=post.slug %}"> {{ post.user.username }} </a></h6>
 												<span class="nav-item small"> {{ post.time_since_creation }}</span>
 											</div>
-											<p class="mb-0 small">{{ profile.user_type }}</p>
+											<p class="mb-0 small">{{ profile.location }}</p>
 										</div>
 									</div>
 									<!-- Card feed action dropdown START -->

@@ -28,6 +28,7 @@ class Profile(models.Model):
     disable_chat = models.BooleanField(default=False)
     user_type = models.CharField(max_length=100, choices=Status.choices, default=Status.BLOGER)
     saved_posts = models.ManyToManyField(Post, related_name='saved_by')
+    location = models.CharField(max_length=255, blank=True, null=True)
 
     def __str__(self):
         return f'Profile of {self.user.username}'

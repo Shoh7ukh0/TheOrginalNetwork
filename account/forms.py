@@ -76,7 +76,7 @@ class UserEditForm(forms.ModelForm):
 class ProfileEditForm(forms.ModelForm):
     class Meta:
         model = Profile
-        fields = ['date_of_birth', 'bio', 'photo', 'user_type']
+        fields = ['date_of_birth', 'bio', 'photo', 'user_type', 'location']
 
         widgets = {
             'date_of_birth': forms.TextInput(
@@ -94,5 +94,10 @@ class ProfileEditForm(forms.ModelForm):
             'photo': ClearableFileInput(
                 attrs={
                     'class': 'dropzone dropzone-default card shadow-none',
-                })
+                }),
+            'location': forms.TextInput(
+                attrs={
+                    'class': 'form-control',
+                    'placeholder': 'Toshkent'
+                }),
         }

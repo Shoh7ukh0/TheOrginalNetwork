@@ -105,7 +105,7 @@
         <!-- Share feed END -->
 
         {% for post in posts %}
-					{% if request.user == post.user %}
+          {% if user.is_authenticated and user == post.user %}
 						{% if not post.hidden %}
               <!-- Card feed item START -->
               <div class="card">
@@ -134,7 +134,7 @@
                       <!-- Card feed action dropdown menu -->
                       <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="cardFeedAction">
                         <li><a class="dropdown-item" href="{% url 'save_post' slug=post.slug %}"> <i class="bi bi-bookmark fa-fw pe-2"></i>Save post</a></li>
-                        <li><a class="dropdown-item" href="{% url 'core:hide_post' %}"> <i class="bi bi-x-circle fa-fw pe-2"></i>Hide post</a></li>
+                        <li><a class="dropdown-item" href="{% url 'core:hide_post' slug=post.slug %}"> <i class="bi bi-x-circle fa-fw pe-2"></i>Hide post</a></li>
                         <li><a class="dropdown-item" href="#"> <i class="bi bi-slash-circle fa-fw pe-2"></i>Block</a></li>
                         <li><hr class="dropdown-divider"></li>
                         <li><a class="dropdown-item" href="#"> <i class="bi bi-flag fa-fw pe-2"></i>Report post</a></li>
@@ -164,9 +164,7 @@
                     <li class="nav-item">
                       <form method="post" action="{% url 'core:like_post' slug=post.slug %}">
                         {% csrf_token %}
-                        <button style="border: none; background-color: transparent !important;" type="submit">
-                          <a class="nav-link mb-0 active" href="#!" data-bs-container="body" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-html="true" data-bs-custom-class="tooltip-text-start"> <i class="bi bi-heart pe-1"></i>Liked ({{ post.likes.count }})</a>
-                        </button>
+                        <a class="nav-link mb-0 active" href="#!" data-bs-container="body" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-html="true" data-bs-custom-class="tooltip-text-start"> <i class="bi bi-heart pe-1"></i>Liked ({{ post.likes.count }})</a>
                       </form>
                     </li>
                     <li class="nav-item">
@@ -279,26 +277,13 @@
                   <!-- Comment wrap END -->
                 </div>
                 <!-- Card body END -->
-                <!-- Card footer START -->
-                <div class="card-footer border-0 pt-0">
-                  <!-- Load more comments -->
-                  <a href="#!" role="button" class="btn btn-link btn-link-loader btn-sm text-secondary d-flex align-items-center" data-bs-toggle="button" aria-pressed="true">
-                    <div class="spinner-dots me-2">
-                      <span class="spinner-dot"></span>
-                      <span class="spinner-dot"></span>
-                      <span class="spinner-dot"></span>
-                    </div>
-                    Load more comments 
-                  </a>
-                </div>
-                <!-- Card footer END -->
               </div>
               {% else %}
                 <div style="text-align: center;" class="content">
                   <i style="font-size: 4em;" class="bi bi-clipboard-x"></i>
                   <p>You have hidden this post so this post will not be visible to you.</p>
                   <div class="d-grid mt-3">
-                    <a class="btn btn-sm btn-primary-soft" href="{% url 'core:hide_post' %}">Unhide Post</a>
+                    <a class="btn btn-sm btn-primary-soft" href="{% url 'core:hide_post' slug=post.slug %}">Unhide Post</a>
                   </div>
                 </div>
               {% endif %}
@@ -330,7 +315,7 @@
                       <!-- Card feed action dropdown menu -->
                       <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="cardFeedAction">
                         <li><a class="dropdown-item" href="{% url 'save_post' slug=post.slug %}"> <i class="bi bi-bookmark fa-fw pe-2"></i>Save post</a></li>
-                        <li><a class="dropdown-item" href="{% url 'core:hide_post' %}"> <i class="bi bi-x-circle fa-fw pe-2"></i>Hide post</a></li>
+                        <li><a class="dropdown-item" href="{% url 'core:hide_post' slug=post.slug %}"> <i class="bi bi-x-circle fa-fw pe-2"></i>Hide post</a></li>
                         <li><a class="dropdown-item" href="#"> <i class="bi bi-slash-circle fa-fw pe-2"></i>Block</a></li>
                         <li><hr class="dropdown-divider"></li>
                         <li><a class="dropdown-item" href="#"> <i class="bi bi-flag fa-fw pe-2"></i>Report post</a></li>
@@ -475,19 +460,6 @@
                   <!-- Comment wrap END -->
                 </div>
                 <!-- Card body END -->
-                <!-- Card footer START -->
-                <div class="card-footer border-0 pt-0">
-                  <!-- Load more comments -->
-                  <a href="#!" role="button" class="btn btn-link btn-link-loader btn-sm text-secondary d-flex align-items-center" data-bs-toggle="button" aria-pressed="true">
-                    <div class="spinner-dots me-2">
-                      <span class="spinner-dot"></span>
-                      <span class="spinner-dot"></span>
-                      <span class="spinner-dot"></span>
-                    </div>
-                    Load more comments 
-                  </a>
-                </div>
-                <!-- Card footer END -->
               </div>
             {% endif %}
           {% endfor %}

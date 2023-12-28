@@ -44,6 +44,7 @@ class PostListView(View):
     def get(self, request, tag_slug=None, *args, **kwargs):
         queryset = Profile.objects.filter(user_type=Profile.Status.BLOGER)
         current_url = request.build_absolute_uri()
+        post = Post.objects.filter(hidden=False)
 
         form = PostForm()
         posts = Post.objects.all().order_by('-created_at')
@@ -61,6 +62,7 @@ class PostListView(View):
             post.time_since_creation = f"{hours}h {minutes}m ago"
 
         context = {
+            'post': post,
             'queryset': queryset,
             'section': 'people', 
             'users': users, 
@@ -271,17 +273,19 @@ class DeletePostView(View):
         post.delete()
         return redirect('core:post_list')
 
-def hide_post(request, slug):
-    post = get_object_or_404(Post, slug=slug)
+class HidePostView(View):
+    def get(self, request, slug):
+        # Retrieve the post using the slug from the URL
+        post = get_object_or_404(Post, slug=slug)
 
-    # Check if the user initiating the hide action is the owner of the post
-    if request.user == post.user:
-        # Toggle the 'hidden' status of the post
-        post.hidden = not post.hidden
-        post.save()
+        # Check if the user initiating the hide action is the owner of the post
+        if request.user.is_authenticated and request.user == post.user:
+            # Toggle the 'hidden' status of the post
+            post.hidden = not post.hidden
+            post.save()
 
-    # Redirect back to the post detail page or any other page
-    return redirect('core:post_list')
+        # Redirect back to the post list page or any other page
+        return redirect('core:post_list')
 
 class CopyLinkView(View):
     def get(self, request, slug, *args, **kwargs):

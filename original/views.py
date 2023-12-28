@@ -32,18 +32,16 @@ class SearchUserView(View):
         context = {
             'query': query,
             'users': users,
-            'form': form,
+            'form': form
         }
         
         return render(request, self.template_name, context)
 
 
 class PostListView(View):
-    template_name = 'base/index.html'
+    template_name = 'base/index-classic.html'
 
-    def get(self, request, username, tag_slug=None, *args, **kwargs):
-        user = get_object_or_404(User, username=username)
-        profile = get_object_or_404(Profile, user=user)
+    def get(self, request, tag_slug=None, *args, **kwargs):
         queryset = Profile.objects.filter(user_type=Profile.Status.BLOGER)
         current_url = request.build_absolute_uri()
 
@@ -63,7 +61,6 @@ class PostListView(View):
             post.time_since_creation = f"{hours}h {minutes}m ago"
 
         context = {
-            'profile': profile,
             'queryset': queryset,
             'section': 'people', 
             'users': users, 
@@ -78,14 +75,12 @@ class PostListView(View):
         return render(request, self.template_name, context)
 
     def post(self, request, *args, **kwargs):
-        user = get_object_or_404(User, username=username)
-        profile = get_object_or_404(Profile, user=user)
         form = PostForm(request.POST, request.FILES, instance=profile)
         if form.is_valid():
             post = form.save(commit=False)
             post.user = self.request.user  # Foydalanuvchi obyektini olib olish
             post.save()
-            return redirect('core:post_list', username=request.user.username)
+            return redirect('core:post_list')
         return render(request, self.template_name, {'form': form})
     
 
@@ -104,7 +99,7 @@ class EditPostView(View):
             edited_post = form.save(commit=False)
             edited_post.user = self.request.user
             edited_post.save()
-            return redirect('core:post_detail', username=request.user.username, slug=slug)
+            return redirect('core:post_detail', slug=slug)
         return render(request, self.template_name, {'form': form, 'post': post})
     
 
@@ -155,7 +150,7 @@ class PostDetailView(View):
             comment.user = request.user
             comment.post = post
             comment.save()
-            return redirect('core:post_detail', username=request.user.username, slug=post.slug)
+            return redirect('core:post_detail', slug=post.slug)
         comments = post.comments.all()
         likes = post.likes.all()
 
@@ -195,7 +190,7 @@ class PostCommentView(View):
             comment.post = post
             comment.user = request.user
             comment.save()
-            return redirect('core:post_detail', username=request.user.username, slug=slug)
+            return redirect('core:post_detail', slug=slug)
 
         comments = Comment.objects.filter(post=post)
         return render(request, self.template_name, {'post': post, 'form': form, 'comments': comments})
@@ -230,7 +225,7 @@ class ReplyCommentView(View):
             comment.user = request.user
             comment.reply_to = parent_comment
             comment.save()
-            return redirect('core:post_detail', username=request.user.username, slug=slug)
+            return redirect('core:post_detail', slug=slug)
 
         comments = Comment.objects.filter(post=post)
 
@@ -262,7 +257,7 @@ class LikePostView(View):
             post.likes.remove(request.user)
         else:
             post.likes.add(request.user)
-        return redirect('core:post_detail', username=request.user.username, slug=post.slug)
+        return redirect('core:post_detail', slug=post.slug)
 
 
 class DeletePostView(View):
@@ -274,7 +269,7 @@ class DeletePostView(View):
         post.comments.all().delete()
 
         post.delete()
-        return redirect('core:post_list', username=request.user.username)
+        return redirect('core:post_list')
 
 def hide_post(request, slug):
     post = get_object_or_404(Post, slug=slug)
@@ -286,7 +281,7 @@ def hide_post(request, slug):
         post.save()
 
     # Redirect back to the post detail page or any other page
-    return redirect('core:post_list', username=request.user.username)
+    return redirect('core:post_list')
 
 class CopyLinkView(View):
     def get(self, request, slug, *args, **kwargs):

@@ -157,7 +157,7 @@
                             </div>
                             <!-- Card feed action dropdown END -->
                           </div>
-                          <p class="mt-3 mb-0">{{ post.caption }} <a href="{% url 'core:post_detail' username=user.username slug=post.slug %}">{% for hashtag in post.hashtags.all %}#{{ hashtag.name }} {% endfor %}</a> </p>
+                          <p class="mt-3 mb-0">{{ post.caption }} <a href="{% url 'core:post_detail' slug=post.slug %}">{% for hashtag in post.hashtags.all %}#{{ hashtag.name }} {% endfor %}</a> </p>
                           <ul class="nav nav-stack py-3 small">
                             <li class="nav-item">
                               <form method="post" action="{% url 'core:like_post' post_id=post.id %}">
@@ -280,7 +280,7 @@
                     <div style="text-align: center;" class="content">
                       <i style="font-size: 4em;" class="bi bi-camera"></i>
                       <p>Hali sizda rasim posti mavjud emas!</p>
-                      <p>Post yaratish uchun <a href="{% url 'core:post_list' username=user.username %}">bu yerga bosing</a></p>
+                      <p>Post yaratish uchun <a href="{% url 'core:post_list' %}">bu yerga bosing</a></p>
                     </div>
                   {% endif %}
                   <!-- Photo item END -->
@@ -342,7 +342,7 @@
                     <div style="text-align: center;" class="content">
                       <i style="font-size: 4em;" class="bi bi-camera-video-off"></i>
                       <p>Hali sizda video posti mavjud emas!</p>
-                      <p>Post yaratish uchun <a href="{% url 'core:post_list' username=user.username %}">bu yerga bosing</a></p>
+                      <p>Post yaratish uchun <a href="{% url 'core:post_list' %}">bu yerga bosing</a></p>
                     </div>
                   {% endif %}
                 </div>

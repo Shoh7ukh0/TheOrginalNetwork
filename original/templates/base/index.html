@@ -237,7 +237,7 @@
 										<!-- Info -->
 										<div>
 											<div class="nav nav-divider">
-												<h6 class="nav-item card-title mb-0"> <a href="{% url 'core:post_detail' username=user.username slug=post.slug %}"> {{ post.user.username }} </a></h6>
+												<h6 class="nav-item card-title mb-0"> <a href="{% url 'core:post_detail' slug=post.slug %}"> {{ post.user.username }} </a></h6>
 												<span class="nav-item small"> {{ post.time_since_creation }}</span>
 											</div>
 											<p class="mb-0 small">{{ post.location }}</p>
@@ -251,7 +251,7 @@
 										<!-- Card feed action dropdown menu -->
 										<ul class="dropdown-menu dropdown-menu-end" aria-labelledby="cardFeedAction">
 											<li><a class="dropdown-item" href="{% url 'save_post' slug=post.slug %}"> <i class="bi bi-bookmark fa-fw pe-2"></i>Save post</a></li>
-											<li><a class="dropdown-item" href="{% url 'core:hide_post' slug=post.slug %}"> <i class="bi bi-x-circle fa-fw pe-2"></i>Hide post</a></li>
+											<li><a class="dropdown-item" href="{% url 'core:hide_post' %}"> <i class="bi bi-x-circle fa-fw pe-2"></i>Hide post</a></li>
 											<li><a class="dropdown-item" href="#"> <i class="bi bi-slash-circle fa-fw pe-2"></i>Block</a></li>
 											<li><hr class="dropdown-divider"></li>
 											<li><a class="dropdown-item" href="#"> <i class="bi bi-flag fa-fw pe-2"></i>Report post</a></li>
@@ -276,11 +276,11 @@
 									</div>
 								{% endif %}
 								<p>{{ post.caption }}</p><br/>
-								<a href="{% url 'core:post_detail' username=user.username slug=post.slug %}">{% for hashtag in post.hashtags.all %}#{{ hashtag.name }} {% endfor %}</a>
+								<a href="{% url 'core:post_detail' slug=post.slug %}">{% for hashtag in post.hashtags.all %}#{{ hashtag.name }} {% endfor %}</a>
 								<!-- Feed react START -->
 								<ul class="nav nav-stack py-3 small">
 									<li class="nav-item">
-										<form method="post" action="{% url 'core:like_post' username=user.username slug=post.slug %}">
+										<form method="post" action="{% url 'core:like_post' slug=post.slug %}">
 											{% csrf_token %}
 											<button style="border: none; background-color: transparent !important;" type="submit">
 												<a class="nav-link active" href="#!" data-bs-container="body" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-html="true" data-bs-custom-class="tooltip-text-start"> <i class="bi bi-hand-thumbs-up-fill pe-1"></i>Liked ({{ post.likes.count }})</a>
@@ -344,7 +344,7 @@
 														<a class="nav-link" href="#!"> Like (3)</a>
 													</li>
 													<li class="nav-item">
-														<a class="nav-link" href="{% url 'core:post_detail' username=user.username slug=post.slug %}"> Reply</a>
+														<a class="nav-link" href="{% url 'core:post_detail' slug=post.slug %}"> Reply</a>
 													</li>
 													<li class="nav-item">
 														<a class="nav-link" href="#!"> View 5 replies</a>
@@ -400,7 +400,7 @@
 								<i style="font-size: 4em;" class="bi bi-clipboard-x"></i>
 								<p>You have hidden this post so this post will not be visible to you.</p>
 								<div class="d-grid mt-3">
-									<a class="btn btn-sm btn-primary-soft" href="{% url 'core:hide_post' slug=post.slug %}">Unhide Post</a>
+									<a class="btn btn-sm btn-primary-soft" href="{% url 'core:hide_post' %}">Unhide Post</a>
 								</div>
 							</div>
 						{% endif %}
@@ -417,7 +417,7 @@
 										<!-- Info -->
 										<div>
 											<div class="nav nav-divider">
-												<h6 class="nav-item card-title mb-0"> <a href="{% url 'core:post_detail' username=user.username slug=post.slug %}"> {{ post.user.username }} </a></h6>
+												<h6 class="nav-item card-title mb-0"> <a href="{% url 'core:post_detail' slug=post.slug %}"> {{ post.user.username }} </a></h6>
 												<span class="nav-item small"> {{ post.time_since_creation }}</span>
 											</div>
 											<p class="mb-0 small">{{ post.location }}</p>
@@ -431,7 +431,7 @@
 										<!-- Card feed action dropdown menu -->
 										<ul class="dropdown-menu dropdown-menu-end" aria-labelledby="cardFeedAction">
 											<li><a class="dropdown-item" href="{% url 'save_post' slug=post.slug %}"> <i class="bi bi-bookmark fa-fw pe-2"></i>Save post</a></li>
-											<li><a class="dropdown-item" href="{% url 'core:hide_post' slug=post.slug %}"> <i class="bi bi-x-circle fa-fw pe-2"></i>Hide post</a></li>
+											<li><a class="dropdown-item" href="{% url 'core:hide_post' %}"> <i class="bi bi-x-circle fa-fw pe-2"></i>Hide post</a></li>
 											<li><a class="dropdown-item" href="#"> <i class="bi bi-slash-circle fa-fw pe-2"></i>Block</a></li>
 											<li><hr class="dropdown-divider"></li>
 											<li><a class="dropdown-item" href="#"> <i class="bi bi-flag fa-fw pe-2"></i>Report post</a></li>
@@ -456,11 +456,11 @@
 									</div>
 								{% endif %}
 								<p>{{ post.caption }}</p><br/>
-								<a href="{% url 'core:post_detail' username=user.username slug=post.slug %}">{% for hashtag in post.hashtags.all %}#{{ hashtag.name }} {% endfor %}</a>
+								<a href="{% url 'core:post_detail' slug=post.slug %}">{% for hashtag in post.hashtags.all %}#{{ hashtag.name }} {% endfor %}</a>
 								<!-- Feed react START -->
 								<ul class="nav nav-stack py-3 small">
 									<li class="nav-item">
-										<form method="post" action="{% url 'core:like_post' username=user.username slug=post.slug %}">
+										<form method="post" action="{% url 'core:like_post' slug=post.slug %}">
 											{% csrf_token %}
 											<button style="border: none; background-color: transparent !important;" type="submit">
 												<a class="nav-link active" href="#!" data-bs-container="body" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-html="true" data-bs-custom-class="tooltip-text-start"> <i class="bi bi-hand-thumbs-up-fill pe-1"></i>Liked ({{ post.likes.count }})</a>
@@ -524,7 +524,7 @@
 														<a class="nav-link" href="#!"> Like (3)</a>
 													</li>
 													<li class="nav-item">
-														<a class="nav-link" href="{% url 'core:post_detail' username=user.username slug=post.slug %}"> Reply</a>
+														<a class="nav-link" href="{% url 'core:post_detail' slug=post.slug %}"> Reply</a>
 													</li>
 													<li class="nav-item">
 														<a class="nav-link" href="#!"> View 5 replies</a>
@@ -859,6 +859,7 @@
 	</div>
 </form>
 <!-- Modal create Feed video END -->
+
 <!-- Modal create events START -->
 <div class="modal fade" id="modalCreateEvents" tabindex="-1" aria-labelledby="modalLabelCreateAlbum" aria-hidden="true">
 	<div class="modal-dialog modal-dialog-centered">

@@ -285,7 +285,7 @@
                       <div style="text-align: center;" class="content">
                         <i style="font-size: 4em;" class="bi bi-camera"></i>
                         <p>Hali sizda rasim posti mavjud emas!</p>
-                        <p>Post yaratish uchun <a href="{% url 'core:post_list' username=user.username %}">bu yerga bosing</a></p>
+                        <p>Post yaratish uchun <a href="{% url 'core:post_list' %}">bu yerga bosing</a></p>
                       </div>
                     {% endif %}
                   {% endfor %}
@@ -346,7 +346,7 @@
                       <div style="text-align: center;" class="content">
                         <i style="font-size: 4em;" class="bi bi-camera-video-off"></i>
                         <p>Hali sizda video posti mavjud emas!</p>
-                        <p>Post yaratish uchun <a href="{% url 'core:post_list' username=user.username %}">bu yerga bosing</a></p>
+                        <p>Post yaratish uchun <a href="{% url 'core:post_list' %}">bu yerga bosing</a></p>
                       </div>
                     {% endif %}
                   {% endfor %}

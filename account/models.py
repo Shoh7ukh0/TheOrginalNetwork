@@ -6,10 +6,6 @@ from original.models import Post
 
 # Create your models here.
 
-class ActiveUser(models.Model):
-    username = models.CharField(max_length=125)
-    is_admin = models.BooleanField(default=False)
-
 class Profile(models.Model):
     class Status(models.TextChoices):
         BLOGER = 'Bloger'

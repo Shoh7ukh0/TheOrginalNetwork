@@ -4,6 +4,10 @@ from django.db import models
 from asgiref.sync import async_to_sync
 from channels.layers import get_channel_layer
 
+class ActiveUser(models.Model):
+    username = models.CharField(max_length=125)
+    is_admin = models.BooleanField(default=False)
+
 
 class MessageModel(models.Model):
     """

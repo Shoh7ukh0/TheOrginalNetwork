@@ -1,6 +1,6 @@
 from django.contrib.auth.models import User
 from django.shortcuts import get_object_or_404
-from core.models import MessageModel
+from core.models import MessageModel, ActiveUser
 from rest_framework.serializers import ModelSerializer, CharField
 
 
@@ -27,3 +27,8 @@ class UserModelSerializer(ModelSerializer):
     class Meta:
         model = User
         fields = ('username',)
+
+class ActiveUserSerializer(ModelSerializer):
+    class Meta:
+        model = ActiveUser
+        fields = '__all__'

@@ -76,7 +76,7 @@
             <!-- Feed react START -->
             <ul class="nav nav-stack flex-wrap small mb-3">
               <li class="nav-item">
-                <form method="post" action="{% url 'core:like_post' slug=post.slug %}">
+                <form method="post" action="{% url 'core:like_post' username=user.username slug=post.slug %}">
                   {% csrf_token %}
                   <button style="border: none; background-color: transparent;" type="submit">
                     <a class="nav-link" href="#!"> 
@@ -108,10 +108,12 @@
             <!-- Feed react END -->
 
             <!-- Comment wrap START -->
-            {% for comment in comments %}
+            
             <ul class="comment-wrap list-unstyled">
               <!-- Comment item START -->
+              {% for comment in comments %}
               <li class="comment-item">
+                
                 <div class="d-flex position-relative">
                   <!-- Avatar -->
                   <div class="avatar avatar-xs">
@@ -130,65 +132,70 @@
                     <!-- Comment react -->
                     <ul class="nav nav-divider py-2 small">
                       <li class="nav-item">
-                        <a class="nav-link like-comment" data-comment-id="{{ comment.id }}" href="#"> Like ({{ comment.likes.count }})</a>
+                        <a class="nav-link like-comment" data-comment-id="{{ comment.id }}" href="#!"> Like ({{ comment.likes.count }})</a>
                       </li>
                       <li class="nav-item">
-                        <a class="nav-link" href="{% url 'core:reply_comment' slug=post.slug comment_id=comment.id %}"> Reply</a>
+                        <a class="nav-link" id="reply" href="#!"> Reply</a>
                       </li>
                       <li class="nav-item">
-                        <a class="nav-link" href="#"> View 5 replies</a>
+                        <a class="nav-link" href="#!"> View replies</a>
                       </li>
                     </ul>
+                    <form style="display: none;" id="replyForm" class="nav nav-item w-100 position-relative" action="{% url 'core:reply_comment' slug=post.slug comment_id=comment.id %}" method="post">
+                      {% csrf_token %}
+                      {{ form.text }}
+                      <button class="nav-link bg-transparent px-3 position-absolute top-50 end-0 translate-middle-y border-0" type="submit">
+                        <i class="bi bi-send-fill"> </i>
+                      </button>
+                    </form> 
                   </div>
                 </div>
+                
                 <!-- Reply Comments -->
-    							{% for reply_comment in comment.get_reply_comments %}
-                  <!-- Comment item nested START -->
-                  <ul class="comment-item-nested list-unstyled">
-                    <!-- Comment item START -->
-                    <li class="comment-item">
-                      <div class="d-flex">
-                        <!-- Avatar -->
-                        <div class="avatar avatar-xs">
-                          <a href="#!"><img class="avatar-img rounded-circle" src="{% if user.profile.photo %}{% thumbnail user.profile.photo 180x180 %}{% else %}../static/profile.gif{% endif %}" alt=""></a>
-                        </div>
-                        <!-- Comment by -->
-                        <div class="ms-2">
-                          <div class="bg-light p-3 rounded">
-                            <div class="d-flex justify-content-between">
-                              <h6 class="mb-1"> <a href="#!"> {{ comment.user.username }} </a> </h6>
-                              <small class="ms-2">{{ comment.created_at }}</small>
-                            </div>
-                            <p class="small mb-0">{{ reply_comment.text }}</p>
-                          </div>
-                          <!-- Comment react -->
-                          <ul class="nav nav-divider py-2 small">
-                            <li class="nav-item">
-                              <a class="nav-link" href=""> Like ({{ reply_comment.likes.count }})</a>
-                            </li>
-                            <!-- <li class="nav-item">
-                              <a class="nav-link" href="#!"> Reply</a>
-                            </li> -->
-                          </ul>
-                          <form action="{% url 'core:reply_comment' slug=post.slug comment_id=comment.id %}" method="post">
-                            {% csrf_token %}
-                            {{ form.text }}
-                            <input class="btn btn-primary" type="submit" value="Reply">
-                          </form>
-                        </div>
+                {% for reply_comment in comment.get_reply_comments %}
+                <!-- Comment item nested START -->
+                <ul class="comment-item-nested list-unstyled">
+                  <!-- Comment item START -->
+                  <li class="comment-item">
+                    <div class="d-flex">
+                      <!-- Avatar -->
+                      <div class="avatar avatar-xs">
+                        <a href="#!"><img class="avatar-img rounded-circle" src="{% if reply_comment.user.profile.photo %}{% thumbnail reply_comment.user.profile.photo 180x180 %}{% else %}../static/profile.gif{% endif %}" alt=""></a>
                       </div>
-                    </li>
-                    <!-- Comment item END -->
-                  </ul>
-                  {% endfor %}
+                      <!-- Comment by -->
+                      <div class="ms-2">
+                        <div class="bg-light p-3 rounded">
+                          <div class="d-flex justify-content-between">
+                            <h6 class="mb-1"> <a href="#!"> {{ reply_comment.user.username }} </a> </h6>
+                            <small class="ms-2">{{ reply_comment.created_at }}</small>
+                          </div>
+                          <p class="small mb-0">{{ reply_comment.text }}</p>
+                        </div>
+                        <!-- Comment react -->
+                        <ul class="nav nav-divider py-2 small">
+                          <li class="nav-item">
+                            <a class="nav-link" href=""> Like ({{ reply_comment.likes.count }})</a>
+                          </li>
+                          <!-- <li class="nav-item">
+                            <a class="nav-link" href="#!"> Reply</a>
+                          </li> -->
+                        </ul>
+                      </div>
+                    </div>
+                  </li>
+                  <!-- Comment item END -->
+                </ul>
+                {% endfor %}
               </li>
+              {% endfor %}
               <!-- Comment item END -->
             </ul>
-            {% endfor %}
-            <form method="post">
+            <form class="nav nav-item w-100 position-relative" method="post">
               {% csrf_token %}
               {{ form.text }}<br/>
-              <button class="btn btn-primary" type="submit">Add Comment</button>
+              <button class="nav-link bg-transparent px-3 position-absolute top-50 end-0 translate-middle-y border-0" type="submit">
+                <i class="bi bi-send-fill"> </i>
+              </button>
             </form>
             <!-- Comment wrap END -->
             <a style="position: relative; top: 10px;" class="nav-link t-1" href="#!"> <i class="bi bi-eye"></i> Views ({{ total_views }})</a>
@@ -204,6 +211,17 @@
 
 <!-- Script code Comment like -->
 <script>
+    document.addEventListener("DOMContentLoaded", function() {
+          // reply tugmasini tanlang
+          var replyButton = document.getElementById("reply"); // yourReplyButtonId ni o'zgartiring
+
+          // reply tugmasi bosilganda formani chiqaring
+          replyButton.addEventListener("click", function() {
+            var replyForm = document.getElementById("replyForm");
+              replyForm.style.display = "block";
+          });
+    });
+
   document.addEventListener("DOMContentLoaded", function () {
       const likeButtons = document.querySelectorAll('.like-comment');
 
@@ -228,50 +246,6 @@
           });
       });
   });
-
-  
-
-	document.getElementById('save-post-button').addEventListener('click', function() {
-    var post_id = this.getAttribute('data-post-id');
-    var url = '/save_post/' + post_id + '/';
-
-    fetch(url, {
-        method: 'POST',
-        headers: {
-            'X-CSRFToken': '{{ csrf_token }}',
-        },
-    })
-    .then(response => {
-    if (!response.ok) {
-        throw new Error('Network response was not ok');
-    }
-
-    // JSON javobini tekshirish
-    return response.json();
-    })
-    .then(data => {
-        // Boshqa kodlar...
-
-        // data o'zgaruvchisini ishlatib, serverdan olingan ma'lumotlar bilan ishlovchi kodlar
-        console.log('Serverdan olingan ma\'lumotlar:', data);
-    })
-    .catch(error => {
-        // Xatolikni tekshirish
-        console.error('Xatolik:', error.message);
-    });
-
-});
-
-document.getElementById('copyLinkBtn').addEventListener('click', function() {
-        // Assuming you are using Fetch API for the AJAX request
-        fetch(`/original/${postSlug}/copy-link/`)
-			.then(response => response.json())
-			.then(data => {
-				console.log(data);
-				// Handle the response accordingly
-			})
-			.catch(error => console.error('Error:', error));
-		});
 </script>
 
 </body>

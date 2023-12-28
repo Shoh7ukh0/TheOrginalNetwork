@@ -225,14 +225,14 @@
 				{% for post in posts %}
 					{% if request.user == post.user %}
 						{% if not post.hidden %}
-						<div class="card">
+						<div id="post1" class="card">
 							<!-- Card header START -->
 							<div class="card-header border-0 pb-0">
 								<div class="d-flex align-items-center justify-content-between">
 									<div class="d-flex align-items-center">
 										<!-- Avatar -->
 										<div class="avatar avatar-story me-2">
-											<a href="#!"> <img class="avatar-img rounded-circle" src="{% if user.profile.photo %}{% thumbnail user.profile.photo 180x180 %}{% else %}../static/profile.gif{% endif %}" alt=""> </a>
+											<a href="#!"> <img class="avatar-img rounded-circle" src="{% if post.user.profile.photo %}{% thumbnail post.user.profile.photo 180x180 %}{% else %}../static/profile.gif{% endif %}" alt=""> </a>
 										</div>
 										<!-- Info -->
 										<div>
@@ -280,7 +280,7 @@
 								<!-- Feed react START -->
 								<ul class="nav nav-stack py-3 small">
 									<li class="nav-item">
-										<form method="post" action="{% url 'core:like_post' slug=post.slug %}">
+										<form method="post" action="{% url 'core:like_post' username=user.username slug=post.slug %}">
 											{% csrf_token %}
 											<button style="border: none; background-color: transparent !important;" type="submit">
 												<a class="nav-link active" href="#!" data-bs-container="body" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-html="true" data-bs-custom-class="tooltip-text-start"> <i class="bi bi-hand-thumbs-up-fill pe-1"></i>Liked ({{ post.likes.count }})</a>
@@ -302,7 +302,7 @@
 										<ul class="dropdown-menu dropdown-menu-end" aria-labelledby="cardShareAction">
 											<li><a class="dropdown-item" href="#"> <i class="bi bi-envelope fa-fw pe-2"></i>Send via Direct Message</a></li>
 											<li><a class="dropdown-item" href="#"> <i class="bi bi-bookmark-check fa-fw pe-2"></i>Bookmark </a></li>
-											<li><a class="dropdown-item" id="copyLinkBtn" href=""> <i class="bi bi-link fa-fw pe-2"></i>Copy link to post</a></li>
+											<li><a class="dropdown-item" href="{{ current_url }}"> <i class="bi bi-link fa-fw pe-2"></i>Copy link to post</a></li>
 											<li><a class="dropdown-item" href="{% url 'core:share_post' slug=post.slug %}"> <i class="bi bi-share fa-fw pe-2"></i>Share post via …</a></li>
 											<li><hr class="dropdown-divider"></li>
 											<li><a class="dropdown-item" href="#"> <i class="bi bi-pencil-square fa-fw pe-2"></i>Share to News Feed</a></li>
@@ -344,7 +344,7 @@
 														<a class="nav-link" href="#!"> Like (3)</a>
 													</li>
 													<li class="nav-item">
-														<a class="nav-link" href="#!"> Reply</a>
+														<a class="nav-link" href="{% url 'core:post_detail' username=user.username slug=post.slug %}"> Reply</a>
 													</li>
 													<li class="nav-item">
 														<a class="nav-link" href="#!"> View 5 replies</a>
@@ -378,15 +378,7 @@
 															<li class="nav-item">
 																<a class="nav-link" href=""> Like ({{ reply_comment.likes.count }})</a>
 															</li>
-															<!-- <li class="nav-item">
-																<a class="nav-link" href="#!"> Reply</a>
-															</li> -->
 														</ul>
-														<form action="{% url 'core:reply_comment' post_id=post.id comment_id=comment.id %}" method="post">
-															{% csrf_token %}
-															{{ form.text }}
-															<input class="btn btn-primary" type="submit" value="Reply">
-														</form>
 													</div>
 												</div>
 											</li>
@@ -413,7 +405,7 @@
 							</div>
 						{% endif %}
 					{% else %}
-						<div class="card">
+						<div id="post1" class="card">
 							<!-- Card header START -->
 							<div class="card-header border-0 pb-0">
 								<div class="d-flex align-items-center justify-content-between">
@@ -468,7 +460,7 @@
 								<!-- Feed react START -->
 								<ul class="nav nav-stack py-3 small">
 									<li class="nav-item">
-										<form method="post" action="{% url 'core:like_post' slug=post.slug %}">
+										<form method="post" action="{% url 'core:like_post' username=user.username slug=post.slug %}">
 											{% csrf_token %}
 											<button style="border: none; background-color: transparent !important;" type="submit">
 												<a class="nav-link active" href="#!" data-bs-container="body" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-html="true" data-bs-custom-class="tooltip-text-start"> <i class="bi bi-hand-thumbs-up-fill pe-1"></i>Liked ({{ post.likes.count }})</a>
@@ -490,7 +482,7 @@
 										<ul class="dropdown-menu dropdown-menu-end" aria-labelledby="cardShareAction">
 											<li><a class="dropdown-item" href="#"> <i class="bi bi-envelope fa-fw pe-2"></i>Send via Direct Message</a></li>
 											<li><a class="dropdown-item" href="#"> <i class="bi bi-bookmark-check fa-fw pe-2"></i>Bookmark </a></li>
-											<li><a class="dropdown-item" href="#"> <i class="bi bi-link fa-fw pe-2"></i>Copy link to post</a></li>
+											<li><a class="dropdown-item" href="{{ current_url }}"> <i class="bi bi-link fa-fw pe-2"></i>Copy link to post</a></li>
 											<li><a class="dropdown-item" href="{% url 'core:share_post' slug=post.slug %}"> <i class="bi bi-share fa-fw pe-2"></i>Share post via …</a></li>
 											<li><hr class="dropdown-divider"></li>
 											<li><a class="dropdown-item" href="#"> <i class="bi bi-pencil-square fa-fw pe-2"></i>Share to News Feed</a></li>
@@ -532,7 +524,7 @@
 														<a class="nav-link" href="#!"> Like (3)</a>
 													</li>
 													<li class="nav-item">
-														<a class="nav-link" href="#!"> Reply</a>
+														<a class="nav-link" href="{% url 'core:post_detail' username=user.username slug=post.slug %}"> Reply</a>
 													</li>
 													<li class="nav-item">
 														<a class="nav-link" href="#!"> View 5 replies</a>
@@ -570,11 +562,6 @@
 																<a class="nav-link" href="#!"> Reply</a>
 															</li> -->
 														</ul>
-														<form action="{% url 'core:reply_comment' post_id=post.id comment_id=comment.id %}" method="post">
-															{% csrf_token %}
-															{{ form.text }}
-															<input class="btn btn-primary" type="submit" value="Reply">
-														</form>
 													</div>
 												</div>
 											</li>
@@ -979,6 +966,7 @@
     let currentUser = '{{ request.user.username }}';
 </script>
 <script>
+
     // Assuming you have a button or link to hide/unhide posts
     document.getElementById('hidePostButton').addEventListener('click', function() {
         // Replace this with the actual post ID and update the URL accordingly
@@ -993,16 +981,34 @@
             .catch(error => console.error('Error:', error));
     });
 
-	document.getElementById('copyLinkBtn').addEventListener('click', function() {
-        // Assuming you are using Fetch API for the AJAX request
-        fetch(`/original/${postSlug}/copy-link/`)
-			.then(response => response.json())
-			.then(data => {
-				console.log(data);
-				// Handle the response accordingly
-			})
-			.catch(error => console.error('Error:', error));
-		});
+	function copyLinkToPost(postId) {
+		// Postning identifikatorini olish
+		var postElement = document.getElementById(postId);
+		
+		if (postElement) {
+			// Postning havolani olish
+			var postLink = postElement.querySelector('.post-link');
+			
+			if (postLink) {
+			// Havolani tanlang
+			postLink.select();
+			
+			try {
+				// Tanlangan havolani klibortga nusxalash
+				var successful = document.execCommand('copy');
+				var message = successful ? 'Havola nusxalandi!' : "Nusxa bo'lmadi. Qaytadan urinib ko'ring.";
+				console.log(message);
+			} catch (err) {
+				console.error('Xatolik yuz berdi:', err);
+			}
+			} else {
+			console.error('Havola topilmadi');
+			}
+		} else {
+			console.error('Post topilmadi');
+		}
+	}
+
 </script>
 
 </body>

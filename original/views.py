@@ -23,8 +23,8 @@ class SearchUserView(View):
 
     def get(self, request, *args, **kwargs):
         form = SearchForm(request.GET)
+        query = form.cleaned_data.get('q', '')  # Provide a default value
         if form.is_valid():
-            query = form.cleaned_data['q']
             users = User.objects.filter(username__icontains=query)
         else:
             users = User.objects.none()
@@ -34,6 +34,7 @@ class SearchUserView(View):
             'users': users,
             'form': form,
         }
+        
         return render(request, self.template_name, context)
 
 
@@ -44,6 +45,7 @@ class PostListView(View):
         user = get_object_or_404(User, username=username)
         profile = get_object_or_404(Profile, user=user)
         queryset = Profile.objects.filter(user_type=Profile.Status.BLOGER)
+        current_url = request.build_absolute_uri()
 
         form = PostForm()
         posts = Post.objects.all().order_by('-created_at')
@@ -69,7 +71,8 @@ class PostListView(View):
             'user_post_count': user_post_count, 
             'form': form, 
             'friends': friends, 
-            'followers': followers
+            'followers': followers,
+            'current_url': current_url
         }
 
         return render(request, self.template_name, context)
@@ -82,7 +85,7 @@ class PostListView(View):
             post = form.save(commit=False)
             post.user = self.request.user  # Foydalanuvchi obyektini olib olish
             post.save()
-            return redirect('core:post_list', username=user.username)
+            return redirect('core:post_list', username=request.user.username)
         return render(request, self.template_name, {'form': form})
     
 
@@ -101,7 +104,7 @@ class EditPostView(View):
             edited_post = form.save(commit=False)
             edited_post.user = self.request.user
             edited_post.save()
-            return redirect('core:post_detail', username=user.username, slug=slug)
+            return redirect('core:post_detail', username=request.user.username, slug=slug)
         return render(request, self.template_name, {'form': form, 'post': post})
     
 
@@ -111,10 +114,14 @@ class PostDetailView(View):
     context_object_name = 'post'
     slug_url_kwarg = 'slug'
 
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['user'] = self.request.user
+        return context
+
     def get(self, request, slug, *args, **kwargs):
         post = get_object_or_404(Post, slug=slug)
         total_views = r.incr(f'Post:{post.id}:views')
-        post.save()  # Bu qatorni o'chiring, chunki bu postni saqlash uchun kerak emas
 
         comments = post.comments.all()
         likes = post.likes.all()
@@ -126,22 +133,29 @@ class PostDetailView(View):
         # Check if the video attribute has a value
         has_video = post.video.url if post.video else None
 
-        return render(
-            request,
-            self.template_name,
-            {'post': post, 'comments': comments, 'likes': likes, 'form': form, 'has_image': has_image, 'has_video': has_video, 'total_views': total_views}
-        )
+        context = {
+            'post': post, 
+            'comments': comments, 
+            'likes': likes, 
+            'form': form, 
+            'has_image': has_image, 
+            'has_video': has_video, 
+            'total_views': total_views
+        }
+
+        return render(request, self.template_name, context)
 
     @login_required
     def post(self, request, slug, *args, **kwargs):
         post = get_object_or_404(Post, slug=slug)
+        
         form = CommentForm(request.POST)
         if form.is_valid():
             comment = form.save(commit=False)
             comment.user = request.user
             comment.post = post
             comment.save()
-            return redirect('core:post_detail', username=user.username, slug=post.slug)
+            return redirect('core:post_detail', username=request.user.username, slug=post.slug)
         comments = post.comments.all()
         likes = post.likes.all()
 
@@ -151,11 +165,16 @@ class PostDetailView(View):
         # Check if the video attribute has a value
         has_video = post.video.url if post.video else None
 
-        return render(
-            request,
-            self.template_name,
-            {'post': post, 'comments': comments, 'likes': likes, 'form': form, 'has_image': has_image, 'has_video': has_video}
-        )
+        context = {
+            'post': post, 
+            'comments': comments, 
+            'likes': likes, 
+            'form': form, 
+            'has_image': has_image, 
+            'has_video': has_video,
+        }
+
+        return render(request, self.template_name, context)
 
 
 class PostCommentView(View):
@@ -176,10 +195,11 @@ class PostCommentView(View):
             comment.post = post
             comment.user = request.user
             comment.save()
-            return redirect('core:post_detail', username=user.username, slug=slug)
+            return redirect('core:post_detail', username=request.user.username, slug=slug)
 
         comments = Comment.objects.filter(post=post)
         return render(request, self.template_name, {'post': post, 'form': form, 'comments': comments})
+
 
 
 class ReplyCommentView(View):
@@ -187,10 +207,17 @@ class ReplyCommentView(View):
 
     def get(self, request, slug, comment_id):
         post = get_object_or_404(Post, slug=slug)
-        form = CommentForm()
+        form = CommentForm(initial={'parent': comment_id})
 
         comments = Comment.objects.filter(post=post)
-        return render(request, self.template_name, {'post': post, 'form': form, 'comments': comments})
+
+        context = {
+            'post': post, 
+            'form': form, 
+            'comments': comments
+        }
+
+        return render(request, self.template_name, context)
 
     def post(self, request, slug, comment_id):
         post = get_object_or_404(Post, slug=slug)
@@ -203,10 +230,17 @@ class ReplyCommentView(View):
             comment.user = request.user
             comment.reply_to = parent_comment
             comment.save()
-            return redirect('core:post_detail', username=user.username, slug=slug)
+            return redirect('core:post_detail', username=request.user.username, slug=slug)
 
         comments = Comment.objects.filter(post=post)
-        return render(request, self.template_name, {'post': post, 'form': form, 'comments': comments})
+
+        context = {
+            'post': post, 
+            'form': form, 
+            'comments': comments
+        }
+
+        return render(request, self.template_name, context)
 
 class LikeCommentView(View):
     def post(self, request, slug, comment_id):
@@ -228,7 +262,7 @@ class LikePostView(View):
             post.likes.remove(request.user)
         else:
             post.likes.add(request.user)
-        return redirect('core:post_detail', username=user.username, slug=post.slug)
+        return redirect('core:post_detail', username=request.user.username, slug=post.slug)
 
 
 class DeletePostView(View):
@@ -240,7 +274,7 @@ class DeletePostView(View):
         post.comments.all().delete()
 
         post.delete()
-        return redirect('core:post_list', username=user.username)
+        return redirect('core:post_list', username=request.user.username)
 
 def hide_post(request, slug):
     post = get_object_or_404(Post, slug=slug)
@@ -252,7 +286,7 @@ def hide_post(request, slug):
         post.save()
 
     # Redirect back to the post detail page or any other page
-    return redirect('core:post_list', username=user.username)
+    return redirect('core:post_list', username=request.user.username)
 
 class CopyLinkView(View):
     def get(self, request, slug, *args, **kwargs):

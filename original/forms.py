@@ -39,6 +39,7 @@ class CommentForm(forms.ModelForm):
             'text': forms.TextInput(
                 attrs={
                     'class': 'form-control pe-5 bg-light',
+                    'rows': 1,
                     'placeholder': "Fikr qo'shish..."
                 }),
         }

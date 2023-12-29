@@ -69,7 +69,8 @@ INSTALLED_APPS = [
     'actions',
     'original',
     'images',
-    'rest_framework',
+    'rest_framework',    # Only for login purpose
+    'django_admin_inline_paginator',
     'channels',
     'social_django',
     'django_extensions',
@@ -85,6 +86,9 @@ MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'whitenoise.middleware.WhiteNoiseMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
+
+    'corsheaders.middleware.CorsMiddleware',
+
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
@@ -110,7 +114,7 @@ TEMPLATES = [
     },
 ]
 
-WSGI_APPLICATION = 'Config.wsgi.application'
+# WSGI_APPLICATION = 'Config.wsgi.application'
 
 
 # Database
@@ -164,7 +168,7 @@ SESSION_CACHE_ALIAS = "default"
 
 LANGUAGE_CODE = 'en-us'
 
-TIME_ZONE = 'UTC'
+TIME_ZONE = 'Asia/Dhaka'
 
 USE_I18N = True
 
@@ -256,33 +260,7 @@ REDIS_DB = 0
 LOGIN_REDIRECT_URL = '/login/'
 
 
-REST_FRAMEWORK = {
-    'DEFAULT_PERMISSION_CLASSES': [
-        'rest_framework.permissions.IsAuthenticated'
-    ],
-    'DEFAULT_PAGINATION_CLASS':
-        'rest_framework.pagination.LimitOffsetPagination',
-    'PAGE_SIZE': 100
-}
-
-MESSAGES_TO_LOAD = 15
-
-# In settings.py
-CHANNEL_LAYERS = {
-    "default": {
-        "BACKEND": "asgiref.inmemory.ChannelLayer",
-        "ROUTING": "chat.routing.channel_routing",
-    },
-}
-
-
-# Import local_settings.py
-try:
-    from local_settings import *
-except ImportError:
-    pass
-
-ASGI_APPLICATION = "Config.asgi.application" 
+ASGI_APPLICATION = 'Config.asgi.application'
 CHANNEL_LAYERS = {
     'default': {
         'BACKEND': 'channels_redis.core.RedisChannelLayer',

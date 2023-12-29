@@ -16,7 +16,7 @@ class Profile(models.Model):
         SMM_MANAGER = 'SMM manager'
         MARKETOLOGY = 'Marketology'
 
-    user = models.OneToOneField(settings.AUTH_USER_MODEL, on_delete=models.PROTECT)
+    user = models.OneToOneField(settings.AUTH_USER_MODEL, on_delete=models.PROTECT, related_name = 'profile_detail')
     date_of_birth = models.DateField(blank=True, null=True)
     bio = models.TextField()
     photo = models.ImageField(upload_to='users/%Y/%m/%d/', blank=True)
@@ -25,6 +25,7 @@ class Profile(models.Model):
     user_type = models.CharField(max_length=100, choices=Status.choices, default=Status.BLOGER)
     saved_posts = models.ManyToManyField(Post, related_name='saved_by')
     location = models.CharField(max_length=255, blank=True, null=True)
+    is_online = models.BooleanField(default = False)
 
     def __str__(self):
         return f'Profile of {self.user.username}'

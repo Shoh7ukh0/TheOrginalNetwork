@@ -32,7 +32,7 @@ def home(request):
             messages.add_message(request,messages.SUCCESS,f'{user_2.username} successfully added in your chat list!!')
         else:
             messages.add_message(request,messages.SUCCESS,f'{user_2.username} already added in your chat list!!')
-        return HttpResponseRedirect('/create_friend')
+        return HttpResponseRedirect('/home')
     else:
         user_all_friends = ChatSession.objects.filter(Q(user1 = user_1) | Q(user2 = user_1))
         user_list = []

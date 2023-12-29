@@ -1,26 +1,12 @@
-{% extends 'base.html' %}
+{% extends './base.html' %}
 {% load static %}
 {% load thumbnail %}
 {% load convert_date %}
 
 {% block content %}
-    <h2>
-        <b>
-            {% if request.user.is_authenticated %}
-                Hello {{request.user.username}} : 
-                <a href="{% url 'friend_list' %}" style="text-decoration: none; color: rgb(255, 95, 2);"> My Chat List</a> 
-                <span id = 'overall_unread' class="w3-badge w3-large w3-green w3-margin-right">{{unread_msg}}</span>
-            {% else %}
-                Login Required: <a href="/api_auth/login/">Login</a>
-            {% endif %}
-        </b>
 
-        <br/>
-        <a href="{% url 'create_friend' %}" style="text-decoration: none; color: rgb(255, 188, 2);"><h4>🔀Add Friend in chat list🔀</h4></a>
-    </h2>
-
-    <!-- **************** MAIN CONTENT START **************** -->
-<main>
+<!-- **************** MAIN CONTENT START **************** -->
+<main class="justify-content-center">
     <!-- Container START -->
     <div class="container">
         <div class="row gx-0">
@@ -73,17 +59,17 @@
                                             <ul class="nav flex-column nav-pills nav-pills-soft">
                                                 <li id = {{user.user_name}} data-bs-dismiss="offcanvas">
                                                     <!-- Chat user tab item -->
-                                                    <a href="#chat-1" class="nav-link active text-start" id="chat-1-tab" data-bs-toggle="pill" role="tab">
+                                                    <div class="nav-link active text-start" id="chat-1-tab" data-bs-toggle="pill" role="tab">
                                                         <div class="d-flex">
                                                             <div class="flex-shrink-0 avatar avatar-story me-2 status-online">
                                                                 <img class="avatar-img rounded-circle" src="{% if user.profile.photo %}{% thumbnail user.profile.photo 180x180 %}{% else %}../static/profile.gif{% endif %}" alt="">
                                                             </div>
                                                             <div class="flex-grow-1 d-block">
-                                                                <h6 class="mb-0 mt-1">{{user.user_name | title}}<span id="{{user.user_id}}" class="w3-badge w3-large w3-green w3-right w3-margin-right">{{user.un_read_msg_count}}</span></h6>
+                                                                <a style="color: #fff; font-weight: 900;" href="{% url 'start_chat' user.room_name %}" class="mb-0 mt-1">{{user.user_name | title}}<span id="{{user.user_id}}" style="background-color: rgb(0, 60, 255); border-radius: 50%; padding: 0px 6px 0px 6px; float: right;">{{user.un_read_msg_count}}</span></a>
                                                                 <div class="small text-secondary">Frances sent a photo.</div>
                                                             </div>
                                                         </div>
-                                                    </a>
+                                                    </div>
                                                 </li>
                                             </ul>
                                         {% endfor %}
@@ -113,12 +99,12 @@
             <!-- Top avatar and status END -->
             <div class="toast-body collapse show" id="collapseChat">
                 <div class="container">
-                    <div class="row g-4">
+                    <div class="row g-6">
                         <!-- Main content START -->
                         <div class="col-lg-8 mx-auto">
                             <!-- Card START -->
                             <div style="background-color: transparent !important; border: none !important;" class="card">
-                                <div class="card-body p-2">
+                                <div class="card-body p-0">
                                     <ul class="list-unstyled">
                                         <!-- Notif item -->
                                         {% if messages %}
@@ -127,19 +113,19 @@
                                             {% endfor %}
                                         {% endif %}
                                         {% for user in all_user %}
-                                            <li>
-                                                <div class="d-sm-flex p-3 position-relative">
+                                            <li style="margin-left: -2em;">
+                                                <div class="d-sm-flex p-0 position-relative">
                                                     <!-- Avatar -->
                                                     <div class="avatar text-center">
                                                         <img class="avatar-img rounded-circle" src="{% if user.profile.photo %}{% thumbnail user.profile.photo 180x180 %}{% else %}../static/profile.gif{% endif %}" alt="">
                                                     </div>
                                                     <!-- Info -->
                                                     <div class="mx-sm-3 my-2 my-sm-0">
-                                                        <p class="small mb-2"><b>{{user.username| title}}</b></p>
-                                                        <p>sent you a friend request.</p>
+                                                        <h1 class="small mb-2"><b>{{user.username| title}}</b></h1>
+                                                        <p class="small mb-2">sent you a friend request.</p>
                                                         <!-- Button -->
                                                         <div class="d-flex">
-                                                            <a href="{% url 'create_friend' %}?id={{user.id}}"><button class="btn btn-sm py-1 btn-primary me-2">Accept </button></a>
+                                                            <a href="{% url 'home_page' %}?id={{user.id}}"><button class="btn btn-sm py-1 btn-primary me-2">Accept </button></a>
                                                             <button class="btn btn-sm py-1 btn-danger-soft">Delete </button>
                                                         </div>
                                                     </div>

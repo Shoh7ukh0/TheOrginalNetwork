@@ -84,8 +84,6 @@
 	<link rel="shortcut icon" href="{% static 'assets/images/favicon.ico' %}">
 
 	<!-- Google Font -->
-	<link rel="preconnect" href="../fonts.googleapis.com/index.html">
-	<link rel="stylesheet" href="../fonts.googleapis.com/css2ab8c.css?family=Inter:wght@300;400;500;600;700&amp;display=swap">
 
 	<!-- Plugins CSS -->
 	<link rel="stylesheet" type="text/css" href="{% static 'assets/vendor/font-awesome/css/all.min.css' %}">
@@ -299,51 +297,53 @@ Header END -->
 
 {% endblock %}
 
-<script>
-	const PersonalroomName = JSON.parse(document.getElementById('personal_room').textContent);
-	const PersonalSocket = new WebSocket(
-		'ws://' + window.location.host + '/ws/personal_chat/' + PersonalroomName + '/'
-	);
-	const set_online = () => {
-		setTimeout(() => {
-			PersonalSocket.send(JSON.stringify({
-				'msg_type': 'WENT_ONLINE',
-				'user_id': '{{request.user.id}}'
-			}));
-		}, 1000)
-	}
-
-	document.addEventListener("visibilitychange", event => {
-		if (document.visibilityState == "visible") {
-			if (PersonalSocket.readyState === WebSocket.OPEN){
-				PersonalSocket.send(JSON.stringify({
-					'msg_type': 'WENT_ONLINE',
-					'user_id': '{{request.user.id}}'
-				}));
-			}
-		}
-		else{
-			if(PersonalSocket.readyState === WebSocket.OPEN){
-				PersonalSocket.send(JSON.stringify({
-					'msg_type': 'WENT_OFFLINE',
-					'user_id': '{{request.user.id}}'
-				}));
-			}
-		}
-	}
-);
-
-PersonalSocket.onopen = set_online();
-</script>
-
-{% block script %}
-
-{% endblock %}
 <!-- =======================
 Header END -->
 
 <!-- =======================
 JS libraries, plugins and custom scripts -->
+
+<span hidden id='personal_room'>{{request.user.id}}</span>
+
+    <script>
+            const PersonalroomName = JSON.parse(document.getElementById('personal_room').textContent);
+            const PersonalSocket = new WebSocket(
+                'ws://' + window.location.host + '/ws/personal_chat/' + PersonalroomName + '/'
+            );
+            const set_online = () => {
+                setTimeout(() => {
+                    PersonalSocket.send(JSON.stringify({
+                        'msg_type': 'WENT_ONLINE',
+                        'user_id': '{{request.user.id}}'
+                    }));
+                }, 1000)
+            }
+
+            document.addEventListener("visibilitychange", event => {
+                    if (document.visibilityState == "visible") {
+                        if (PersonalSocket.readyState === WebSocket.OPEN){
+                            PersonalSocket.send(JSON.stringify({
+                                'msg_type': 'WENT_ONLINE',
+                                'user_id': '{{request.user.id}}'
+                            }));
+                        }
+                    }
+                    else{
+                        if(PersonalSocket.readyState === WebSocket.OPEN){
+                                    PersonalSocket.send(JSON.stringify({
+                                        'msg_type': 'WENT_OFFLINE',
+                                        'user_id': '{{request.user.id}}'
+                                    }));
+                            }
+                        }
+                }
+            );
+
+            PersonalSocket.onopen = set_online();
+    </script>
+
+    {% block script %}
+    {% endblock %}
 
 <!-- Bootstrap JS -->
 <script src="{% static 'assets/vendor/bootstrap/dist/js/bootstrap.bundle.min.js' %}"></script>

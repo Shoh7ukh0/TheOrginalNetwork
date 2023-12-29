@@ -241,7 +241,7 @@ Header START -->
 							{% endif %}
 						</li>
 						<!-- Links -->
-						<li><a class="dropdown-item" href="{% url 'edit_profile' %}"><i class="bi bi-gear fa-fw me-2"></i>Settings & Privacy</a></li>
+						<li><a class="dropdown-item" href="{% url 'edit_profile' username=user.username %}"><i class="bi bi-gear fa-fw me-2"></i>Settings & Privacy</a></li>
 						<li> 
 							<a class="dropdown-item" href="#!" target="_blank">
 								<i class="fa-fw bi bi-card-text me-2"></i>Documentation

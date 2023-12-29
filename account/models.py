@@ -16,16 +16,16 @@ class Profile(models.Model):
         SMM_MANAGER = 'SMM manager'
         MARKETOLOGY = 'Marketology'
 
-    user = models.OneToOneField(settings.AUTH_USER_MODEL, on_delete=models.PROTECT, related_name = 'profile_detail')
+    user = models.OneToOneField(settings.AUTH_USER_MODEL, on_delete=models.PROTECT)
     date_of_birth = models.DateField(blank=True, null=True)
     bio = models.TextField()
     photo = models.ImageField(upload_to='users/%Y/%m/%d/', blank=True)
     following = models.ManyToManyField('self', through='Contact', related_name='followers', symmetrical=False, blank=True)
     disable_chat = models.BooleanField(default=False)
     user_type = models.CharField(max_length=100, choices=Status.choices, default=Status.BLOGER)
-    saved_posts = models.ManyToManyField(Post, related_name='saved_by')
+    saved_posts = models.ManyToManyField(Post, related_name='saved_by', blank=True)
     location = models.CharField(max_length=255, blank=True, null=True)
-    is_online = models.BooleanField(default = False)
+    # is_online = models.BooleanField(default = False)
 
     def __str__(self):
         return f'Profile of {self.user.username}'

@@ -43,7 +43,6 @@ def friend_list(request):
             "user_name" : user.username,
             "room_name" : ch_session.room_group_name,
             "un_read_msg_count" : un_read_msg_count,
-            "status" : user.profile_detail.is_online,
             "user_id" : user.id
         }
         all_friends.append(data)

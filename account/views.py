@@ -121,13 +121,14 @@ class EditProfileView(View):
         return render(request, self.template_name, {'user_form': user_form, 'profile_form': profile_form})
 
     @method_decorator(login_required)
-    def post(self, request, *args, **kwargs):
+    def post(self, request, username, *args, **kwargs):
         user_form = UserEditForm(instance=request.user, data=request.POST)
         profile_form = ProfileEditForm(instance=request.user.profile, data=request.POST, files=request.FILES)
         if user_form.is_valid() and profile_form.is_valid():
             user_form.save()
             profile_form.save()
             messages.success(request, 'Profile updated successfully')
+            return redirect('dashboard', username=username)
         else:
             messages.error(request, 'Error updating your profile')
         return render(request, self.template_name, {'user_form': user_form, 'profile_form': profile_form})

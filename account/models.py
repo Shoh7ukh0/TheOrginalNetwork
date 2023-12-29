@@ -25,7 +25,6 @@ class Profile(models.Model):
     user_type = models.CharField(max_length=100, choices=Status.choices, default=Status.BLOGER)
     saved_posts = models.ManyToManyField(Post, related_name='saved_by', blank=True)
     location = models.CharField(max_length=255, blank=True, null=True)
-    # is_online = models.BooleanField(default = False)
 
     def __str__(self):
         return f'Profile of {self.user.username}'

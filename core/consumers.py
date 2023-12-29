@@ -100,7 +100,7 @@ class PersonalConsumer(AsyncWebsocketConsumer):
     
     @database_sync_to_async
     def set_online(self,user_id):
-        Profile.objects.filter(user__id = user_id).update(is_online = True)
+        Profile.objects.filter(user__id = user_id)
         user_all_friends = ChatSession.objects.filter(Q(user1 = self.user) | Q(user2 = self.user))
         user_id = []
         for ch_session in user_all_friends:
@@ -109,7 +109,7 @@ class PersonalConsumer(AsyncWebsocketConsumer):
 
     @database_sync_to_async
     def set_offline(self,user_id):
-        Profile.objects.filter(user__id = user_id).update(is_online = False)
+        Profile.objects.filter(user__id = user_id)
         user_all_friends = ChatSession.objects.filter(Q(user1 = self.user) | Q(user2 = self.user))
         user_id = []
         for ch_session in user_all_friends:

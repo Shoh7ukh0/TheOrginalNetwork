@@ -294,7 +294,50 @@ Header END -->
 {% block content %}
 
 {% endblock %}
+
 {% block main %}
+
+{% endblock %}
+
+<script>
+	const PersonalroomName = JSON.parse(document.getElementById('personal_room').textContent);
+	const PersonalSocket = new WebSocket(
+		'ws://' + window.location.host + '/ws/personal_chat/' + PersonalroomName + '/'
+	);
+	const set_online = () => {
+		setTimeout(() => {
+			PersonalSocket.send(JSON.stringify({
+				'msg_type': 'WENT_ONLINE',
+				'user_id': '{{request.user.id}}'
+			}));
+		}, 1000)
+	}
+
+	document.addEventListener("visibilitychange", event => {
+		if (document.visibilityState == "visible") {
+			if (PersonalSocket.readyState === WebSocket.OPEN){
+				PersonalSocket.send(JSON.stringify({
+					'msg_type': 'WENT_ONLINE',
+					'user_id': '{{request.user.id}}'
+				}));
+			}
+		}
+		else{
+			if(PersonalSocket.readyState === WebSocket.OPEN){
+				PersonalSocket.send(JSON.stringify({
+					'msg_type': 'WENT_OFFLINE',
+					'user_id': '{{request.user.id}}'
+				}));
+			}
+		}
+	}
+);
+
+PersonalSocket.onopen = set_online();
+</script>
+
+{% block script %}
+
 {% endblock %}
 <!-- =======================
 Header END -->

@@ -5,9 +5,49 @@ from .models import *
 from django.http.response import HttpResponse, HttpResponseRedirect
 from django.contrib import messages
 
+@login_required
 def home(request):
     unread_msg = ChatMessage.count_overall_unread_msg(request.user.id)
-    return render(request, 'chat/home.html',{"unread_msg" : unread_msg})
+
+    user_inst = request.user
+    user_all_friends = ChatSession.objects.filter(Q(user1 = user_inst) | Q(user2 = user_inst)).select_related('user1','user2').order_by('-updated_on')
+    all_friends = []
+    for ch_session in user_all_friends:
+        user,user_inst = [ch_session.user2,ch_session.user1] if request.user.username == ch_session.user1.username else [ch_session.user1,ch_session.user2]
+        un_read_msg_count = ChatMessage.objects.filter(chat_session = ch_session.id,message_detail__read = False).exclude(user = user_inst).count()        
+        data = {
+            "user_name" : user.username,
+            "room_name" : ch_session.room_group_name,
+            "un_read_msg_count" : un_read_msg_count,
+            "user_id" : user.id
+        }
+        all_friends.append(data)
+
+    user_1 = request.user
+    if request.GET.get('id'):
+        user2_id = request.GET.get('id')
+        user_2 = get_object_or_404(User,id = user2_id)
+        get_create = ChatSession.create_if_not_exists(user_1,user_2)
+        if get_create:
+            messages.add_message(request,messages.SUCCESS,f'{user_2.username} successfully added in your chat list!!')
+        else:
+            messages.add_message(request,messages.SUCCESS,f'{user_2.username} already added in your chat list!!')
+        return HttpResponseRedirect('/create_friend')
+    else:
+        user_all_friends = ChatSession.objects.filter(Q(user1 = user_1) | Q(user2 = user_1))
+        user_list = []
+        for ch_session in user_all_friends:
+            user_list.append(ch_session.user1.id)
+            user_list.append(ch_session.user2.id)
+        all_user = User.objects.exclude(Q(username=user_1.username)|Q(id__in = list(set(user_list))))
+
+    context = {
+        "unread_msg" : unread_msg,
+        'user_list': all_friends,
+        'all_user' : all_user
+    }
+
+    return render(request, 'chat/home.html', context)
 
 @login_required
 def create_friend(request):

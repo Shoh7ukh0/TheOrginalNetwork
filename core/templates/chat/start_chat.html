@@ -1,81 +1,104 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load thumbnail %}
+{% load convert_date %}
 <!DOCTYPE html>
 <html>
 
 <head>
-    <meta charset="utf-8" />
-    <title>Chat Room</title>
-    <style>        
-        div.scroll {
-            margin: 4px, 4px;
-            padding: 4px;
-            width: 95%;
-            height: 350px;
-            overflow-x: auto;
-            overflow-y: auto;
-            text-align: justify;
-            border: 2px solid rgb(196, 224, 196);
-            border-radius: 9px;
-            position: relative;
-        }
-        ::-webkit-scrollbar {
-        width: 3px;
-        }
-        /* Track */
-        ::-webkit-scrollbar-track {
-        box-shadow: inset 0 0 5px grey; 
-        border-radius: 10px;
-        }
-        
-        /* Handle */
-        ::-webkit-scrollbar-thumb {
-        background: rgb(49, 39, 39); 
-        border-radius: 10px;
-        }
-
-        /* Handle on hover */
-        ::-webkit-scrollbar-thumb:hover {
-        background: #b81f1f; 
-        }
-        .chat_box{
-            border: 1px solid black;
-            width: 50%;
-            height: auto;
-            border-radius: 8px;
-            padding: 3px;
-            background-color:#7d7dee;
-            }
-
-    </style>
 </head>
-
+{% block content %}
 <body>
-    {% load convert_date %}
-    <h2>🧒 | {{opposite_user.username | title}}
-    </h2>
-    <div>
-        <div id="chat-log" class="scroll">
-            {% for msg in fetch_all_message %}
-            <p class="chat_box" id="{{msg.id}}">
-                <small> <b class="check_user">{{msg.user.username}}</b> - {{msg.message_detail.timestamp | convert_date | date:"M d'Y f"}}</small>
-                <br/>
-                <span style="padding: 7px; color: #ffffff; font-weight: bold;"> • {{msg.message_detail.msg}}</span>
-                <br/>
-                {% if msg.user == request.user  %}
-                    <small id = "as_read" style="padding-left: 95%;{% if msg.message_detail.read %}color: rgb(8, 255, 8);{% else %}color: #bbb8b8 {% endif %}font-weight: bold;">✔✔</small>
-                {% endif %}
-            </p>
-            {% endfor %}
-        </div><br>
-        <input id="chat-message-input" type="text" placeholder="Enter Message..." autofocus style="width: 50%; padding: 8px;">
-        <input id="chat-message-submit" type="button" value="Send" style="padding: 6px;">
+<!-- **************** MAIN CONTENT START **************** -->
+<main>
+    <!-- Container START -->
+    <div class="container">
+        <div class="row gx-0">
+        
+            <!-- Chat conversation START -->
+            <div class="col-lg-8 col-xxl-9">
+                <div class="card card-chat rounded-start-lg-0 border-start-lg-0">
+                    <div class="card-body h-100">
+                        <div class="tab-content py-0 mb-0 h-100" id="chatTabsContent">
+                            <!-- Conversation item START -->
+                            <div class="fade tab-pane show active h-100" id="chat-1" role="tabpanel" aria-labelledby="chat-1-tab">
+                                <!-- Top avatar and status START -->
+                                <div class="d-sm-flex justify-content-between align-items-center">
+                                    <div class="d-flex mb-2 mb-sm-0">
+                                        <div class="flex-shrink-0 avatar me-2">
+                                            <img class="avatar-img rounded-circle" src="{% if user.profile.photo %}{% thumbnail user.profile.photo 180x180 %}{% else %}../static/profile.gif{% endif %}" alt="">
+                                        </div>
+                                        <div class="d-block flex-grow-1">
+                                            <h6 class="mb-0 mt-1">{{opposite_user.username | title}}</h6>
+                                            <div class="small text-secondary"><i class="fa-solid fa-circle text-success me-1"></i>Online</div>
+                                        </div>
+                                    </div>
+                                    <div class="d-flex align-items-center">
+                                        <!-- Call button -->
+                                        <a href="#!" class="icon-md rounded-circle btn btn-primary-soft me-2 px-2" data-bs-toggle="tooltip" data-bs-placement="top" title="Audio call"><i class="bi bi-telephone-fill"></i></a>
+                                        <a href="#!" class="icon-md rounded-circle btn btn-primary-soft me-2 px-2" data-bs-toggle="tooltip" data-bs-placement="top" title="Video call"><i class="bi bi-camera-video-fill"></i></a>
+                                        <!-- Card action START -->
+                                        <div class="dropdown">
+                                            <a class="icon-md rounded-circle btn btn-primary-soft me-2 px-2" href="#" id="chatcoversationDropdown" role="button" data-bs-toggle="dropdown" data-bs-auto-close="outside" aria-expanded="false"><i class="bi bi-three-dots-vertical"></i></a>               
+                                            <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="chatcoversationDropdown">
+                                            <li><a class="dropdown-item" href="#"><i class="bi bi-check-lg me-2 fw-icon"></i>Mark as read</a></li>
+                                            <li><a class="dropdown-item" href="#"><i class="bi bi-mic-mute me-2 fw-icon"></i>Mute conversation</a></li>
+                                            <li><a class="dropdown-item" href="#"><i class="bi bi-person-check me-2 fw-icon"></i>View profile</a></li>
+                                            <li><a class="dropdown-item" href="#"><i class="bi bi-trash me-2 fw-icon"></i>Delete chat</a></li>
+                                            <li class="dropdown-divider"></li>
+                                            <li><a class="dropdown-item" href="#"><i class="bi bi-archive me-2 fw-icon"></i>Archive chat</a></li>
+                                            </ul>
+                                        </div>
+                                        <!-- Card action END -->
+                                    </div>
+                                </div>
+
+                                
+                                <div style="position: relative; top: 25px;" id="chat-log" class="scroll chat-conversation-content custom-scrollbar">
+                                    {% for msg in fetch_all_message %}
+                                    <div class="chat_box d-flex mb-1" id="{{msg.id}}">
+                                        <div class="flex-shrink-0 avatar avatar-xs me-2">
+                                            <img class="avatar-img rounded-circle" src="{% if user.profile.photo %}{% thumbnail user.profile.photo 180x180 %}{% else %}../static/profile.gif{% endif %}" alt="">
+                                        </div>
+                                        <div class="flex-grow-1">
+                                            <div class="w-100">
+                                                <h5>{{msg.user.username}}</h5>
+                                                <div class="bg-light text-secondary p-2 px-3 rounded-2 w-100">{{msg.message_detail.msg}}</div>
+                                                <div class="small my-2">{{msg.message_detail.timestamp | convert_date | date:"M d'Y f"}}</div>
+                                                {% if msg.user == request.user  %}
+                                                    <small id = "as_read" style="padding-left: 95%;{% if msg.message_detail.read %}color: rgb(8, 255, 8);{% else %}color: #bbb8b8 {% endif %}font-weight: bold;">✔✔</small>
+                                                {% endif %}
+                                            </div>
+                                        </div>
+                                    </div>
+                                    {% endfor %}
+                                </div>
+                                
+                                <div class="card-footer">
+                                    <div class="d-sm-flex align-items-end">
+                                        <textarea id="chat-message-input" class="form-control mb-sm-0 mb-3" data-autoresize placeholder="Type a message" rows="1"></textarea>
+                                        <button class="btn btn-sm btn-danger-soft ms-sm-2"><i class="fa-solid fa-face-smile fs-6"></i></button>
+                                        <button class="btn btn-sm btn-secondary-soft ms-2"><i class="fa-solid fa-paperclip fs-6"></i></button>
+                                        <button id="chat-message-submit" class="btn btn-sm btn-primary ms-2"><i class="fa-solid fa-paper-plane fs-6"></i></button>
+                                    </div>
+                                </div>
+                                {{ room_name|json_script:"room_name" }}
+                            </div>
+                        </div>
+                        <!-- Chat conversation END -->
+                    </div> <!-- Row END -->
+                    <!-- ======================= Chat END -->
+  
+                </div>
+                <!-- Container END -->
+            </div>
+        </div>
     </div>
-    {{ room_name|json_script:"room_name" }}
+  
+</main>
+<!-- **************** MAIN CONTENT END **************** -->
 
-</body>
-
-</html>
-
-<script>
+  <script>
     const roomName = JSON.parse(document.getElementById('room_name').textContent);
 
     const chatSocket = new WebSocket(
@@ -99,7 +122,22 @@
         const user = data.user === '{{request.user.username}}' ? "You" : data.user
         const error_msg = data.error_message === 'MESSAGE_OUT_OF_LENGTH' ? "<br/>" + "Error:Msg size must be less then 10 char." + "<br/>" + " • This Message not sent.." :false
         const add_read = data.user === '{{request.user.username}}' ? '<small id="as_read" style="padding-left: 95%; color: #bbb8b8; font-weight: bold;">✔✔</small>':''
-        ele = `<p id=${data.msg_id} class="chat_box" style = "background-color : ${box_color};"><small><b>${user}</b> - ${data.timestampe}</small><br/><span style="color: #ffffff; font-weight: bold;""> • ${data.message}<small><br/>${error_msg ? error_msg :add_read }</small></span><br/></p>`
+        ele = `
+            <div id=${data.msg_id} class="chat_box scroll chat-conversation-content custom-scrollbar">
+                <div class="d-flex mb-1">
+                    <div class="flex-shrink-0 avatar avatar-xs me-2">
+                        <img class="avatar-img rounded-circle" src="{% if user.profile.photo %}{% thumbnail user.profile.photo 180x180 %}{% else %}../static/profile.gif{% endif %}" alt="">
+                    </div>
+                    <div class="flex-grow-1">
+                        <div class="w-100">
+                            <h5>${user}</h5>
+                            <div class="bg-light text-secondary p-2 px-3 rounded-2 w-100">${data.message}<small><br/>${error_msg ? error_msg :add_read }</small></div>
+                            <div class="small my-2">${data.timestampe}</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            `
         document.querySelector('#chat-log').innerHTML += ele
         messageBody.scrollTop = messageBody.scrollHeight - messageBody.clientHeight;
     }
@@ -226,6 +264,10 @@
     for (let i = 0; i < check_user.length; i++){
         if (check_user[i].innerText === '{{request.user.username}}') {
             check_user[i].innerText = 'You'
-    }
+        }
     }
 </script>
+
+</body>
+{% endblock %}
+</html>

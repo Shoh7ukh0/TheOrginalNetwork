@@ -13,6 +13,8 @@ from datetime import datetime, timezone
 from django.http import JsonResponse
 from django.http import HttpResponseServerError
 from account.models import Contact, Profile
+from django.db.models import Q
+from core.models import ChatSession, ChatMessage
 
 # соединить с redis
 r = redis.Redis(host=settings.REDIS_HOST, port=settings.REDIS_PORT, db=settings.REDIS_DB)
@@ -61,6 +63,20 @@ class PostListView(View):
             minutes, _ = divmod(remainder, 60)
             post.time_since_creation = f"{hours}h {minutes}m ago"
 
+        user_inst = request.user
+        user_all_friends = ChatSession.objects.filter(Q(user1 = user_inst) | Q(user2 = user_inst)).select_related('user1','user2').order_by('-updated_on')
+        all_friends = []
+        for ch_session in user_all_friends:
+            user,user_inst = [ch_session.user2,ch_session.user1] if request.user.username == ch_session.user1.username else [ch_session.user1,ch_session.user2]
+            un_read_msg_count = ChatMessage.objects.filter(chat_session = ch_session.id,message_detail__read = False).exclude(user = user_inst).count()        
+            data = {
+                "user_name" : user.username,
+                "room_name" : ch_session.room_group_name,
+                "un_read_msg_count" : un_read_msg_count,
+                "user_id" : user.id
+            }
+            all_friends.append(data)
+
         context = {
             'post': post,
             'queryset': queryset,
@@ -71,16 +87,17 @@ class PostListView(View):
             'form': form, 
             'friends': friends, 
             'followers': followers,
-            'current_url': current_url
+            'current_url': current_url,
+            'user_list': all_friends,
         }
 
         return render(request, self.template_name, context)
 
     def post(self, request, *args, **kwargs):
-        form = PostForm(request.POST, request.FILES, instance=profile)
+        form = PostForm(request.POST, request.FILES, instance=Post())  # Use instance=Post()
         if form.is_valid():
             post = form.save(commit=False)
-            post.user = self.request.user  # Foydalanuvchi obyektini olib olish
+            post.user = self.request.user  # Associate the post with the current user
             post.save()
             return redirect('core:post_list')
         return render(request, self.template_name, {'form': form})

@@ -30,12 +30,12 @@ class UsersListView(LoginRequiredMixin, ListView):
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('account/', include('account.urls')),
+    path('', include('account.urls')),
     path('original/', include(('original.urls', 'core',), namespace='core')),
     path('social-auth/', include('social_django.urls', namespace='social')),
 	path('images/', include('images.urls')),
     path('users/', UsersListView.as_view(), name='users_list'),
-    path('', include('core.urls')),
+    path('core/', include('core.urls')),
     
     path('api_auth/', include('rest_framework.urls', namespace='rest_framework'))
 ]

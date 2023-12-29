@@ -167,7 +167,7 @@ Header START -->
 
 				  	<!-- Nav item -->
 					<li class="nav-item">
-						<a class="nav-link" href=""> 
+						<a class="nav-link" href="{% url 'friend_list' %}"> 
 							<div class="badge-notif badge-notif-bottom"></div>
 							<i class="bi bi-chat-left"></i> <span class="nav-text"> messaging </span>
 						</a>
@@ -239,7 +239,6 @@ Header START -->
 							{% endif %}
 						</li>
 						<!-- Links -->
-						<li><a class="dropdown-item" href="{% url 'edit_profile' username=user.username %}"><i class="bi bi-gear fa-fw me-2"></i>Settings & Privacy</a></li>
 						<li> 
 							<a class="dropdown-item" href="#!" target="_blank">
 								<i class="fa-fw bi bi-card-text me-2"></i>Documentation

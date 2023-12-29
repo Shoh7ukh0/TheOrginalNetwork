@@ -63,8 +63,8 @@ class PersonalConsumer(AsyncWebsocketConsumer):
                 await self.channel_layer.group_send(
                     f'personal__{room_id}',
                     {
-                    'type': 'user_online',
-                    'user_name' : self.user.username
+                        'type': 'user_online',
+                        'user_name' : self.user.username
                     }
                 )
         elif msg_type == MESSAGE_TYPE['WENT_OFFLINE']:
@@ -73,8 +73,8 @@ class PersonalConsumer(AsyncWebsocketConsumer):
                 await self.channel_layer.group_send(
                     f'personal__{room_id}',
                     {
-                    'type': 'user_offline',
-                    'user_name' : self.user.username
+                        'type': 'user_offline',
+                        'user_name' : self.user.username
                     }
                 )
             

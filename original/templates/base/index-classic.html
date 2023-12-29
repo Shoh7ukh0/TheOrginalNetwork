@@ -44,7 +44,13 @@
                   <a class="nav-link" href="{% url 'edit_profile' username=user.username %}"> <i class="bi bi-gear-wide-connected nav-icon"></i> <span class="nav-text">Settings </span></a>
                 </li>
                 <li class="nav-item">
-                  <a class="nav-link" href=""> <i class="bi bi-chat-left-text nav-icon"></i> <span class="nav-text">Messaging </span></a>
+                  <a class="nav-link" href="{% url 'friend_list' %}"> <i class="bi bi-chat-left-text nav-icon"></i> <span class="nav-text">Messaging </span></a>
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link" href="{% url 'help' %}"> <i class="bi bi-info-circle nav-icon"></i> <span class="nav-text">Help </span></a>
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link" href="{% url 'privacy' %}"> <i class="bi bi-shield-exclamation nav-icon"></i> <span class="nav-text">Privacy & terms </span></a>
                 </li>
               </ul>
               <!-- Side Nav END -->

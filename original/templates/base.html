@@ -244,6 +244,16 @@ Header START -->
 								<i class="fa-fw bi bi-card-text me-2"></i>Documentation
 							</a> 
 						</li>
+						<li> 
+							<a class="dropdown-item" href="{% url 'help' %}" target="_blank">
+								<i class="bi bi-info-circle me-2"></i>Help
+							</a> 
+						</li>
+						<li> 
+							<a class="dropdown-item" href="{% url 'privacy' %}" target="_blank">
+								<i class="bi bi-shield-exclamation me-2"></i>Privacy & terms
+							</a> 
+						</li>
 						<li class="dropdown-divider"></li>
 						{% if user.is_authenticated %}
 							<li><a class="dropdown-item bg-danger-soft-hover" href="{% url 'login' %}"><i class="bi bi-box-arrow-right"></i> Sign Out</a></li>

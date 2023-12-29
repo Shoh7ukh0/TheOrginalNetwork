@@ -25,10 +25,12 @@ class SearchUserView(View):
 
     def get(self, request, *args, **kwargs):
         form = SearchForm(request.GET)
-        query = form.cleaned_data.get('q', '')  # Provide a default value
+        
         if form.is_valid():
+            query = form.cleaned_data.get('q', '')
             users = User.objects.filter(username__icontains=query)
         else:
+            query = ''
             users = User.objects.none()
 
         context = {

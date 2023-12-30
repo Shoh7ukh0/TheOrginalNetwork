@@ -38,7 +38,7 @@
                   <a class="nav-link" href="{% url 'user_list' %}"> <i class="bi bi-collection-fill nav-icon"></i> <span class="nav-text">Groups </span></a>
                 </li>
                 <li class="nav-item">
-                  <a class="nav-link" href="notifications.html"> <i class="bi bi-bell-fill nav-icon"></i> <span class="nav-text">Notifications </span></a>
+                  <a class="nav-link" href="{% url 'notifications' %}"> <i class="bi bi-bell-fill nav-icon"></i> <span class="nav-text">Notifications </span></a>
                 </li>
                 <li class="nav-item">
                   <a class="nav-link" href="{% url 'edit_profile' username=user.username %}"> <i class="bi bi-gear-wide-connected nav-icon"></i> <span class="nav-text">Settings </span></a>
@@ -102,7 +102,7 @@
                 <li><a class="dropdown-item" href="#"> <i class="bi bi-envelope fa-fw pe-2"></i>Create a poll</a></li>
                 <li><a class="dropdown-item" href="#"> <i class="bi bi-bookmark-check fa-fw pe-2"></i>Ask a question </a></li>
                 <li><hr class="dropdown-divider"></li>
-                <li><a class="dropdown-item" href="#"> <i class="bi bi-pencil-square fa-fw pe-2"></i>Help</a></li>
+                <li><a class="dropdown-item" href="{% url 'help' %}"> <i class="bi bi-pencil-square fa-fw pe-2"></i>Help</a></li>
               </ul>
             </li>
           </ul>

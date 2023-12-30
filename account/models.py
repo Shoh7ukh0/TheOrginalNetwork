@@ -4,6 +4,11 @@ from django.contrib.auth import get_user_model
 from django.contrib.auth.models import User
 from original.models import Post
 
+
+class ActiveUser(models.Model):
+    username = models.CharField(max_length=125)
+    is_admin = models.BooleanField(default=False)
+
 # Create your models here.
 
 class Profile(models.Model):

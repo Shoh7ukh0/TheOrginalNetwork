@@ -68,7 +68,6 @@ INSTALLED_APPS = [
     'core',
     'actions',
     'original',
-    'images',
     'rest_framework',    # Only for login purpose
     'django_admin_inline_paginator',
     'channels',

@@ -33,7 +33,6 @@ urlpatterns = [
     path('', include('account.urls')),
     path('original/', include(('original.urls', 'core',), namespace='core')),
     path('social-auth/', include('social_django.urls', namespace='social')),
-	path('images/', include('images.urls')),
     path('users/', UsersListView.as_view(), name='users_list'),
     path('core/', include('core.urls')),
     

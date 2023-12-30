@@ -175,7 +175,7 @@ Header START -->
 
 					<!-- Nav item -->
 				  	<li class="nav-item">
-					  	<a class="nav-link" href="#"> 
+					  	<a class="nav-link" href="{% url 'notifications' %}"> 
 							<div class="badge-notif badge-notif-bottom"></div>
 							<i class="bi bi-bell"></i> <span class="nav-text"> Notifications </span>
 						</a>
@@ -200,7 +200,7 @@ Header START -->
 		  				<!-- Profile info -->
 		  				<div class="nav flex-nowrap align-items-center">
 							<div class="nav-item w-100">
-			  					<form class="rounded position-relative" method="get" action="{% url 'core:search_user' %}">
+			  					<form class="rounded position-relative" method="get" action="{% url 'search_user' %}">
 									{% csrf_token %}
 									<input class="form-control ps-5 bg-light" type="search" name="q" placeholder="Search..." aria-label="Search">
 									<button class="btn bg-transparent px-2 py-0 position-absolute top-50 start-0 translate-middle-y" type="submit"><i class="bi bi-search fs-5"> </i></button>

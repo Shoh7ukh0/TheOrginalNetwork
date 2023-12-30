@@ -5,7 +5,6 @@ from django.contrib.auth import views as auth_views
 
 
 urlpatterns = [
-    # path('', include('django.contrib.auth.urls')),
     path('', views.LoginView.as_view(), name='login'),
     path('dashboard/<str:username>/', views.ProfileView.as_view(), name='dashboard'),
     path('register/', views.RegistrationView.as_view(), name='register'),
@@ -25,6 +24,8 @@ urlpatterns = [
     path('help/', views.help, name='help'),
     path('help_details/', views.help_details, name='help_details'),
     path('privacy/', views.privacy, name='privacy'),
+    path('notifications/', views.notifications, name = 'notifications'),
+    path('search/', views.SearchUserView.as_view(), name='search_user'),
 
     # # url-адреса смены пароля
     path('password-reset/', auth_views.PasswordResetView.as_view(), name='password_reset'),

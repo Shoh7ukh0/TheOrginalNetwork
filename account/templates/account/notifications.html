@@ -59,7 +59,7 @@
                       <p class="small mb-2"><b>{{user.username| title}}</b> sent you a friend request.</p>
                     <!-- Button -->
                     <div class="d-flex">
-                      <a href="{% url 'create_friend' %}?id={{user.id}}"><button class="btn btn-sm py-1 btn-primary me-2">Accept </button></a>
+                      <a href="{% url 'notifications' %}?id={{user.id}}"><button class="btn btn-sm py-1 btn-primary me-2">Accept </button></a>
                       <button class="btn btn-sm py-1 btn-danger-soft">Delete </button>
                     </div>
                   </div>

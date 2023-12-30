@@ -12,8 +12,7 @@ urlpatterns = [
     path('post/<slug:slug>/comment/<int:comment_id>/like/', views.LikeCommentView.as_view(), name='like_comment'),
     path('<slug:slug>/edit/', views.EditPostView.as_view(), name='edit_post'),
     path('<slug:slug>/delete/', views.DeletePostView.as_view(), name='delete_post'),
-    path('search/', views.SearchUserView.as_view(), name='search_user'),
     path('hide_post/<slug:slug>/', views.HidePostView.as_view(), name='hide_post'),
 
-    path('share_post/<slug:slug>/', views.share_post, name='share_post')
+    path('share_post/<slug:slug>/', views.share_post, name='share_post'),
 ]

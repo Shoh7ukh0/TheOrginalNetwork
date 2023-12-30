@@ -20,28 +20,6 @@ from core.models import ChatSession, ChatMessage
 r = redis.Redis(host=settings.REDIS_HOST, port=settings.REDIS_PORT, db=settings.REDIS_DB)
 
 
-class SearchUserView(View):
-    template_name = 'base/search.html'
-
-    def get(self, request, *args, **kwargs):
-        form = SearchForm(request.GET)
-        
-        if form.is_valid():
-            query = form.cleaned_data.get('q', '')
-            users = User.objects.filter(username__icontains=query)
-        else:
-            query = ''
-            users = User.objects.none()
-
-        context = {
-            'query': query,
-            'users': users,
-            'form': form
-        }
-        
-        return render(request, self.template_name, context)
-
-
 class PostListView(View):
     template_name = 'base/index-classic.html'
 

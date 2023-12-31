@@ -115,7 +115,7 @@ class PostDetailView(View):
 
     def get(self, request, slug, *args, **kwargs):
         post = get_object_or_404(Post, slug=slug)
-        total_views = r.incr(f'Post:{post.id}:views')
+        total_views = r.incr(f'Post:{post.slug}:views')
 
         comments = post.comments.all()
         likes = post.likes.all()

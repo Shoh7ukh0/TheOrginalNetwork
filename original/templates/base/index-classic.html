@@ -512,7 +512,7 @@
                   <a class="h6 mb-0" href="{% url 'start_chat' user.room_name %}">{{user.user_name | title}}</a>
                 </div>
                 <!-- Chat time -->
-                <div class="contact-status ms-auto"> <span id="{{user.user_id}}" style="background-color: rgb(0, 60, 255); border-radius: 50%; padding: 0px 6px 0px 6px; float: right;">{{user.un_read_msg_count}}</span>  </div>
+                <div class="contact-status ms-auto"> <span id="{{user.user_id}}" style="background-color: rgb(0, 60, 255); border-radius: 50%; padding: 0px 7px 0px 7px; float: right; color: #fff;">{{user.un_read_msg_count}}</span>  </div>
               </li>
             </ul>
             {% endfor %}

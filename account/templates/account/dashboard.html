@@ -157,10 +157,11 @@
                             </div>
                             <!-- Card feed action dropdown END -->
                           </div>
-                          <p class="mt-3 mb-0">{{ post.caption }} <a href="{% url 'core:post_detail' slug=post.slug %}">{% for hashtag in post.hashtags.all %}#{{ hashtag.name }} {% endfor %}</a> </p>
+                          <p class="mt-3 mb-0">{{ post.caption }} 
+                          <a href="{% url 'core:post_detail' slug=post.slug %}">{{ post.hashtags }}</a> </p>
                           <ul class="nav nav-stack py-3 small">
                             <li class="nav-item">
-                              <form method="post" action="{% url 'core:like_post' post_id=post.id %}">
+                              <form method="post" action="{% url 'core:like_post' slug=post.slug %}">
                                 {% csrf_token %}
                                 <button style="border: none; background-color: transparent !important;" type="submit">
                                   <a class="nav-link active" href="#!" data-bs-container="body" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-html="true" data-bs-custom-class="tooltip-text-start" data-bs-title="{{ user.username }}<br> "> <i class="bi bi-hand-thumbs-up-fill pe-1"></i>Liked ({{ post.likes.count }})</a>
@@ -168,7 +169,7 @@
                               </form>
                             </li>
                             <li class="nav-item">
-                              <form action="{% url 'core:add_comment' post_id=post.id %}" method="post">
+                              <form action="{% url 'core:add_comment' slug=post.slug %}" method="post">
                                 {% csrf_token %}
                                 <button style="background-color: transparent; border: none; color: #fff;" type="submit"><i class="bi bi-chat-fill pe-1"></i>Comments ({{ post.comments.count }})</button>
                               </form>

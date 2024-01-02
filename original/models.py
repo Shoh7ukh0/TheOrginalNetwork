@@ -2,11 +2,12 @@ from django.db import models
 from django.contrib.auth.models import User
 from taggit.managers import TaggableManager
 from django.utils.text import slugify
+from django.urls import reverse
 
 class Post(models.Model):
     user = models.ForeignKey(User, on_delete=models.PROTECT)
     caption = models.TextField()
-    slug = models.SlugField(unique=True, max_length=200)
+    slug = models.SlugField(unique=True, max_length=255, blank=True, null=True)
     created_at = models.DateTimeField(auto_now_add=True)
     image = models.ImageField(upload_to='posts/images/', blank=True, null=True)
     video = models.FileField(upload_to='posts/videos/', blank=True, null=True)
@@ -26,8 +27,7 @@ class Post(models.Model):
         super().save(*args, **kwargs)
 
     def get_absolute_url(self):
-        # Define the URL for a post
-        return reverse('core:post_detail', kwargs={'slug': self.slug})
+        return reverse('core:post_detail', args=[str(self.slug)])
         
 
 class SavedPost(models.Model):

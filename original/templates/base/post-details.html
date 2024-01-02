@@ -97,7 +97,7 @@
                 <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="cardShareAction">
                   <li><a class="dropdown-item" href="#"> <i class="bi bi-envelope fa-fw pe-2"></i>Send via Direct Message</a></li>
                   <li><a class="dropdown-item" href="#"> <i class="bi bi-bookmark-check fa-fw pe-2"></i>Bookmark </a></li>
-                  <li><a class="dropdown-item" id="copyLinkBtn" href=""> <i class="bi bi-link fa-fw pe-2"></i>Copy link to post</a></li>
+                  <li><a class="dropdown-item" id="copyLinkToPost" href=""> <i class="bi bi-link fa-fw pe-2"></i>{{ post.get_absolute_url }}</a></li>
                   <li><a class="dropdown-item" href="#"> <i class="bi bi-share fa-fw pe-2"></i>Share post via …</a></li>
                   <li><hr class="dropdown-divider"></li>
                   <li><a class="dropdown-item" href="#"> <i class="bi bi-pencil-square fa-fw pe-2"></i>Share to News Feed</a></li>
@@ -211,6 +211,34 @@
 
 <!-- Script code Comment like -->
 <script>
+    function copyLinkToPost(postId) {
+		// Postning identifikatorini olish
+		var postElement = document.getElementById(postId);
+		
+		if (postElement) {
+			// Postning havolani olish
+			var postLink = postElement.querySelector('.post-link');
+			
+			if (postLink) {
+			// Havolani tanlang
+			postLink.select();
+			
+			try {
+				// Tanlangan havolani klibortga nusxalash
+				var successful = document.execCommand('copy');
+				var message = successful ? 'Havola nusxalandi!' : "Nusxa bo'lmadi. Qaytadan urinib ko'ring.";
+				console.log(message);
+			} catch (err) {
+				console.error('Xatolik yuz berdi:', err);
+			}
+			} else {
+			console.error('Havola topilmadi');
+			}
+		} else {
+			console.error('Post topilmadi');
+		}
+	}
+
     document.addEventListener("DOMContentLoaded", function() {
           // reply tugmasini tanlang
           var replyButton = document.getElementById("reply"); // yourReplyButtonId ni o'zgartiring

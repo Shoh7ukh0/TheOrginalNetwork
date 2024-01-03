@@ -57,11 +57,11 @@
                       </button>
                       <!-- Card share action dropdown menu -->
                       <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="profileAction2">
-                        <li><a class="dropdown-item" href="#"> <i class="bi bi-bookmark fa-fw pe-2"></i>Profilni xabarda baham ko'ring</a></li>
-                        <li><a class="dropdown-item" href="#"> <i class="bi bi-file-earmark-pdf fa-fw pe-2"></i>Profilingizni PDF formatida saqlang</a></li>
-                        <li><a class="dropdown-item" href="#"> <i class="bi bi-lock fa-fw pe-2"></i>Profilni qulflash</a></li>
+                        <li><a class="dropdown-item" href="#"> <i class="bi bi-bookmark fa-fw pe-2"></i>Share profile in a message</a></li>
+                        <li><a class="dropdown-item" href="{% url 'profile_to_pdf' %}"> <i class="bi bi-file-earmark-pdf fa-fw pe-2"></i>Save your profile to PDF</a></li>
+                        <li><a class="dropdown-item" href="#"> <i class="bi bi-lock fa-fw pe-2"></i>Lock profile</a></li>
                         <li><hr class="dropdown-divider"></li>
-                        <li><a class="dropdown-item" href="#"> <i class="bi bi-gear fa-fw pe-2"></i>Profil sozlamalari</a></li>
+                        <li><a class="dropdown-item" href="{% url 'edit_profile' username=user.username %}"> <i class="bi bi-gear fa-fw pe-2"></i>Profile settings</a></li>
                       </ul>
                     </div>
                   </div>

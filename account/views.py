@@ -19,6 +19,8 @@ from django.http import HttpResponseServerError
 from django.db.models import Q
 from core.models import ChatSession, ChatMessage
 from original.forms import SearchForm
+import pdfkit
+from django.template import loader
 
 
 class SearchUserView(View):
@@ -293,3 +295,37 @@ def notifications(request):
             user_list.append(ch_session.user2.id)
         all_user = User.objects.exclude(Q(username=user_1.username)|Q(id__in = list(set(user_list))))
     return render(request, 'account/notifications.html',{'all_user' : all_user})
+
+class ProfileToPDFView(View):
+    @method_decorator(login_required)
+    def get(self, request, *args, **kwargs):
+        # Foydalanuvchi profilini olish
+        user_profile = request.user.profile
+
+        # Shablonni yuklash
+        template = loader.get_template('account/profile_pdf_template.html')
+
+        # Shablon bilan ma'lumotlarni to'ldirish
+        context = {
+            'user_profile': user_profile,
+        }
+
+        # HTML-ni generatsiya qilish
+        html_content = template.render(context)
+
+        # HTML-ni PDF-ga o'girish
+        pdf_options = {
+            'page-size': 'A4',
+            'margin-top': '0mm',
+            'margin-right': '0mm',
+            'margin-bottom': '0mm',
+            'margin-left': '0mm',
+        }
+
+        pdf_file = pdfkit.from_string(html_content, False, options=pdf_options)
+
+        # PDF-ni HttpResponse orqali foydalanuvchiga yuborish
+        response = HttpResponse(pdf_file, content_type='application/pdf')
+        response['Content-Disposition'] = 'attachment; filename="user_profile.pdf"'
+
+        return response

@@ -99,6 +99,9 @@
 
 	<!-- Theme CSS -->
 	<link rel="stylesheet" type="text/css" href="{% static 'assets/css/style.css' %}">
+	<link rel="preconnect" href="https://fonts.googleapis.com">
+	<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+	<link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@300&display=swap" rel="stylesheet">
 
 	 <!-- Global site tag (gtag.js) - Google Analytics -->
 	<script async src="https://www.googletagmanager.com/gtag/js?id=G-GMKQ4P9YMZ"></script>
@@ -112,6 +115,7 @@
 
 </head>
 <body>
+{% if user.is_authenticated %}
 <!-- Pre loader -->
 <div class="preloader">
 	<div class="preloader-item">
@@ -120,6 +124,10 @@
 			<img class="light-mode-item navbar-brand-item" src="{% static 'assets/images/logo.svg' %}" alt="logo">
 			<img class="dark-mode-item navbar-brand-item" src="{% static 'assets/images/logo.svg' %}" alt="logo">
 		</a>
+		<div style="position: relative; top: 15em;" class="content">
+			<p style="color: #676a79; position: relative; top: 1em; letter-spacing: 1px;">from</p>
+			<h4 style="color: #0f6fec;"><i style="position: relative; font-family: Tajawal; top: 3px; color: #fff;" class="bi bi-infinity me-2"></i>shohrukh</h4>
+		</div>
 		<!-- Logo END -->
 	</div>
 </div>
@@ -139,9 +147,10 @@ Header START -->
 	  			<i class="bi bi-justify-left fs-3 lh-1"></i>
 			</a>
 			<!-- Logo START -->
-			<a class="navbar-brand" href="{% url 'core:post_list' %}">
+			<a style="letter-spacing: 1px; font-family: Tajawal; font-size: 25px; font-weight: 600;" class="navbar-brand" href="{% url 'core:post_list' %}">
 				<img class="light-mode-item navbar-brand-item" src="{% static 'assets/images/logo.svg' %}" alt="logo">
-				<img class="dark-mode-item navbar-brand-item" src="{% static 'assets/images/logo.svg' %}" alt="logo">		
+				<img class="dark-mode-item navbar-brand-item" src="{% static 'assets/images/logo.svg' %}" alt="logo">
+				Lifebook
 			</a>
 		  	<!-- Logo END -->
 			<!-- Responsive navbar toggler -->
@@ -255,12 +264,7 @@ Header START -->
 							</a> 
 						</li>
 						<li class="dropdown-divider"></li>
-						{% if user.is_authenticated %}
-							<li><a class="dropdown-item bg-danger-soft-hover" href="{% url 'login' %}"><i class="bi bi-box-arrow-right"></i> Sign Out</a></li>
-						{% else %}							
-							<li><a class="dropdown-item bg-danger-soft-hover" href="{% url 'login' %}"><i class="bi bi-box-arrow-in-right"></i> Sign In</a></li>
-							<li><a class="dropdown-item bg-danger-soft-hover" href="{% url 'register' %}"><i class="bi bi-power fa-fw me-2"></i> Sign Up</a></li>
-						{% endif %}
+						<li><a class="dropdown-item bg-danger-soft-hover" href="{% url 'login' %}"><i class="bi bi-box-arrow-right"></i> Sign Out</a></li>
 						<li> <hr class="dropdown-divider"></li>
 						<!-- Dark mode options START -->
 						<li>
@@ -296,6 +300,10 @@ Header START -->
 	</nav>
 <!-- Logo Nav END -->
 </header>
+{% else %}							
+	<li><a class="dropdown-item bg-danger-soft-hover" href="{% url 'login' %}"><i class="bi bi-box-arrow-in-right"></i> Sign In</a></li>
+	<li><a class="dropdown-item bg-danger-soft-hover" href="{% url 'register' %}"><i class="bi bi-power fa-fw me-2"></i> Sign Up</a></li>
+{% endif %}
 <!-- =======================
 Header END -->
 {% block content %}

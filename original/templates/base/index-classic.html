@@ -610,7 +610,12 @@
 							<!-- Feed box  -->
 							<form class="w-100">
 								{% csrf_token %}
-								{{ form.caption }}<br>
+								<div class="d-flex">
+                  <div class="avatar me-2">
+                    <a href="#!"> <img class="avatar-img rounded-circle" src="{% if user.profile.photo %}{% thumbnail user.profile.photo 180x180 %}{% else %}../static/profile.gif{% endif %}" alt=""> </a>
+                  </div>
+                  {{ form.caption }}
+                </div><br>
 								{{ form.hashtags }}<br>
 								{{ form.location }}<br>
 							</form>
@@ -662,7 +667,12 @@
 						<!-- Feed box  -->
 						<form class="w-100">
 							{% csrf_token %}
-							{{ form.caption }}<br>
+							<div class="d-flex">
+                <div class="avatar me-2">
+                  <a href="#!"> <img class="avatar-img rounded-circle" src="{% if user.profile.photo %}{% thumbnail user.profile.photo 180x180 %}{% else %}../static/profile.gif{% endif %}" alt=""> </a>
+                </div>
+                {{ form.caption }}
+              </div><br>
 							{{ form.hashtags }}<br>
 							{{ form.location }}<br>
 						</form>

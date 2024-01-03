@@ -6,7 +6,7 @@ from django.shortcuts import render, redirect, get_object_or_404
 from django.views import View
 from django.views.decorators.http import require_POST
 from .forms import LoginForm, UserRegistrationForm, UserEditForm, ProfileEditForm
-from .models import Profile, Contact
+from .models import Notification, Profile, Contact
 from original.models import Post
 from datetime import timedelta
 from django.utils import timezone
@@ -59,11 +59,15 @@ class ProfileView(View):
         one_day_ago = timezone.now() - timedelta(days=1)
         new_users = User.objects.filter(date_joined__gte=one_day_ago)
 
+        # Profilga xabarlar uchun
+        notifications = Notification.objects.filter(user=user)
+
         context = {
             'profile': profile,
             'posts': posts,
             'queryset': queryset,
             'new_users': new_users,
+            'notifications': notifications,
         }
         return render(request, self.template_name, context)
 
@@ -84,6 +88,11 @@ class ProfileView(View):
             messages.success(request, 'Profil ma\'lumotlari saqlandi.')
         else:
             messages.error(request, 'Xatolik yuz berdi. Iltimos, qaytadan urinib ko\'ring.')
+        
+        message = request.POST.get('message')
+        sender = request.user
+        notifications(sender, message)
+        messages.success(request, 'Xabarlar yuborildi.')
 
         return redirect('dashboard', username=username)
 
@@ -146,26 +155,35 @@ class RegistrationView(View):
 
         return render(request, self.template_name, {'user_form': user_form})
 
+@method_decorator(login_required, name='dispatch')
 class EditProfileView(View):
     template_name = 'account/edit.html'
 
-    @method_decorator(login_required)
+    @staticmethod
+    def add_notification(request, user, message):
+        Notification.objects.create(user=user, message=message)
+        messages.success(request, 'Notification added.')
+
     def get(self, request, *args, **kwargs):
         user_form = UserEditForm(instance=request.user)
         profile_form = ProfileEditForm(instance=request.user.profile)
         return render(request, self.template_name, {'user_form': user_form, 'profile_form': profile_form})
 
-    @method_decorator(login_required)
-    def post(self, request, username, *args, **kwargs):
+    def post(self, request, *args, **kwargs):
         user_form = UserEditForm(instance=request.user, data=request.POST)
         profile_form = ProfileEditForm(instance=request.user.profile, data=request.POST, files=request.FILES)
+        
         if user_form.is_valid() and profile_form.is_valid():
             user_form.save()
             profile_form.save()
-            messages.success(request, 'Profile updated successfully')
+            
+            # Qo'shilgan xabarni yuborish
+            self.add_notification(request, request.user, 'Profil ma\'lumotlari o\'zgartirildi.')
+            
             return redirect('my_profile_about')
         else:
             messages.error(request, 'Error updating your profile')
+        
         return render(request, self.template_name, {'user_form': user_form, 'profile_form': profile_form})
 
 class UserListView(View):
@@ -280,27 +298,6 @@ def help_details(request):
 def privacy(request):
     return render(request, 'account/privacy-and-terms.html')
 
-@login_required
-def notifications(request):
-    user_1 = request.user
-    if request.GET.get('id'):
-        user2_id = request.GET.get('id')
-        user_2 = get_object_or_404(User,id = user2_id)
-        get_create = ChatSession.create_if_not_exists(user_1,user_2)
-        if get_create:
-            messages.add_message(request,messages.SUCCESS,f'{user_2.username} successfully added in your chat list!!')
-        else:
-            messages.add_message(request,messages.SUCCESS,f'{user_2.username} already added in your chat list!!')
-        return HttpResponseRedirect('/notifications')
-    else:
-        user_all_friends = ChatSession.objects.filter(Q(user1 = user_1) | Q(user2 = user_1))
-        user_list = []
-        for ch_session in user_all_friends:
-            user_list.append(ch_session.user1.id)
-            user_list.append(ch_session.user2.id)
-        all_user = User.objects.exclude(Q(username=user_1.username)|Q(id__in = list(set(user_list))))
-    return render(request, 'account/notifications.html',{'all_user' : all_user})
-
 class ProfileToPDFView(View):
     @method_decorator(login_required)
     def get(self, request, *args, **kwargs):
@@ -334,3 +331,44 @@ class ProfileToPDFView(View):
         response['Content-Disposition'] = 'attachment; filename="user_profile.pdf"'
 
         return response
+
+
+@method_decorator(login_required, name='dispatch')
+class NotificationsView(View):
+    template_name = 'account/notifications.html'
+
+    def get(self, request, username, *args, **kwargs):
+        user = get_object_or_404(User, username=username)
+        notifications = Notification.objects.filter(user=user)
+
+        user_1 = request.user
+        if request.GET.get('id'):
+            user2_id = request.GET.get('id')
+            user_2 = get_object_or_404(User,id = user2_id)
+            get_create = ChatSession.create_if_not_exists(user_1,user_2)
+            if get_create:
+                messages.add_message(request,messages.SUCCESS,f'{user_2.username} successfully added in your chat list!!')
+            else:
+                messages.add_message(request,messages.SUCCESS,f'{user_2.username} already added in your chat list!!')
+            return HttpResponseRedirect('/notifications')
+        else:
+            user_all_friends = ChatSession.objects.filter(Q(user1 = user_1) | Q(user2 = user_1))
+            user_list = []
+            for ch_session in user_all_friends:
+                user_list.append(ch_session.user1.id)
+                user_list.append(ch_session.user2.id)
+            all_user = User.objects.exclude(Q(username=user_1.username)|Q(id__in = list(set(user_list))))
+        # Profilga bog'liq xabarlar
+        notifications = Notification.objects.filter(user=request.user)
+
+        context = {
+            'notifications': notifications,
+            'all_user': all_user,
+        }
+
+        return render(request, self.template_name, context)
+
+def notifications(sender, message):
+    users = User.objects.exclude(username=sender.username)
+    for user in users:
+        Notification.objects.create(user=user, message=message)

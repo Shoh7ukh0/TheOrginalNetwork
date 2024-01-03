@@ -183,7 +183,7 @@ Header START -->
 
 					<!-- Nav item -->
 				  	<li class="nav-item">
-					  	<a class="nav-link" href="{% url 'notifications' %}"> 
+					  	<a class="nav-link" href="{% url 'notifications'  username=user.username %}"> 
 							<div class="badge-notif badge-notif-bottom"></div>
 							<i class="bi bi-bell"></i> <span class="nav-text"> Notifications </span>
 						</a>

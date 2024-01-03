@@ -24,7 +24,7 @@ urlpatterns = [
     path('help/', views.help, name='help'),
     path('help_details/', views.help_details, name='help_details'),
     path('privacy/', views.privacy, name='privacy'),
-    path('notifications/', views.notifications, name = 'notifications'),
+    path('notifications/<str:username>/', views.NotificationsView.as_view(), name='notifications'),
     path('search/', views.SearchUserView.as_view(), name='search_user'),
 
     # # url-адреса смены пароля

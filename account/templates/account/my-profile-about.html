@@ -75,7 +75,7 @@
               <ul class="list-inline mb-0 text-center text-sm-start mt-3 mt-sm-0">
                 <li class="list-inline-item"><i class="bi bi-briefcase me-1"></i> {{ profile.user_type }}</li>
                 <li class="list-inline-item"><i class="bi bi-geo-alt me-1"></i> {{ profile.location }}</li>
-                <li class="list-inline-item"><i class="bi bi-calendar2-plus me-1"></i> Joined on Nov 26, 2019</li>
+                <li class="list-inline-item"><i class="bi bi-calendar2-plus me-1"></i> {{ profile.created_at }} qo‘shilgan</li>
               </ul>
             </div>
             <!-- Card body END -->
@@ -124,7 +124,7 @@
                     </ul>
                   </div>
                 </div>
-                <p>He moonlights difficult engrossed it, sportsmen. Interested has all Devonshire difficulty gay assistance joy. Handsome met debating sir dwelling age material. As style lived he worse dried. Offered related so visitors we private removed. Moderate do subjects to distance. </p>
+                <p>{{ profile.bio }}</p>
               </div>
               <div class="row g-4">
                 <div class="col-sm-6">
@@ -132,7 +132,11 @@
                   <div class="d-flex align-items-center rounded border px-3 py-2"> 
                     <!-- Date -->
                     <p class="mb-0">
-                      <i class="bi bi-calendar-date fa-fw me-2"></i> Born: <strong> October 20, 1990 </strong>
+                      {% if profile.date_of_birth %}
+                        <i class="bi bi-calendar-date fa-fw me-2"></i> Born: <strong> {{ profile.date_of_birth }} </strong>
+                      {% else %}
+                        <i class="bi bi-calendar-date fa-fw me-2"></i> Born: <strong> 12/12/1990 </strong>
+                      {% endif %}
                     </p>
                     <div class="dropdown ms-auto">
                       <!-- Card share action menu -->
@@ -174,7 +178,7 @@
                   <div class="d-flex align-items-center rounded border px-3 py-2"> 
                     <!-- Date -->
                     <p class="mb-0">
-                      <i class="bi bi-briefcase fa-fw me-2"></i> <strong> Lead Developer </strong>
+                      <i class="bi bi-briefcase fa-fw me-2"></i> <strong> {{ profile.user_type }} </strong>
                     </p>
                     <div class="dropdown ms-auto">
                       <!-- Card share action menu -->
@@ -195,7 +199,7 @@
                   <div class="d-flex align-items-center rounded border px-3 py-2"> 
                     <!-- Date -->
                     <p class="mb-0">
-                      <i class="bi bi-geo-alt fa-fw me-2"></i> Lives in: <strong> New Hampshire </strong>
+                      <i class="bi bi-geo-alt fa-fw me-2"></i> Lives in: <strong> {{ profile.location }} </strong>
                     </p>
                     <div class="dropdown ms-auto">
                       <!-- Card share action menu -->
@@ -216,7 +220,7 @@
                   <div class="d-flex align-items-center rounded border px-3 py-2"> 
                     <!-- Date -->
                     <p class="mb-0">
-                      <i class="bi bi-geo-alt fa-fw me-2"></i> Joined on: <strong> Nov 26, 2019 </strong>
+                      <i class="bi bi-geo-alt fa-fw me-2"></i> Joined on: <strong> {{ profile.created_at }} </strong>
                     </p>
                     <div class="dropdown ms-auto">
                       <!-- Card share action menu -->
@@ -237,7 +241,7 @@
                   <div class="d-flex align-items-center rounded border px-3 py-2"> 
                     <!-- Date -->
                     <p class="mb-0">
-                      <i class="bi bi-envelope fa-fw me-2"></i> Email: <strong> webestica@gmail.com </strong>
+                      <i class="bi bi-envelope fa-fw me-2"></i> Email: <strong> {{ user.email }} </strong>
                     </p>
                     <div class="dropdown ms-auto">
                       <!-- Card share action menu -->

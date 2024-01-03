@@ -204,9 +204,18 @@ class UserFollowView(View):
                 return JsonResponse({'status': 'error'})
 
         return JsonResponse({'status': 'error'})
+        
 
 def my_profile_about(request):
-    return render(request, 'account/my-profile-about.html')
+    # Foydalanuvchini profilini olish
+    profile = Profile.objects.get(user=request.user)
+
+    # Profil ma'lumotlarini shablonga o'tkazish
+    context = {
+        'profile': profile,
+    }
+
+    return render(request, 'account/my-profile-about.html', context)
 
 
 def my_profile_connections(request):

@@ -22,6 +22,7 @@ class Profile(models.Model):
         MARKETOLOGY = 'Marketology'
 
     user = models.OneToOneField(settings.AUTH_USER_MODEL, on_delete=models.PROTECT)
+    email = models.CharField(max_length=300)
     date_of_birth = models.DateField(blank=True, null=True)
     bio = models.TextField()
     photo = models.ImageField(upload_to='users/%Y/%m/%d/', blank=True)

@@ -119,7 +119,7 @@
                     </a>
                     <!-- Card share action dropdown menu -->
                     <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="aboutAction">
-                      <li><a class="dropdown-item" href="#"> <i class="bi bi-pencil-square fa-fw pe-2"></i>Edit</a></li>
+                      <li><a class="dropdown-item" href="{% url 'edit_profile' username=user.username %}"> <i class="bi bi-pencil-square fa-fw pe-2"></i>Edit</a></li>
                       <li><a class="dropdown-item" href="#"> <i class="bi bi-trash fa-fw pe-2"></i>Delete</a></li>
                     </ul>
                   </div>
@@ -145,7 +145,7 @@
                       </a>
                       <!-- Card share action dropdown menu -->
                       <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="aboutAction2">
-                        <li><a class="dropdown-item" href="#"> <i class="bi bi-pencil-square fa-fw pe-2"></i>Edit</a></li>
+                        <li><a class="dropdown-item" href="{% url 'edit_profile' username=user.username %}"> <i class="bi bi-pencil-square fa-fw pe-2"></i>Edit</a></li>
                         <li><a class="dropdown-item" href="#"> <i class="bi bi-trash fa-fw pe-2"></i>Delete</a></li>
                       </ul>
                     </div>
@@ -166,7 +166,7 @@
                       </a>
                       <!-- Card share action dropdown menu -->
                       <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="aboutAction3">
-                        <li><a class="dropdown-item" href="#"> <i class="bi bi-pencil-square fa-fw pe-2"></i>Edit</a></li>
+                        <li><a class="dropdown-item" href="{% url 'edit_profile' username=user.username %}"> <i class="bi bi-pencil-square fa-fw pe-2"></i>Edit</a></li>
                         <li><a class="dropdown-item" href="#"> <i class="bi bi-trash fa-fw pe-2"></i>Delete</a></li>
                       </ul>
                     </div>
@@ -187,7 +187,7 @@
                       </a>
                       <!-- Card share action dropdown menu -->
                       <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="aboutAction4">
-                        <li><a class="dropdown-item" href="#"> <i class="bi bi-pencil-square fa-fw pe-2"></i>Edit</a></li>
+                        <li><a class="dropdown-item" href="{% url 'edit_profile' username=user.username %}"> <i class="bi bi-pencil-square fa-fw pe-2"></i>Edit</a></li>
                         <li><a class="dropdown-item" href="#"> <i class="bi bi-trash fa-fw pe-2"></i>Delete</a></li>
                       </ul>
                     </div>
@@ -208,7 +208,7 @@
                       </a>
                       <!-- Card share action dropdown menu -->
                       <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="aboutAction5">
-                        <li><a class="dropdown-item" href="#"> <i class="bi bi-pencil-square fa-fw pe-2"></i>Edit</a></li>
+                        <li><a class="dropdown-item" href="{% url 'edit_profile' username=user.username %}"> <i class="bi bi-pencil-square fa-fw pe-2"></i>Edit</a></li>
                         <li><a class="dropdown-item" href="#"> <i class="bi bi-trash fa-fw pe-2"></i>Delete</a></li>
                       </ul>
                     </div>
@@ -229,7 +229,7 @@
                       </a>
                       <!-- Card share action dropdown menu -->
                       <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="aboutAction6">
-                        <li><a class="dropdown-item" href="#"> <i class="bi bi-pencil-square fa-fw pe-2"></i>Edit</a></li>
+                        <li><a class="dropdown-item" href="{% url 'edit_profile' username=user.username %}"> <i class="bi bi-pencil-square fa-fw pe-2"></i>Edit</a></li>
                         <li><a class="dropdown-item" href="#"> <i class="bi bi-trash fa-fw pe-2"></i>Delete</a></li>
                       </ul>
                     </div>
@@ -250,22 +250,12 @@
                       </a>
                       <!-- Card share action dropdown menu -->
                       <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="aboutAction7">
-                        <li><a class="dropdown-item" href="#"> <i class="bi bi-pencil-square fa-fw pe-2"></i>Edit</a></li>
+                        <li><a class="dropdown-item" href="{% url 'edit_profile' username=user.username %}"> <i class="bi bi-pencil-square fa-fw pe-2"></i>Edit</a></li>
                         <li><a class="dropdown-item" href="#"> <i class="bi bi-trash fa-fw pe-2"></i>Delete</a></li>
                       </ul>
                     </div>
                   </div>
                   <!-- Joined on END -->
-                </div>
-                <div class="col-sm-6 position-relative">
-                  <!-- Workplace on START -->
-                  <a class="btn btn-dashed rounded w-100" href="#!"> <i class="bi bi-plus-circle-dotted me-1"></i>Add a workplace</a>
-                  <!-- Workplace on END -->
-                </div>
-                <div class="col-sm-6 position-relative">
-                  <!-- Education on START -->
-                  <a class="btn btn-dashed rounded w-100" href="#!"> <i class="bi bi-plus-circle-dotted me-1"></i>Add a education</a>
-                  <!-- Education on END -->
                 </div>
               </div>
             </div>

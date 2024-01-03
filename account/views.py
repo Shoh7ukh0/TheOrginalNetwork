@@ -156,7 +156,7 @@ class EditProfileView(View):
             user_form.save()
             profile_form.save()
             messages.success(request, 'Profile updated successfully')
-            return redirect('dashboard', username=username)
+            return redirect('my_profile_about')
         else:
             messages.error(request, 'Error updating your profile')
         return render(request, self.template_name, {'user_form': user_form, 'profile_form': profile_form})

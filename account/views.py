@@ -56,15 +56,13 @@ class ProfileView(View):
         profile = get_object_or_404(Profile, user=user)
         posts = Post.objects.filter(user=user)
         queryset = Profile.objects.filter(user_type=Profile.Status.BLOGER)
-
-        # Qachon ro'yxatdan o'tganligi 24 soat ichida bo'lgan foydalanuvchilarni topamiz
         one_day_ago = timezone.now() - timedelta(days=1)
         new_users = User.objects.filter(date_joined__gte=one_day_ago)
 
         context = {
             'profile': profile,
             'posts': posts,
-            'queryset':queryset,
+            'queryset': queryset,
             'new_users': new_users,
         }
         return render(request, self.template_name, context)
@@ -72,13 +70,20 @@ class ProfileView(View):
     def post(self, request, username, *args, **kwargs):
         user = get_object_or_404(User, username=username)
         profile = get_object_or_404(Profile, user=user)
-        form = UserProfileForm(request.POST, request.FILES, instance=profile)
+        form = ProfileEditForm(request.POST, request.FILES, instance=profile)
+
+        # Lock/unlock so'rovi qabul qilinganmi tekshirish
+        if 'lock_profile' in request.POST:
+            profile.is_locked = not profile.is_locked
+            profile.save()
+            messages.success(request, 'Profil muvaffaqiyatli lock/unlock qilindi.')
+            return redirect('dashboard', username=username)
 
         if form.is_valid():
             form.save()
             messages.success(request, 'Profil ma\'lumotlari saqlandi.')
         else:
-            messages.error(request, 'Xatolik yuz berdi. Iltimos, qaytadan urinib ko\'ring.') 
+            messages.error(request, 'Xatolik yuz berdi. Iltimos, qaytadan urinib ko\'ring.')
 
         return redirect('dashboard', username=username)
 

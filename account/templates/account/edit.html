@@ -119,6 +119,8 @@
                     <form class="row g-3" method="post" enctype="multipart/form-data">
                         {{ user_form.as_p }}
                         {{ profile_form.as_p }}
+                        <label for="is_locked">Lock Profile:</label>
+                        <input type="checkbox" id="is_locked" name="is_locked" {% if user_profile.is_locked %}checked{% endif %}>
                         {% csrf_token %}
                       <!-- Allow checkbox -->
                       <div class="col-12">

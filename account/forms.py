@@ -76,7 +76,7 @@ class UserEditForm(forms.ModelForm):
 class ProfileEditForm(forms.ModelForm):
     class Meta:
         model = Profile
-        fields = ['date_of_birth', 'bio', 'photo', 'user_type', 'location']
+        fields = ['is_locked', 'date_of_birth', 'bio', 'photo', 'user_type', 'location']
 
         widgets = {
             'date_of_birth': forms.TextInput(

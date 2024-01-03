@@ -20,6 +20,8 @@ class Profile(models.Model):
         MUSICIAN = 'Musician'
         SMM_MANAGER = 'SMM manager'
         MARKETOLOGY = 'Marketology'
+        
+    is_locked = models.BooleanField(default=False)
 
     user = models.OneToOneField(settings.AUTH_USER_MODEL, on_delete=models.PROTECT)
     email = models.CharField(max_length=300)

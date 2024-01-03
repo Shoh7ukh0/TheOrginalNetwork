@@ -16,6 +16,22 @@
 </head>
 {% block content %}
 <body>
+{% if profile.is_locked %}
+  <div style="text-align: center; margin-top: 12em;" class="content">
+    <p>Sizning Profileingiz bloklangan uni ochish uchun Pastdagi tugma ustiga bosishingizni suraymiz!</p>
+    <form method="post" action="{% url 'dashboard' username=user.username %}">
+      {% csrf_token %}
+      <!-- Profilni lock/unlock qilish tugmasi -->
+      <button class="dropdown-item"  type="submit" name="lock_profile">
+        {% if profile.is_locked %}
+          <i style="font-size: 7em;" class="bi bi-unlock fa-fw pe-2"></i>
+        {% else %}
+          <i class="bi bi-lock fa-fw pe-2"></i>Lock profile
+        {% endif %}
+      </button>
+    </form>
+  </div>
+{% else %}
 <!-- **************** MAIN CONTENT START **************** -->
 <main>
   
@@ -63,8 +79,20 @@
                     <!-- Card share action dropdown menu -->
                     <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="profileAction2">
                       <li><a class="dropdown-item" href="#"> <i class="bi bi-bookmark fa-fw pe-2"></i>Share profile in a message</a></li>
-                      <li><a class="dropdown-item" href="#"> <i class="bi bi-file-earmark-pdf fa-fw pe-2"></i>Save your profile to PDF</a></li>
-                      <li><a class="dropdown-item" href="#"> <i class="bi bi-lock fa-fw pe-2"></i>Lock profile</a></li>
+                      <li><a class="dropdown-item" href="{% url 'profile_to_pdf' %}"> <i class="bi bi-file-earmark-pdf fa-fw pe-2"></i>Save your profile to PDF</a></li>
+                      <li>
+                        <form method="post" action="{% url 'dashboard' username=user.username %}">
+                          {% csrf_token %}
+                          <!-- Profilni lock/unlock qilish tugmasi -->
+                          <button class="dropdown-item"  type="submit" name="lock_profile">
+                            {% if profile.is_locked %}
+                              <i class="bi bi-unlock fa-fw pe-2"></i>Unlock profile
+                            {% else %}
+                              <i class="bi bi-lock fa-fw pe-2"></i>Lock profile
+                            {% endif %}
+                          </button>
+                        </form>
+                      </li>
                       <li><hr class="dropdown-divider"></li>
                       <li><a class="dropdown-item" href="#"> <i class="bi bi-gear fa-fw pe-2"></i>Profile settings</a></li>
                     </ul>
@@ -73,9 +101,9 @@
               </div>
               <!-- List profile -->
               <ul class="list-inline mb-0 text-center text-sm-start mt-3 mt-sm-0">
-                <li class="list-inline-item"><i class="bi bi-briefcase me-1"></i> Lead Developer</li>
-                <li class="list-inline-item"><i class="bi bi-geo-alt me-1"></i> New Hampshire</li>
-                <li class="list-inline-item"><i class="bi bi-calendar2-plus me-1"></i> Joined on Nov 26, 2019</li>
+                <li class="list-inline-item"><i class="bi bi-briefcase me-1"></i> {{ profile.user_type }}</li>
+                <li class="list-inline-item"><i class="bi bi-geo-alt me-1"></i> {{ profile.location }}</li>
+                <li class="list-inline-item"><i class="bi bi-calendar2-plus me-1"></i> {{ profile.created_at }}</li>
               </ul>
             </div>
             <!-- Card body END -->
@@ -250,7 +278,7 @@
 
 </main>
 <!-- **************** MAIN CONTENT END **************** -->
-
+{% endif %}
 </body>
 {% endblock %}
 </html>

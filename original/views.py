@@ -250,7 +250,14 @@ class LikeCommentView(View):
 
 
 class LikePostView(View):
+    def get(self, request, slug, *args, **kwargs):
+        # GET so'rovini boshqarish, masalan, postni o'qish uchun
+        post = get_object_or_404(Post, slug=slug)
+
+        return redirect('core:post_detail', slug=post.slug)
+
     def post(self, request, slug, *args, **kwargs):
+        # POST so'rovini boshqarish, masalan, postni "like" yoki "unlike" qilish
         post = get_object_or_404(Post, slug=slug)
         if request.user in post.likes.all():
             post.likes.remove(request.user)

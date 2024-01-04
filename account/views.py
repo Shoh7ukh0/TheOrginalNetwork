@@ -350,7 +350,7 @@ class NotificationsView(View):
                 messages.add_message(request,messages.SUCCESS,f'{user_2.username} successfully added in your chat list!!')
             else:
                 messages.add_message(request,messages.SUCCESS,f'{user_2.username} already added in your chat list!!')
-            return HttpResponseRedirect('/notifications')
+            return HttpResponseRedirect('/notifications', username=username)
         else:
             user_all_friends = ChatSession.objects.filter(Q(user1 = user_1) | Q(user2 = user_1))
             user_list = []

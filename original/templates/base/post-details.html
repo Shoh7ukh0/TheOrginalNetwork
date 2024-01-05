@@ -48,7 +48,7 @@
                 <!-- Info -->
                 <div>
                   <div class="nav nav-divider">
-                    <h6 class="nav-item card-title mb-0"> <a href="#!"> {{ post.user.username }} </a></h6>
+                    <h6 class="nav-item card-title mb-0"> <a href="{% url 'dashboard' username=user.username %}"> {{ post.user.username }} </a></h6>
                     <span class="nav-item small"> {{ post.time_since_creation }}</span>
                   </div>
                   <p class="mb-0 small">{{ post.location }}</p>
@@ -124,7 +124,7 @@
                     <!-- Comment by -->
                     <div class="bg-light rounded-start-top-0 p-3 rounded">
                       <div class="d-flex justify-content-between">
-                        <h6 class="mb-1"> <a href="#!"> {{ comment.user.username }} </a></h6>
+                        <h6 class="mb-1"> <a href="{% url 'dashboard' username=user.username %}"> {{ comment.user.username }} </a></h6>
                         <small class="ms-2">{{ comment.created_at }}</small>
                       </div>
                       <p class="small mb-0">{{ comment.text }}</p>
@@ -166,7 +166,7 @@
                       <div class="ms-2">
                         <div class="bg-light p-3 rounded">
                           <div class="d-flex justify-content-between">
-                            <h6 class="mb-1"> <a href="#!"> {{ reply_comment.user.username }} </a> </h6>
+                            <h6 class="mb-1"> <a href="{% url 'dashboard' username=user.username %}"> {{ reply_comment.user.username }} </a> </h6>
                             <small class="ms-2">{{ reply_comment.created_at }}</small>
                           </div>
                           <p class="small mb-0">{{ reply_comment.text }}</p>

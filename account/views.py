@@ -244,14 +244,19 @@ def my_profile_about(request):
 
 
 def my_profile_connections(request):
+    # Foydalanuvchini profilini olish
+    profile = Profile.objects.get(user=request.user)
+
     try:
         user = request.user
         friends = Contact.objects.filter(user_to=user)
         followers = Contact.objects.filter(user_from=user)
 
+        # Profil ma'lumotlarini shablonga o'tkazish
         context = {
             'friends': friends,
             'followers': followers,
+            'profile': profile,
         }
 
         return render(request, 'account/my-profile-connections.html', context)

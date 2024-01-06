@@ -50,20 +50,8 @@ let stories = new Zuck("stories", {
       [
         // item [id, photo/video, length(sec), src, preview, link, linkText, time, seen(true/false)]
         ["user1-story1", "photo", 5, "../../static/assets/images/albums/01.jpg", "", '', false, false, timestamp()],
-        ["user1-story2", "video", 0, "../../static/assets/images/videos/video_2023-12-30_15-53-33.mp4", "", '', false, false, timestamp()],
+        ["user1-story2", "video", 0, "../../static/assets/images/videos/video-call.mp4", "", '', false, false, timestamp()],
         ["user1-story3", "photo", 5, "../../static/assets/images/albums/02.jpg", "", 'https://webestica.com/', 'Visit my Portfolio', false, timestamp()]
-      ]
-    ),
-
-    // Story (First way)
-    Zuck.buildTimelineItem(
-      "user-2",
-      "../../static/assets/images/post/1by1/08.jpg",
-      "Shohrukh Uralov",
-      "",
-      timestamp(),
-      [
-        ["user2-story1", "video", 0, "../../static/assets/images/videos/video_2023-12-30_15-53-33.mp4", "", '', false, false, timestamp()],
       ]
     ),
     

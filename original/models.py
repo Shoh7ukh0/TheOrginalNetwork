@@ -18,7 +18,7 @@ class Post(models.Model):
     location = models.CharField(max_length=255, blank=True, null=True)
 
     def __str__(self):
-        return f'{self.user.username} - {self.caption[:20]}'
+        return f'{self.user.username} - {self.caption[:50]}'
 
     def save(self, *args, **kwargs):
         # Auto-generate the slug when saving the post

@@ -16,20 +16,25 @@ from account.models import Contact, Profile
 from django.db.models import Q
 from core.models import ChatSession, ChatMessage
 
+from rest_framework.views import APIView
+from rest_framework.response import Response
+from rest_framework import status
+from .permissions import IsOwner
+from rest_framework.decorators import authentication_classes, permission_classes
+from rest_framework.permissions import IsAuthenticated
+from .serializers import PostSerializer, CommentSerializer, SavedPostSerializer
+
 # соединить с redis
 r = redis.Redis(host=settings.REDIS_HOST, port=settings.REDIS_PORT, db=settings.REDIS_DB)
 
 
-class PostListView(View):
-    template_name = 'base/index-classic.html'
-
+@authentication_classes([])
+@permission_classes([])
+class PostListView(APIView):
     def get(self, request, tag_slug=None, *args, **kwargs):
         queryset = Profile.objects.filter(user_type=Profile.Status.BLOGER)
         current_url = request.build_absolute_uri()
-        post = Post.objects.filter(hidden=False)
-
-        form = PostForm()
-        posts = Post.objects.all().order_by('-created_at')
+        posts = Post.objects.filter(hidden=False).order_by('-created_at')
         user_post_count = Post.objects.filter(user=request.user).count()
         users = User.objects.filter(is_active=True)
 
@@ -44,34 +49,34 @@ class PostListView(View):
             post.time_since_creation = f"{hours}h {minutes}m ago"
 
         user_inst = request.user
-        user_all_friends = ChatSession.objects.filter(Q(user1 = user_inst) | Q(user2 = user_inst)).select_related('user1','user2').order_by('-updated_on')
+        user_all_friends = ChatSession.objects.filter(Q(user1=user_inst) | Q(user2=user_inst)).select_related('user1', 'user2').order_by('-updated_on')
         all_friends = []
         for ch_session in user_all_friends:
-            user,user_inst = [ch_session.user2,ch_session.user1] if request.user.username == ch_session.user1.username else [ch_session.user1,ch_session.user2]
-            un_read_msg_count = ChatMessage.objects.filter(chat_session = ch_session.id,message_detail__read = False).exclude(user = user_inst).count()        
+            user, user_inst = [ch_session.user2, ch_session.user1] if request.user.username == ch_session.user1.username else [ch_session.user1, ch_session.user2]
+            un_read_msg_count = ChatMessage.objects.filter(chat_session=ch_session.id, message_detail__read=False).exclude(user=user_inst).count()        
             data = {
-                "user_name" : user.username,
-                "room_name" : ch_session.room_group_name,
-                "un_read_msg_count" : un_read_msg_count,
-                "user_id" : user.id
+                "user_name": user.username,
+                "room_name": ch_session.room_group_name,
+                "un_read_msg_count": un_read_msg_count,
+                "user_id": user.id
             }
             all_friends.append(data)
 
+        serializer = PostSerializer(posts, many=True)
+
         context = {
-            'post': post,
+            'posts': serializer.data,
             'queryset': queryset,
             'section': 'people', 
             'users': users, 
-            'posts': posts, 
             'user_post_count': user_post_count, 
-            'form': form, 
             'friends': friends, 
             'followers': followers,
             'current_url': current_url,
             'user_list': all_friends,
         }
 
-        return render(request, self.template_name, context)
+        return Response(context)
 
     def post(self, request, *args, **kwargs):
         form = PostForm(request.POST, request.FILES, instance=Post())  # Use instance=Post()
@@ -79,43 +84,36 @@ class PostListView(View):
             post = form.save(commit=False)
             post.user = self.request.user  # Associate the post with the current user
             post.save()
-            return redirect('core:post_list')
-        return render(request, self.template_name, {'form': form})
-    
+            serializer = PostSerializer(post)
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
+        return Response(form.errors, status=status.HTTP_400_BAD_REQUEST)
 
-class EditPostView(View):
-    template_name = 'base/edit_post.html'
 
-    def get(self, request, slug, *args, **kwargs):
-        post = get_object_or_404(Post, slug=slug)
-        form = PostForm(instance=post)
-        return render(request, self.template_name, {'form': form, 'post': post})
-
-    def post(self, request, slug, *args, **kwargs):
-        post = get_object_or_404(Post, slug=slug)
-        form = PostForm(request.POST, request.FILES, instance=post)
-        if form.is_valid():
-            edited_post = form.save(commit=False)
-            edited_post.user = self.request.user
-            edited_post.save()
-            return redirect('core:post_detail', slug=slug)
-        return render(request, self.template_name, {'form': form, 'post': post})
-    
-
-class PostDetailView(PostListView, View):
-    model = Post
-    template_name = 'base/post-details.html'
-    context_object_name = 'post'
-    slug_url_kwarg = 'slug'
-
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-        context['user'] = self.request.user
-        return context
+class EditPostAPIView(APIView):
+    permission_classes = [IsAuthenticated]
 
     def get(self, request, slug, *args, **kwargs):
         post = get_object_or_404(Post, slug=slug)
-        total_views = r.incr(f'Post:{post.slug}:views')
+        serializer = PostSerializer(post)
+        return Response(serializer.data)
+
+    def put(self, request, slug, *args, **kwargs):
+        post = get_object_or_404(Post, slug=slug)
+        serializer = PostSerializer(post, data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+    
+class PostDetailView(APIView):
+    def get(self, request, slug, *args, **kwargs):
+        post = get_object_or_404(Post, slug=slug)
+        total_views = post.views + 1
+        post.views = total_views
+        post.save()
+
+        serializer = PostSerializer(post)
 
         comments = post.comments.all()
         likes = post.likes.all()
@@ -127,8 +125,8 @@ class PostDetailView(PostListView, View):
         # Check if the video attribute has a value
         has_video = post.video.url if post.video else None
 
-        context = {
-            'post': post, 
+        data = {
+            'post': serializer.data,
             'comments': comments, 
             'likes': likes, 
             'form': form, 
@@ -137,7 +135,7 @@ class PostDetailView(PostListView, View):
             'total_views': total_views
         }
 
-        return render(request, self.template_name, context)
+        return Response(serializer.data)
 
     @login_required
     def post(self, request, slug, *args, **kwargs):
@@ -159,8 +157,8 @@ class PostDetailView(PostListView, View):
         # Check if the video attribute has a value
         has_video = post.video.url if post.video else None
 
-        context = {
-            'post': post, 
+        data = {
+            'post': serializer.data,
             'comments': comments, 
             'likes': likes, 
             'form': form, 
@@ -168,141 +166,123 @@ class PostDetailView(PostListView, View):
             'has_video': has_video,
         }
 
-        return render(request, self.template_name, context)
+        return Response(serializer.data)
 
 
-class PostCommentView(View):
-    template_name = 'base/post-details.html'
-
+class PostCommentAPIView(APIView):
     def get(self, request, slug):
         post = get_object_or_404(Post, slug=slug)
-        form = CommentForm()
         comments = Comment.objects.filter(post=post)
-        return render(request, self.template_name, {'post': post, 'form': form, 'comments': comments})
+        serializer = CommentSerializer(comments, many=True)
+        return Response(serializer.data)
 
     def post(self, request, slug):
         post = get_object_or_404(Post, slug=slug)
-        form = CommentForm(request.POST)
+        serializer = CommentSerializer(data=request.data)
 
-        if form.is_valid():
-            comment = form.save(commit=False)
-            comment.post = post
-            comment.user = request.user
-            comment.save()
-            return redirect('core:post_detail', slug=slug)
+        if serializer.is_valid():
+            serializer.save(post=post, user=request.user)
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
 
-        comments = Comment.objects.filter(post=post)
-        return render(request, self.template_name, {'post': post, 'form': form, 'comments': comments})
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
-
-class ReplyCommentView(View):
-    template_name = 'base/post-details.html'
-
+class ReplyCommentView(APIView):
     def get(self, request, slug, comment_id):
         post = get_object_or_404(Post, slug=slug)
-        form = CommentForm(initial={'parent': comment_id})
-
         comments = Comment.objects.filter(post=post)
+        serializer = CommentSerializer(comments, many=True)
 
-        context = {
-            'post': post, 
-            'form': form, 
-            'comments': comments
-        }
-
-        return render(request, self.template_name, context)
+        return Response(serializer.data)
 
     def post(self, request, slug, comment_id):
         post = get_object_or_404(Post, slug=slug)
-        form = CommentForm(request.POST)
+        parent_comment = get_object_or_404(Comment, id=comment_id)
+        serializer = CommentSerializer(data=request.data)
 
-        if form.is_valid():
-            parent_comment = get_object_or_404(Comment, id=comment_id)
-            comment = form.save(commit=False)
-            comment.post = post
-            comment.user = request.user
-            comment.reply_to = parent_comment
-            comment.save()
-            return redirect('core:post_detail', slug=slug)
+        if serializer.is_valid():
+            serializer.save(post=post, user=request.user, reply_to=parent_comment)
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
 
-        comments = Comment.objects.filter(post=post)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
-        context = {
-            'post': post, 
-            'form': form, 
-            'comments': comments
-        }
+    def delete(self, request, slug, comment_id):
+        comment = get_object_or_404(Comment, id=comment_id)
+        comment.delete()
+        return Response(status=status.HTTP_204_NO_CONTENT)
 
-        return render(request, self.template_name, context)
-
-class LikeCommentView(View):
-    def post(self, request, slug, comment_id):
+class LikeCommentView(APIView):
+    def post(self, request, comment_id):
         comment = get_object_or_404(Comment, id=comment_id)
         user = request.user
 
         if user in comment.likes.all():
+            # Foydalanuvchi allaqachon buni yoqtirgan bo'lsa, yo'qotib tashlash
             comment.likes.remove(user)
+            liked = False
         else:
+            # Foydalanuvchi yoqmasa, qo'shish
             comment.likes.add(user)
+            liked = True
 
-        return JsonResponse({'likes_count': comment.likes.count()})
+        return Response({'liked': liked})
 
 
-class LikePostView(View):
-    def get(self, request, slug, *args, **kwargs):
-        # GET so'rovini boshqarish, masalan, postni o'qish uchun
+class LikePostAPIView(APIView):
+    def post(self, request, slug):
         post = get_object_or_404(Post, slug=slug)
+        user = request.user
 
-        return redirect('core:post_detail', slug=post.slug)
-
-    def post(self, request, slug, *args, **kwargs):
-        # POST so'rovini boshqarish, masalan, postni "like" yoki "unlike" qilish
-        post = get_object_or_404(Post, slug=slug)
-        if request.user in post.likes.all():
-            post.likes.remove(request.user)
+        if user in post.likes.all():
+            post.likes.remove(user)
+            liked = False
         else:
-            post.likes.add(request.user)
-        return redirect('core:post_detail', slug=post.slug)
+            post.likes.add(user)
+            liked = True
+
+        return Response({'liked': liked})
 
 
-class DeletePostView(View):
-    @method_decorator(login_required)
-    def get(self, request, slug, *args, **kwargs):
+@permission_classes([IsAuthenticated, IsOwner])  # Ruxsatni tekshirish decoratorini qo'shing
+class DeletePostAPIView(APIView):
+    def delete(self, request, slug):
+        post = get_object_or_404(Post, slug=slug, user=request.user)
+        post.comments.all().delete()
+        post.delete()
+        return Response({'message': 'Post deleted successfully'}, status=status.HTTP_204_NO_CONTENT)
+
+@permission_classes([IsAuthenticated, IsOwner])  # Ruxsatni tekshirish decoratorini qo'shing
+class HidePostAPIView(APIView):
+    def post(self, request, slug):
+        post = get_object_or_404(Post, slug=slug, user=request.user)
+        post.hidden = not post.hidden
+        post.save()
+        return Response({'message': 'Post hidden successfully'}, status=status.HTTP_200_OK)
+
+@permission_classes([IsAuthenticated])
+class CopyLinkAPIView(APIView):
+    def post(self, request, slug):
         post = get_object_or_404(Post, slug=slug, user=request.user)
 
-        # O'chirilayotgan postga bog'liq Comment obyektlarni o'chirish
-        post.comments.all().delete()
+        # Copy the link logic goes here
+        # For simplicity, let's assume we just want to create a new post with the same content
 
-        post.delete()
-        return redirect('core:post_list')
+        new_post_data = {
+            'user': post.user,
+            'title': post.title,
+            'content': post.content,
+            # Add other fields as needed
+        }
 
-class HidePostView(View):
-    def get(self, request, slug):
-        # Retrieve the post using the slug from the URL
-        post = get_object_or_404(Post, slug=slug)
+        new_post_serializer = PostSerializer(data=new_post_data)
 
-        # Check if the user initiating the hide action is the owner of the post
-        if request.user.is_authenticated and request.user == post.user:
-            # Toggle the 'hidden' status of the post
-            post.hidden = not post.hidden
-            post.save()
+        if new_post_serializer.is_valid():
+            new_post_serializer.save()
+            return Response({'message': 'Link copied successfully'}, status=status.HTTP_201_CREATED)
+        else:
+            return Response({'error': 'Failed to copy link'}, status=status.HTTP_400_BAD_REQUEST)
 
-        # Redirect back to the post list page or any other page
-        return redirect('core:post_list')
-
-class CopyLinkView(View):
-    def get(self, request, slug, *args, **kwargs):
-        post = get_object_or_404(Post, slug=slug)
-
-        # Assuming you have a function to get the absolute URL of the post
-        post_url = post.get_absolute_url()
-
-        # You can also use request.build_absolute_uri(post.get_absolute_url()) if needed
-
-        return JsonResponse({'post_url': post_url})
-
-def share_post(request, slug):
-    post = get_object_or_404(Post, slug=slug)
-    share_url = request.build_absolute_uri(post.get_absolute_url())
-    return render(request, 'base/share_post.html', {'share_url': share_url})
+# def share_post(request, slug):
+#     post = get_object_or_404(Post, slug=slug)
+#     share_url = request.build_absolute_uri(post.get_absolute_url())
+#     return render(request, 'base/share_post.html', {'share_url': share_url})

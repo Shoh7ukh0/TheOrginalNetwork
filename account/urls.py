@@ -7,7 +7,6 @@ from .views import SearchUserAPIView, ProfileAPIView, LoginAPIView, Registration
 from django.contrib.auth import views as auth_views
 
 
-
 urlpatterns = [
     path('api/help/', HelpView.as_view(), name='api-help'),
     path('api/login/', LoginAPIView.as_view(), name='login-api'),

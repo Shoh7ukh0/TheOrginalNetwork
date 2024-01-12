@@ -1,6 +1,5 @@
 from rest_framework import serializers, viewsets
 from django.contrib.auth.models import User
-from original.models import Post
 
 from .models import Notification, Profile, Contact
 
@@ -88,12 +87,6 @@ class UserConnectionsSerializer(serializers.Serializer):
     def get_profile(self, obj):
         # Profil ma'lumotlarini olish
         return ProfileSerializer(obj['profile']).data
-
-
-class SavedPostsSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = Post
-        fields = '__all__'
 
 
 class ProfileToPDFSerializer(serializers.Serializer):

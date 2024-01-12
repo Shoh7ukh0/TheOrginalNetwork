@@ -29,7 +29,9 @@ from rest_framework.permissions import IsAuthenticated
 
 from .serializers import ProfileSerializer, NotificationSerializer, ProfileEditSerializer, \
     UserRegistrationSerializer, UserFollowSerializer, UserListSerializer, UserDetailSerializer, \
-    UserConnectionsSerializer, SavedPostsSerializer, ProfileToPDFSerializer
+    UserConnectionsSerializer, ProfileToPDFSerializer
+
+from original.serializers import SavedPostSerializer
 
 
 class SearchUserAPIView(APIView):
@@ -286,7 +288,7 @@ class SavedPostsView(APIView):
         saved_posts = user_profile.saved_posts.all()
 
         # Saqlangan postlar haqida ma'lumotlarni JSON formatida qaytarish
-        serializer = SavedPostsSerializer(saved_posts, many=True)
+        serializer = SavedPostSerializer(saved_posts, many=True)
         return Response(serializer.data)
 
 
@@ -300,7 +302,7 @@ class SavePostView(APIView):
             user_profile.saved_posts.add(post)
 
             # Saqlangan post haqida ma'lumotlarni JSON formatida qaytarish
-            serializer = SavedPostsSerializer(user_profile.saved_posts.all(), many=True)
+            serializer = SavedPostSerializer(user_profile.saved_posts.all(), many=True)
             return Response(serializer.data, status=status.HTTP_201_CREATED)
         else:
             return Response({'detail': 'Post has already been saved.'}, status=status.HTTP_400_BAD_REQUEST)
@@ -318,7 +320,7 @@ class DeleteSavedPostView(APIView):
             user_profile.saved_posts.remove(post)
 
             # Saqlangan postlardan keyingi ma'lumotlarni JSON formatida qaytarish
-            serializer = SavedPostsSerializer(user_profile.saved_posts.all(), many=True)
+            serializer = SavedPostSerializer(user_profile.saved_posts.all(), many=True)
             return Response(serializer.data, status=status.HTTP_200_OK)
         else:
             return Response({'detail': 'Post is not saved by the user.'}, status=status.HTTP_400_BAD_REQUEST)

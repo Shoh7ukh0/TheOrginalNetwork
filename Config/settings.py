@@ -68,6 +68,9 @@ INSTALLED_APPS = [
     'core',
     'actions',
     'original',
+
+    'drf_yasg',
+
     'rest_framework',    # Only for login purpose
     'django_admin_inline_paginator',
     'channels',
@@ -198,10 +201,6 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 
-LOGIN_REDIRECT_URL = 'dashboard'
-LOGIN_URL = 'login'
-LOGOUT_URL = 'logout'
-
 ###EmailMessage Settings###
 EMAIL_HOST = 'smtp.gmail.com'
 EMAIL_PORT = '587'
@@ -257,8 +256,6 @@ SOCIAL_AUTH_PIPELINE = [
 REDIS_HOST = 'localhost'
 REDIS_PORT = 6379
 REDIS_DB = 0
-
-LOGIN_REDIRECT_URL = '/login/'
 
 
 ASGI_APPLICATION = 'Config.asgi.application'

@@ -76,7 +76,7 @@ class UserEditForm(forms.ModelForm):
 class ProfileEditForm(forms.ModelForm):
     class Meta:
         model = Profile
-        fields = ['is_locked', 'date_of_birth', 'bio', 'photo', 'user_type', 'location']
+        fields = ['is_locked', 'date_of_birth', 'bio', 'photo', 'bg_photo', 'user_type', 'location']
 
         widgets = {
             'date_of_birth': forms.TextInput(
@@ -96,6 +96,7 @@ class ProfileEditForm(forms.ModelForm):
                 attrs={
                     'class': 'dropzone dropzone-default card shadow-none',
                 }),
+
             'location': forms.TextInput(
                 attrs={
                     'class': 'form-control',

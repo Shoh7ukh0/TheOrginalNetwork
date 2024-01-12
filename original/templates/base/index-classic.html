@@ -153,14 +153,19 @@
                 <!-- Card body START -->
                 <div class="card-body">
                   {% if post.image %}
-                    <img class="card-img" src="{{ post.image.url }}" alt="{{ post.caption }}">
+                    <!-- Grid img -->
+                    <a class="h-100" href="{{ post.image.url }}" data-glightbox data-gallery="image-popup">
+                      <img class="card-img" src="{{ post.image.url }}" alt="{{ post.caption }}">
+                    </a>
                   {% endif %}
 
                   {% if post.video %}
-                    <div class="player-wrapper overflow-hidden">
-                      <video class="player-html" controls crossorigin="anonymous">
-                        <source src="{{ post.video.url }}" type="video/mp4">Your browser does not support the video tag.
-                      </video	>
+                    <div class="overflow-hidden fullscreen-video w-100">
+                      <div class="player-wrapper overflow-hidden">
+                        <video class="player-html" controls crossorigin="anonymous">
+                          <source src="{{ post.video.url }}" type="video/mp4">Your browser does not support the video tag.
+                        </video	>
+                      </div>
                     </div>
                   {% endif %}
                   <p>{{ post.caption }}</p><br/>

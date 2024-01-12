@@ -102,7 +102,7 @@ class EditPostView(View):
         return render(request, self.template_name, {'form': form, 'post': post})
     
 
-class PostDetailView(View):
+class PostDetailView(PostListView, View):
     model = Post
     template_name = 'base/post-details.html'
     context_object_name = 'post'

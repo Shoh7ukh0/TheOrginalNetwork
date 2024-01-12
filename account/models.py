@@ -36,6 +36,7 @@ class Profile(models.Model):
     date_of_birth = models.DateField(blank=True, null=True)
     bio = models.TextField()
     photo = models.ImageField(upload_to='users/%Y/%m/%d/', blank=True)
+    bg_photo = models.ImageField(upload_to='users/%Y/%m/%d', blank=True)
     following = models.ManyToManyField('self', through='Contact', related_name='followers', symmetrical=False, blank=True)
     disable_chat = models.BooleanField(default=False)
     user_type = models.CharField(max_length=100, choices=Status.choices, default=Status.BLOGER)

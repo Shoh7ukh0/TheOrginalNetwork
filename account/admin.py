@@ -3,7 +3,7 @@ from .models import Profile, Contact
 
 @admin.register(Profile)
 class ProfileAdmin(admin.ModelAdmin):
-    list_display = ['user', 'date_of_birth', 'photo', 'location', 'created_at', ]
+    list_display = ['user', 'date_of_birth', 'photo', 'bg_photo', 'location', 'created_at', ]
     raw_id_fields = ['user', 'saved_posts']
 
 @admin.register(Contact)

@@ -12,8 +12,6 @@ https://docs.djangoproject.com/en/4.2/ref/settings/
 
 from pathlib import Path
 import os
-import django_on_heroku
-import dj_database_url
 
 from django.urls import reverse_lazy
 
@@ -39,7 +37,6 @@ ALLOWED_HOSTS = [
     'localhost', 
     '127.0.0.1',
     'lifebook.onrender.com',
-    'lifebook-4203d966baf7.herokuapp.com',
 ]
 
 ABSOLUTE_URL_OVERRIDES = {
@@ -185,8 +182,6 @@ STATIC_URL = 'static/'
 
 STATICFILES_DIRS = (os.path.join(BASE_DIR,'static'), )
 STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
-
-django_on_heroku.settings(locals())
 
 MEDIA_URL = 'media/'
 MEDIA_ROOT = BASE_DIR / 'media'

@@ -41,6 +41,7 @@ ALLOWED_HOSTS = [
     'mysite.com', 
     'localhost', 
     '127.0.0.1',
+    'lifebook.onrender.com',
 ]
 
 ABSOLUTE_URL_OVERRIDES = {

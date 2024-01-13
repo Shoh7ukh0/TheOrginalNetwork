@@ -29,6 +29,7 @@ djangorestframework
 drf-yasg
 easy-thumbnails
 Flask
+gunicorn
 hyperlink
 idna
 incremental

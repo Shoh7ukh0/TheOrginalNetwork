@@ -42,6 +42,7 @@ ALLOWED_HOSTS = [
     'localhost', 
     '127.0.0.1',
     'lifebook.onrender.com',
+    'lifebook-4203d966baf7.herokuapp.com',
 ]
 
 ABSOLUTE_URL_OVERRIDES = {

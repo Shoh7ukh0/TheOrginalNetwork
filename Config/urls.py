@@ -1,7 +1,7 @@
+from ast import List
 from django.urls import path, re_path, include
 from django.contrib import admin
-from django.views.generic import TemplateView, ListView
-from django.contrib.auth.decorators import login_required
+from django.views.generic import ListView
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth import get_user_model
 from django.conf import settings

@@ -1,0 +1,143 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load thumbnail %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+	<!-- Meta Tags -->
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+	<meta name="description" content="Bootstrap 5 based Social Media Network and Community Theme">
+</head>
+{% block content %}
+<body>
+<!-- **************** MAIN CONTENT START **************** -->
+<main>
+  
+  <!-- Container START -->
+  <div class="container">
+    <div class="row g-4">
+      <!-- Main content START -->
+      <div class="col-lg-8 mx-auto">
+        <!-- Card START -->
+        <div class="card">
+          <div class="card-header py-3 border-0 d-flex align-items-center justify-content-between">
+            <h1 class="h5 mb-0">Notifications</h1>
+            <!-- Notification action START -->
+            <div class="dropdown">
+              <a href="#" class="text-secondary btn btn-secondary-soft-hover py-1 px-2" id="cardNotiAction" data-bs-toggle="dropdown" aria-expanded="false">
+                <i class="bi bi-three-dots"></i>
+              </a>
+              <!-- Card share action dropdown menu -->
+              <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="cardNotiAction">
+                <li><a class="dropdown-item" href="#"> <i class="bi bi-check-lg fa-fw pe-2"></i>Mark all read</a></li>
+                <li><a class="dropdown-item" href="#"> <i class="bi bi-bell-slash fa-fw pe-2"></i>Push notifications </a></li>
+                <li><a class="dropdown-item" href="#"> <i class="bi bi-bell fa-fw pe-2"></i>Email notifications </a></li>
+              </ul>
+            </div>
+            <!-- Notification action END -->
+          </div>
+          <div class="card-body p-2">
+            <ul class="list-unstyled">
+              <!-- Notif item -->
+              {% for user in all_user %}
+                <li>
+                  <div class="rounded badge-unread d-sm-flex border-0 mb-1 p-3 position-relative">
+                    <!-- Avatar -->
+                    <div class="avatar text-center">
+                      <img class="avatar-img rounded-circle" src="{% if user.profile.photo %}{% thumbnail user.profile.photo 180x180 %}{% else %}../static/profile.gif{% endif %}" alt="">
+                    </div>
+                    <!-- Info -->
+                    <div class="mx-sm-3 my-2 my-sm-0">
+                      <p class="small mb-2"><b style="font-size: 18px;">{{user.username| title}}</b> sent you a friend request.</p>
+                    <!-- Button -->
+                    <div class="d-flex">
+                      <a href="{% url 'notifications'  username=user.username %}?id={{user.id}}"><button class="btn btn-sm py-1 btn-primary me-2">Accept </button></a>
+                      <button class="btn btn-sm py-1 btn-danger-soft">Delete </button>
+                    </div>
+                  </div>
+                  <!-- Action -->
+                  <div class="d-flex ms-auto">
+                    <p class="small me-5 text-nowrap">Just now</p>
+                    <!-- Notification action START -->
+                    <div class="dropdown position-absolute end-0 top-0 mt-3 me-3">
+                      <a href="#" class="z-index-1 text-secondary btn position-relative py-0 px-2" id="cardNotiAction1" data-bs-toggle="dropdown" aria-expanded="false">
+                        <i class="bi bi-three-dots"></i>
+                      </a>
+                      <!-- Card share action dropdown menu -->
+                      <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="cardNotiAction1">
+                        <li><a class="dropdown-item" href="#"> <i class="bi bi-trash fa-fw pe-2"></i>Delete</a></li>
+                        <li><a class="dropdown-item" href="#"> <i class="bi bi-bell-slash fa-fw pe-2"></i>Turn off </a></li>
+                        <li><a class="dropdown-item" href="#"> <i class="bi bi-volume-mute fa-fw fs-5 pe-2"></i>Mute {{user.username| title}} </a></li>
+                      </ul>
+                    </div>
+                    <!-- Notification action END -->
+                    </div>
+                  </div>
+                </li>
+              {% endfor %}
+              {% for notification in notifications %}
+                <li>
+                  <div class="rounded badge-unread d-sm-flex border-0 mb-1 p-3 position-relative">
+                    <!-- Avatar -->
+                    <div class="avatar text-center">
+                      <img class="avatar-img rounded-circle" src="{% if user.profile.photo %}{% thumbnail user.profile.photo 180x180 %}{% else %}../static/profile.gif{% endif %}" alt="">
+                    </div>
+                    <!-- Info -->
+                    <div class="mx-sm-3 my-2 my-sm-0">
+                      <p class="small mb-2">{{ notification.message }}</p>
+                    <!-- Button -->
+                    <div class="d-flex">
+                      <a href="#!"><button class="btn btn-sm py-1 btn-primary me-2">Accept </button></a>
+                      <button class="btn btn-sm py-1 btn-danger-soft">Delete </button>
+                    </div>
+                  </div>
+                  <!-- Action -->
+                  <div class="d-flex ms-auto">
+                    <p class="small me-5 text-nowrap">{{ notification.timestamp|date:"F d, Y H:i" }}</p>
+                    <!-- Notification action START -->
+                    <div class="dropdown position-absolute end-0 top-0 mt-3 me-3">
+                      <a href="#" class="z-index-1 text-secondary btn position-relative py-0 px-2" id="cardNotiAction1" data-bs-toggle="dropdown" aria-expanded="false">
+                        <i class="bi bi-three-dots"></i>
+                      </a>
+                      <!-- Card share action dropdown menu -->
+                      <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="cardNotiAction1">
+                        <li><a class="dropdown-item" href="#"> <i class="bi bi-trash fa-fw pe-2"></i>Delete</a></li>
+                        <li><a class="dropdown-item" href="#"> <i class="bi bi-bell-slash fa-fw pe-2"></i>Turn off </a></li>
+                      </ul>
+                    </div>
+                    <!-- Notification action END -->
+                    </div>
+                  </div>
+                </li>
+              {% endfor %}
+            </ul>
+          </div>
+          <div class="card-footer border-0 py-3 text-center position-relative d-grid pt-0">
+            <!-- Load more button START -->
+            <a href="#!" role="button" class="btn btn-loader btn-primary-soft" data-bs-toggle="button" aria-pressed="true">
+              <span class="load-text"> Load more notifications </span>
+              <div class="load-icon">
+                <div class="spinner-grow spinner-grow-sm" role="status">
+                  <span class="visually-hidden">Loading...</span>
+                </div>
+              </div>
+            </a>
+            <!-- Load more button END -->
+          </div>
+        </div>
+        <!-- Card END -->
+      </div>
+    </div> <!-- Row END -->
+  </div>
+  <!-- Container END -->
+
+</main>
+
+<!-- **************** MAIN CONTENT END **************** -->
+
+</body>
+{% endblock %}
+</html>

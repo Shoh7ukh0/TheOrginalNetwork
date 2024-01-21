@@ -18,6 +18,11 @@ from django.urls import reverse_lazy
 import redis
 
 # Connect to your internal Redis instance using the REDIS_URL environment variable
+# The REDIS_URL is set to the internal Redis URL e.g. redis://red-343245ndffg023:6379
+# r = redis.from_url(os.environ['redis://red-clecoj0lccns73e9reg0:6379'])
+
+# r.set('key', 'redis-py')
+# r.get('key')
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -36,7 +41,6 @@ ALLOWED_HOSTS = [
     'mysite.com', 
     'localhost', 
     '127.0.0.1',
-    'lifebook.onrender.com',
 ]
 
 ABSOLUTE_URL_OVERRIDES = {
@@ -64,9 +68,6 @@ INSTALLED_APPS = [
     'core',
     'actions',
     'original',
-
-    'drf_yasg',
-
     'rest_framework',    # Only for login purpose
     'django_admin_inline_paginator',
     'channels',
@@ -180,8 +181,11 @@ WKHTMLTOPDF_PATH = '/full/path/to/wkhtmltopdf'
 
 STATIC_URL = 'static/'
 
-STATICFILES_DIRS = (os.path.join(BASE_DIR,'static'), )
-STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
+STATICFILES_DIRS = (
+    os.path.join(BASE_DIR,'static'),
+)
+
+STATIC_ROOT = BASE_DIR / 'staticfiles'
 
 MEDIA_URL = 'media/'
 MEDIA_ROOT = BASE_DIR / 'media'
@@ -193,6 +197,10 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+
+LOGIN_REDIRECT_URL = 'dashboard'
+LOGIN_URL = 'login'
+LOGOUT_URL = 'logout'
 
 ###EmailMessage Settings###
 EMAIL_HOST = 'smtp.gmail.com'
@@ -249,6 +257,8 @@ SOCIAL_AUTH_PIPELINE = [
 REDIS_HOST = 'localhost'
 REDIS_PORT = 6379
 REDIS_DB = 0
+
+LOGIN_REDIRECT_URL = '/login/'
 
 
 ASGI_APPLICATION = 'Config.asgi.application'

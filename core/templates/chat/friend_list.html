@@ -1,0 +1,168 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load thumbnail %}
+
+{% block content %}
+    <!-- **************** MAIN CONTENT START **************** -->
+<main class="justify-content-center">
+    <!-- Container START -->
+    <div class="container">
+        <div class="row gx-0">
+            <!-- Sidebar START -->
+            <div class="col-lg-4 col-xxl-3" id="chatTabs" role="tablist">
+  
+                <!-- Divider -->
+                <div class="d-flex align-items-center mb-4 d-lg-none">
+                    <button class="border-0 bg-transparent" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasNavbar" aria-controls="offcanvasNavbar">
+                        <span class="btn btn-primary"><i class="fa-solid fa-sliders-h"></i></span>
+                        <span class="h6 mb-0 fw-bold d-lg-none ms-2">Chats</span>
+                    </button>
+                </div>
+                <!-- Advanced filter responsive toggler END -->
+                <div class="card card-body border-end-0 border-bottom-0 rounded-bottom-0">
+                    <div class=" d-flex justify-content-between align-items-center">
+                        <h1 class="h5 mb-0">Active chats <span class="badge bg-success bg-opacity-10 text-success">6</span></h1>
+                        <!-- Chat new create message item START -->
+                        <div class="dropend position-relative">
+                            <div class="nav">
+                                <a class="icon-md rounded-circle btn btn-sm btn-primary-soft nav-link toast-btn" data-target="chatToast" href="#" > <i class="bi bi-pencil-square"></i> </a>
+                            </div>
+                        </div>
+                        <!-- Chat new create message item END -->
+                    </div>
+                </div>
+  
+                <nav class="navbar navbar-light navbar-expand-lg mx-0">
+                    <div class="offcanvas offcanvas-start" tabindex="-1" id="offcanvasNavbar">
+                    <!-- Offcanvas header -->
+                        <div class="offcanvas-header">
+                            <button type="button" class="btn-close text-reset ms-auto" data-bs-dismiss="offcanvas"></button>
+                        </div>
+  
+                        <!-- Offcanvas body -->
+                        <div class="offcanvas-body p-0">
+                            <div class="card card-chat-list rounded-end-lg-0 card-body border-end-lg-0 rounded-top-0">
+                                <!-- Search chat START -->
+                                <form class="position-relative">
+                                    <input class="form-control py-2" type="search" placeholder="Search for chats" aria-label="Search">
+                                    <button class="btn bg-transparent text-secondary px-2 py-0 position-absolute top-50 end-0 translate-middle-y" type="submit">
+                                        <i class="bi bi-search fs-5"></i>
+                                    </button>
+                                </form>
+                                <!-- Search chat END -->
+                                <!-- Chat list tab START -->
+                                <div class="mt-4 h-100">
+                                    <div class="chat-tab-list custom-scrollbar">
+                                        {% for user in user_list %}
+                                            <ul class="nav flex-column nav-pills nav-pills-soft">
+                                                <li id = {{user.user_name}} data-bs-dismiss="offcanvas">
+                                                    <!-- Chat user tab item -->
+                                                    <div class="nav-link active text-start" id="chat-1-tab" data-bs-toggle="pill" role="tab">
+                                                        <div class="d-flex">
+                                                            <div class="flex-shrink-0 avatar avatar-story me-2 status-online">
+                                                                <img class="avatar-img rounded-circle" src="{% if user.profile.photo %}{% thumbnail user.profile.photo 180x180 %}{% else %}../static/profile.gif{% endif %}" alt="">
+                                                            </div>
+                                                            <div class="flex-grow-1 d-block">
+                                                                <a style="color: #fff; font-weight: 900;" href="{% url 'start_chat' user.room_name %}" class="mb-0 mt-1">{{user.user_name | title}}<span id="{{user.user_id}}" style="background-color: rgb(0, 60, 255); border-radius: 50%; padding: 0px 6px 0px 6px; float: right;">{{user.un_read_msg_count}}</span></a>
+                                                                <div class="small text-secondary">Frances sent a photo.</div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </li>
+                                            </ul>
+                                        {% endfor %}
+                                    </div>
+                                </div>
+                                <!-- Chat list tab END -->
+                            </div>
+                        </div>
+                    </div>
+                </nav>
+            </div>
+            <!-- Sidebar START -->
+        </div>
+        <!-- Container END -->
+    </main>
+    <!-- **************** MAIN CONTENT END **************** -->
+    <!-- Chat START -->
+    <div class="position-fixed bottom-0 end-0 p-3">
+
+        <!-- Chat toast START -->
+        <div id="chatToast" class="toast bg-mode" role="alert" aria-live="assertive" aria-atomic="true" data-bs-autohide="false">
+            <div class="toast-header bg-mode d-flex justify-content-between">
+                <!-- Title -->
+                <h6 class="mb-0">New message</h6>
+                <button class="btn btn-secondary-soft-hover py-1 px-2" data-bs-dismiss="toast" aria-label="Close"><i class="fa-solid fa-xmark"></i></button>
+            </div>
+            <!-- Top avatar and status END -->
+            <div class="toast-body collapse show" id="collapseChat">
+                <div class="container">
+                    <div class="row g-6">
+                        <!-- Main content START -->
+                        <div class="col-lg-8 mx-auto">
+                            <!-- Card START -->
+                            <div style="background-color: transparent !important; border: none !important;" class="card">
+                                <div class="card-body p-0">
+                                    <ul class="list-unstyled">
+                                        <!-- Notif item -->
+                                        {% for user in all_user %}
+                                            <li style="margin-left: -2em;">
+                                                <div class="d-sm-flex p-0 position-relative">
+                                                    <!-- Avatar -->
+                                                    <div class="avatar text-center">
+                                                        <img class="avatar-img rounded-circle" src="{% if user.profile.photo %}{% thumbnail user.profile.photo 180x180 %}{% else %}../static/profile.gif{% endif %}" alt="">
+                                                    </div>
+                                                    <!-- Info -->
+                                                    <div class="mx-sm-3 my-2 my-sm-0">
+                                                        <h1 class="small mb-2"><b>{{user.username| title}}</b></h1>
+                                                        <p class="small mb-2">sent you a friend request.</p>
+                                                        <!-- Button -->
+                                                        <div class="d-flex">
+                                                            <a href="{% url 'friend_list' %}?id={{user.id}}"><button class="btn btn-sm py-1 btn-primary me-2">Accept </button></a>
+                                                            <button class="btn btn-sm py-1 btn-danger-soft">Delete </button>
+                                                        </div>
+                                                    </div>
+                                                    <!-- Action -->
+                                                    <div class="d-flex ms-auto">
+                                                        <p class="small me-5 text-nowrap">Just now</p>
+                                                    </div>
+                                                </div>
+                                            </li>
+                                        {% endfor %}
+                                    </ul>
+                                </div>
+                            </div>
+                            <!-- Card END -->
+                        </div>
+                    </div> <!-- Row END -->
+                  </div>
+                <!-- Extra space -->
+                <div class="h-200px"></div>
+            </div>
+        </div>
+        <!-- Chat toast END -->
+    
+    </div>
+    <!-- Chat END -->
+{% endblock %}
+
+{% block script %}
+
+    <script>
+        PersonalSocket.onmessage = (e) => {
+            const data = JSON.parse(e.data);
+            if(data.msg_type === 'WENT_ONLINE'){
+                document.getElementById(data.user_name).querySelector('#status').textContent = 'Online'
+            }
+
+            else if(data.msg_type === 'WENT_OFFLINE'){
+                document.getElementById(data.user_name).querySelector('#status').textContent = ''
+            }
+            else if(data.msg_type === 'MESSAGE_COUNTER'){
+                let val = document.getElementById(data.user_id).textContent
+                document.getElementById(data.user_id).textContent = parseInt(val) + 1
+            }
+        }
+    </script>
+
+{% endblock %}

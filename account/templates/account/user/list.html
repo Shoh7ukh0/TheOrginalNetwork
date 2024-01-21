@@ -1,0 +1,36 @@
+{% extends "base.html" %}
+{% load thumbnail %}
+
+{% block title %}People{% endblock %}
+
+{% block content %}
+<div style="margin-top: 5em;" class="col-sm-6 col-lg-12 top-50">
+    <div class="card">
+        <div class="card-header pb-0 border-0">
+            <h5 class="card-title mb-0">Who to follow</h5>
+        </div>
+        <!-- Card body START -->
+        <div class="card-body">
+            <!-- Connection item START -->
+            {% for user in users %}
+                <div class="hstack gap-2 mb-3">
+                    <!-- Avatar -->
+                    <div class="avatar">
+                        <a href="">
+                            <img class="avatar-img rounded-circle" src="{% if user.profile.photo %}{% thumbnail user.profile.photo 180x180 %}{% else %}../static/profile.gif{% endif %}" alt="">
+                        </a>
+                    </div>
+                    <!-- Title -->
+                    <div class="overflow-hidden">
+                        <a class="h6 mb-0" href="{% url 'user_detail' username=user.username %}">
+                            {{ user.username }}<i class="bi bi-patch-check-fill text-success small"></i> </a>
+                        <p class="mb-0 small text-truncate">News anchor</p>
+                    </div>
+                </div>
+            {% endfor %}
+            <!-- Connection item END -->
+        </div>
+        <!-- Card body END -->
+    </div>
+</div>
+{% endblock %}

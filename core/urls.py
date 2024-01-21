@@ -1,10 +1,15 @@
 from django.urls import path
-from .views import HomeAPIView, CreateFriendAPIView, FriendListAPIView, StartChatAPIView, GetLastMessageAPIView 
+from .views import *
+from django.views.generic.base import RedirectView
 
 urlpatterns = [
-    path('api/home/', HomeAPIView.as_view(), name='api_home'),     
-    path('api/create-friend/', CreateFriendAPIView.as_view(), name='api_create_friend'),   
-    path('api/friend-list/', FriendListAPIView.as_view(), name='api_friend_list'),    
-    path('api/start-chat/<str:room_name>/', StartChatAPIView.as_view(), name='api_start_chat'),
-    path('api/get-last-message/', GetLastMessageAPIView.as_view(), name='api_get_last_message'),
+    path('home/', home, name = 'home_page'),
+    
+    path('', RedirectView.as_view(url = '/home')),
+    
+    path('create_friend/', create_friend,name = 'create_friend'),
+    
+    path('friend_list/', friend_list,name = 'friend_list'),
+    
+    path('chat/<str:room_name>/', start_chat, name='start_chat'),
 ]

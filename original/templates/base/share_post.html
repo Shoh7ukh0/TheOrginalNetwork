@@ -1,0 +1,18 @@
+# share_post.html
+{% extends 'base.html' %}
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Share Post</title>
+</head>
+{% block content %}
+<body>
+    <h1>Share Post</h1>
+    <p>Copy the following link to share the post:</p>
+    <input type="text" value="{{ share_url }}" readonly>
+</body>
+{% endblock %}
+</html>

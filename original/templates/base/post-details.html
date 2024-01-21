@@ -1,0 +1,283 @@
+{% extends 'base.html' %}
+{% load blog_tags %}
+{% load thumbnail %}
+<!DOCTYPE html>
+<html lang="en">
+
+<!-- Mirrored from social.webestica.com/post-details.html by HTTrack Website Copier/3.x [XR&CO'2014], Thu, 27 Apr 2023 18:09:16 GMT -->
+<head>
+	<title>The Original</title>
+
+	<!-- Meta Tags -->
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+	<meta name="author" content="Webestica.com">
+	<meta name="description" content="Bootstrap 5 based Social Media Network and Community Theme">
+
+</head>
+{% block content %}
+<body>
+<!-- **************** MAIN CONTENT START **************** -->
+<main>
+
+  <!-- Container START -->
+  <div>
+    <div class="container">
+      <div class="row">
+        <div class="col-lg-8 mx-auto">
+          <div class="card card-body">
+            <!-- Fees images -->
+            {% if post.image %}
+							<img class="card-img" src="{{ post.image.url }}" alt="{{ post.caption }}">
+						{% endif %}
+
+						{% if post.video %}
+						<div class="player-wrapper overflow-hidden">
+							<video class="player-html" controls crossorigin="anonymous">
+								<source src="{{ post.video.url }}" type="video/mp4">Your browser does not support the video tag.
+							</video>
+						</div>
+						{% endif %}
+            <!-- Feed meta START -->
+            <div class="d-flex align-items-center justify-content-between my-3">
+              <div class="d-flex align-items-center">
+                <!-- Avatar -->
+                <div class="avatar avatar-story me-2">
+                  <a href="#!"> <img class="avatar-img rounded-circle" src="{% if user.profile.photo %}{% thumbnail user.profile.photo 180x180 %}{% else %}../static/profile.gif{% endif %}" alt=""> </a>
+                </div>
+                <!-- Info -->
+                <div>
+                  <div class="nav nav-divider">
+                    <h6 class="nav-item card-title mb-0"> <a href="{% url 'dashboard' username=user.username %}"> {{ post.user.username }} </a></h6>
+                    <span class="nav-item small"> {{ post.time_since_creation }}</span>
+                  </div>
+                  <p class="mb-0 small">{{ post.location }}</p>
+                </div>
+              </div>
+              <!-- Card feed action dropdown START -->
+              <div class="dropdown">
+                <a href="#" class="text-secondary btn btn-secondary-soft-hover py-1 px-2" id="cardFeedAction" data-bs-toggle="dropdown" aria-expanded="false">
+                  <i class="bi bi-three-dots"></i>
+                </a>
+                <!-- Card feed action dropdown menu -->
+                <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="cardFeedAction">
+                  <li>
+                    {% if user.is_authenticated %}
+                      <a class="dropdown-item" href="{% url 'core:edit_post' slug=post.slug %}"> <i class="bi bi-pencil-square"></i> Edit</a>
+                      <a class="dropdown-item" href="{% url 'core:delete_post' slug=post.slug %}"> <i class="bi bi-trash3"></i> Delete</a>
+                    {% endif %}</li>
+                </ul>
+              </div>
+              <!-- Card feed action dropdown END -->
+            </div>
+            <!-- Feed meta Info -->
+            <p>{{ post.caption }}</p><br/>
+            <a href="#">{% for hashtag in post.hashtags.all %}#{{ hashtag.name }} {% endfor %}</a>
+            <!-- Feed react START -->
+            <ul class="nav nav-stack flex-wrap small mb-3">
+              <li class="nav-item">
+                <form method="post" action="{% url 'core:like_post' slug=post.slug %}">
+                  {% csrf_token %}
+                  <button style="border: none; background-color: transparent;" type="submit">
+                    <a class="nav-link" href="#!"> 
+                      <i class="bi bi-hand-thumbs-up-fill pe-1"></i>({{ likes.count }})
+                    </a>
+                  </button>
+              </form>          
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="#!"> <i class="bi bi-chat-fill pe-1"></i>({{ post.comments.count }})</a>
+              </li>
+              <!-- Card share action START -->
+              <li class="nav-item dropdown ms-sm-auto">
+                <a class="nav-link mb-0" href="#" id="cardShareAction" data-bs-toggle="dropdown" aria-expanded="false">
+                  <i class="bi bi-reply-fill flip-horizontal ps-1"></i>(3)
+                </a>
+                <!-- Card share action dropdown menu -->
+                <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="cardShareAction">
+                  <li><a class="dropdown-item" href="#"> <i class="bi bi-envelope fa-fw pe-2"></i>Send via Direct Message</a></li>
+                  <li><a class="dropdown-item" href="#"> <i class="bi bi-bookmark-check fa-fw pe-2"></i>Bookmark </a></li>
+                  <li><a class="dropdown-item" id="copyLinkToPost" href=""> <i class="bi bi-link fa-fw pe-2"></i>{{ post.get_absolute_url }}</a></li>
+                  <li><a class="dropdown-item" href="#"> <i class="bi bi-share fa-fw pe-2"></i>Share post via …</a></li>
+                  <li><hr class="dropdown-divider"></li>
+                  <li><a class="dropdown-item" href="#"> <i class="bi bi-pencil-square fa-fw pe-2"></i>Share to News Feed</a></li>
+                </ul>
+              </li>
+              <!-- Card share action END -->
+            </ul>
+            <!-- Feed react END -->
+
+            <!-- Comment wrap START -->
+            
+            <ul class="comment-wrap list-unstyled">
+              <!-- Comment item START -->
+              {% for comment in comments %}
+              <li class="comment-item">
+                
+                <div class="d-flex position-relative">
+                  <!-- Avatar -->
+                  <div class="avatar avatar-xs">
+                    <a href="#!"><img class="avatar-img rounded-circle" src="{% if user.profile.photo %}{% thumbnail user.profile.photo 180x180 %}{% else %}../static/profile.gif{% endif %}" alt=""></a>
+                  </div>
+                  
+                  <div class="ms-2">
+                    <!-- Comment by -->
+                    <div class="bg-light rounded-start-top-0 p-3 rounded">
+                      <div class="d-flex justify-content-between">
+                        <h6 class="mb-1"> <a href="{% url 'dashboard' username=user.username %}"> {{ comment.user.username }} </a></h6>
+                        <small class="ms-2">{{ comment.created_at }}</small>
+                      </div>
+                      <p class="small mb-0">{{ comment.text }}</p>
+                    </div>
+                    <!-- Comment react -->
+                    <ul class="nav nav-divider py-2 small">
+                      <li class="nav-item">
+                        <a class="nav-link like-comment" data-comment-id="{{ comment.id }}" href="#!"> Like ({{ comment.likes.count }})</a>
+                      </li>
+                      <li class="nav-item">
+                        <a class="nav-link" id="reply" href="#!"> Reply</a>
+                      </li>
+                      <li class="nav-item">
+                        <a class="nav-link" href="#!"> View replies</a>
+                      </li>
+                    </ul>
+                    <form style="display: none;" id="replyForm" class="nav nav-item w-100 position-relative" action="{% url 'core:reply_comment' slug=post.slug comment_id=comment.id %}" method="post">
+                      {% csrf_token %}
+                      {{ form.text }}
+                      <button class="nav-link bg-transparent px-3 position-absolute top-50 end-0 translate-middle-y border-0" type="submit">
+                        <i class="bi bi-send-fill"> </i>
+                      </button>
+                    </form> 
+                  </div>
+                </div>
+                
+                <!-- Reply Comments -->
+                {% for reply_comment in comment.get_reply_comments %}
+                <!-- Comment item nested START -->
+                <ul class="comment-item-nested list-unstyled">
+                  <!-- Comment item START -->
+                  <li class="comment-item">
+                    <div class="d-flex">
+                      <!-- Avatar -->
+                      <div class="avatar avatar-xs">
+                        <a href="#!"><img class="avatar-img rounded-circle" src="{% if reply_comment.user.profile.photo %}{% thumbnail reply_comment.user.profile.photo 180x180 %}{% else %}../static/profile.gif{% endif %}" alt=""></a>
+                      </div>
+                      <!-- Comment by -->
+                      <div class="ms-2">
+                        <div class="bg-light p-3 rounded">
+                          <div class="d-flex justify-content-between">
+                            <h6 class="mb-1"> <a href="{% url 'dashboard' username=user.username %}"> {{ reply_comment.user.username }} </a> </h6>
+                            <small class="ms-2">{{ reply_comment.created_at }}</small>
+                          </div>
+                          <p class="small mb-0">{{ reply_comment.text }}</p>
+                        </div>
+                        <!-- Comment react -->
+                        <ul class="nav nav-divider py-2 small">
+                          <li class="nav-item">
+                            <a class="nav-link" href=""> Like ({{ reply_comment.likes.count }})</a>
+                          </li>
+                          <!-- <li class="nav-item">
+                            <a class="nav-link" href="#!"> Reply</a>
+                          </li> -->
+                        </ul>
+                      </div>
+                    </div>
+                  </li>
+                  <!-- Comment item END -->
+                </ul>
+                {% endfor %}
+              </li>
+              {% endfor %}
+              <!-- Comment item END -->
+            </ul>
+            <form class="nav nav-item w-100 position-relative" method="post">
+              {% csrf_token %}
+              {{ form.text }}<br/>
+              <button class="nav-link bg-transparent px-3 position-absolute top-50 end-0 translate-middle-y border-0" type="submit">
+                <i class="bi bi-send-fill"> </i>
+              </button>
+            </form>
+            <!-- Comment wrap END -->
+            <a style="position: relative; top: 10px;" class="nav-link t-1" href="#!"> <i class="bi bi-eye"></i> Views ({{ total_views }})</a>
+          </div>
+        </div>
+      </div>
+    </div>
+   </div>
+  <!-- Container END -->
+
+</main>
+<!-- **************** MAIN CONTENT END **************** -->
+
+<!-- Script code Comment like -->
+<script>
+    function copyLinkToPost(postId) {
+		// Postning identifikatorini olish
+		var postElement = document.getElementById(postId);
+		
+		if (postElement) {
+			// Postning havolani olish
+			var postLink = postElement.querySelector('.post-link');
+			
+			if (postLink) {
+			// Havolani tanlang
+			postLink.select();
+			
+			try {
+				// Tanlangan havolani klibortga nusxalash
+				var successful = document.execCommand('copy');
+				var message = successful ? 'Havola nusxalandi!' : "Nusxa bo'lmadi. Qaytadan urinib ko'ring.";
+				console.log(message);
+			} catch (err) {
+				console.error('Xatolik yuz berdi:', err);
+			}
+			} else {
+			console.error('Havola topilmadi');
+			}
+		} else {
+			console.error('Post topilmadi');
+		}
+	}
+
+    document.addEventListener("DOMContentLoaded", function() {
+          // reply tugmasini tanlang
+          var replyButton = document.getElementById("reply"); // yourReplyButtonId ni o'zgartiring
+
+          // reply tugmasi bosilganda formani chiqaring
+          replyButton.addEventListener("click", function() {
+            var replyForm = document.getElementById("replyForm");
+              replyForm.style.display = "block";
+          });
+    });
+
+  document.addEventListener("DOMContentLoaded", function () {
+      const likeButtons = document.querySelectorAll('.like-comment');
+
+      likeButtons.forEach(function (button) {
+          button.addEventListener('click', function () {
+              const commentId = this.getAttribute('data-comment-id');
+
+              fetch(`/post/${post.id}/comment/${commentId}/like/`, {
+                  method: 'POST',
+                  headers: {
+                      'X-CSRFToken': '{{ csrf_token }}',
+                  },
+              })
+                  .then(response => response.json())
+                  .then(data => {
+                      // JSON javobni qabul qilinganidan so'ng kerakli amallarni bajarish
+                      console.log(data);
+                  })
+                  .catch(error => {
+                      console.error('Xatolik yuz berdi:', error);
+                  });
+          });
+      });
+  });
+</script>
+
+</body>
+{% endblock %}
+
+<!-- Mirrored from social.webestica.com/post-details.html by HTTrack Website Copier/3.x [XR&CO'2014], Thu, 27 Apr 2023 18:09:18 GMT -->
+</html>

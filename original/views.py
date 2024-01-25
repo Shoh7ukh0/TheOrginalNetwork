@@ -12,7 +12,7 @@ from django.conf import settings
 from datetime import datetime, timezone
 from django.http import JsonResponse
 from django.http import HttpResponseServerError
-from account.models import Contact, Profile
+from accounts.models import Contact, Profile
 from django.db.models import Q
 from core.models import ChatSession, ChatMessage
 

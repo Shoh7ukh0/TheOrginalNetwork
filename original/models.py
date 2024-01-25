@@ -17,6 +17,10 @@ class Post(models.Model):
     hidden = models.BooleanField(default=False)
     location = models.CharField(max_length=255, blank=True, null=True)
 
+    @property
+    def likes_count(self):
+        return self.likes.count()
+
     def __str__(self):
         return f'{self.user.username} - {self.caption[:50]}'
 

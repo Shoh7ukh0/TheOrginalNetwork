@@ -1,27 +1,29 @@
 from django.shortcuts import render, redirect
 from django.contrib.auth.decorators import login_required
 from django.utils.decorators import method_decorator
-from django.urls import reverse
+from django.views.generic import DetailView, ListView
 from django.views import View
 from django.shortcuts import get_object_or_404
-from .models import Post, SavedPost, Comment
-from .forms import PostForm, CommentForm, SearchForm
+from .models import Post, Comment
+from .forms import PostForm, CommentForm
 from django.contrib.auth.models import User
 import redis
 from django.conf import settings
 from datetime import datetime, timezone
 from django.http import JsonResponse
-from django.http import HttpResponseServerError
 from accounts.models import Contact, Profile
 from django.db.models import Q
 from core.models import ChatSession, ChatMessage
+from django.contrib.auth.mixins import LoginRequiredMixin
 
 # соединить с redis
 r = redis.Redis(host=settings.REDIS_HOST, port=settings.REDIS_PORT, db=settings.REDIS_DB)
 
 
-class PostListView(View):
+class PostListView(LoginRequiredMixin, ListView):
+    login_url = '/accounts/login/'
     template_name = 'base/index-classic.html'
+
 
     def get(self, request, tag_slug=None, *args, **kwargs):
         queryset = Profile.objects.filter(user_type=Profile.Status.BLOGER)
@@ -72,7 +74,7 @@ class PostListView(View):
         }
 
         return render(request, self.template_name, context)
-
+    
     def post(self, request, *args, **kwargs):
         form = PostForm(request.POST, request.FILES, instance=Post())  # Use instance=Post()
         if form.is_valid():
@@ -102,11 +104,12 @@ class EditPostView(View):
         return render(request, self.template_name, {'form': form, 'post': post})
     
 
-class PostDetailView(PostListView, View):
+class PostDetailView(DetailView):
     model = Post
     template_name = 'base/post-details.html'
     context_object_name = 'post'
     slug_url_kwarg = 'slug'
+    login_url = '/accounts/login/'
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -237,6 +240,7 @@ class ReplyCommentView(View):
         return render(request, self.template_name, context)
 
 class LikeCommentView(View):
+    
     def post(self, request, slug, comment_id):
         comment = get_object_or_404(Comment, id=comment_id)
         user = request.user
@@ -249,21 +253,24 @@ class LikeCommentView(View):
         return JsonResponse({'likes_count': comment.likes.count()})
 
 
-class LikePostView(View):
-    def get(self, request, slug, *args, **kwargs):
-        # GET so'rovini boshqarish, masalan, postni o'qish uchun
+class LikePostView(LoginRequiredMixin, View):
+    login_url = '/accounts/login/'
+
+    def post(self, request, slug):
         post = get_object_or_404(Post, slug=slug)
 
-        return redirect('core:post_detail', slug=post.slug)
-
-    def post(self, request, slug, *args, **kwargs):
-        # POST so'rovini boshqarish, masalan, postni "like" yoki "unlike" qilish
-        post = get_object_or_404(Post, slug=slug)
+        # Check if the user has already liked the post
         if request.user in post.likes.all():
+            # User already liked, remove the like
             post.likes.remove(request.user)
+            liked = False
         else:
+            # User has not liked, add the like
             post.likes.add(request.user)
-        return redirect('core:post_detail', slug=post.slug)
+            liked = True
+
+        # Return updated like status
+        return JsonResponse({'liked': liked, 'likes_count': post.likes.count()})
 
 
 class DeletePostView(View):

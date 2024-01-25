@@ -76,14 +76,14 @@
             <!-- Feed react START -->
             <ul class="nav nav-stack flex-wrap small mb-3">
               <li class="nav-item">
-                <form method="post" action="{% url 'core:like_post' slug=post.slug %}">
-                  {% csrf_token %}
-                  <button style="border: none; background-color: transparent;" type="submit">
-                    <a class="nav-link" href="#!"> 
-                      <i class="bi bi-hand-thumbs-up-fill pe-1"></i>({{ likes.count }})
-                    </a>
-                  </button>
-              </form>          
+                <button style="border: none; background-color: transparent !important; color: #fff;" class="like-btn" data-post-slug="{{ post.slug }}" data-liked="{% if request.user in post.likes.all %}true{% else %}false{% endif %}">
+                  {% if request.user in post.likes.all %}
+                    <i style="color: red;" class="fas fa-heart"></i> <!-- Filled heart icon -->
+                  {% else %}
+                    <i class="far fa-heart"></i> <!-- Empty heart icon -->
+                  {% endif %}
+                </button>          
+                <span id="likes-count-{{ post.slug }}">({{ post.likes_count }}) </span>
               </li>
               <li class="nav-item">
                 <a class="nav-link" href="#!"> <i class="bi bi-chat-fill pe-1"></i>({{ post.comments.count }})</a>
@@ -211,6 +211,44 @@
 
 <!-- Script code Comment like -->
 <script>
+    $(document).ready(function () {
+      $.ajaxSetup({
+        headers: {
+          'X-CSRFToken': $('input[name=csrfmiddlewaretoken]').val()
+        }
+      });
+
+      $('.like-btn').on('click', function () {
+        var button = $(this);
+        var postSlug = button.data('post-slug');
+        var liked = button.data('liked') === 'true';
+
+        console.log('postSlug:', postSlug);
+
+        $.post('/like-post/' + postSlug + '/', {}, function (data) {
+          if (data.error) {
+            console.error('Error during like request:', data.error);
+            return;
+          }
+
+          if (data.liked) {
+            // Update the like status
+            button.find('.far').show(); // Show empty heart icon
+            button.find('.fas').hide(); // Hide filled heart icon
+          } else {
+            // Update the like status
+            button.find('.far').hide(); // Hide empty heart icon
+            button.find('.fas').show(); // Show filled heart icon
+          }
+
+          // Update the likes count
+          $('#likes-count-' + postSlug).text(data.likes_count);
+        }).fail(function(xhr, status, error) {
+          console.error('AJAX request failed:', status, error);
+        });
+      });
+    });
+  
     function copyLinkToPost(postId) {
 		// Postning identifikatorini olish
 		var postElement = document.getElementById(postId);
@@ -239,16 +277,16 @@
 		}
 	}
 
-    document.addEventListener("DOMContentLoaded", function() {
-          // reply tugmasini tanlang
-          var replyButton = document.getElementById("reply"); // yourReplyButtonId ni o'zgartiring
+  document.addEventListener("DOMContentLoaded", function() {
+    // reply tugmasini tanlang
+    var replyButton = document.getElementById("reply"); // yourReplyButtonId ni o'zgartiring
 
-          // reply tugmasi bosilganda formani chiqaring
-          replyButton.addEventListener("click", function() {
-            var replyForm = document.getElementById("replyForm");
-              replyForm.style.display = "block";
-          });
+    // reply tugmasi bosilganda formani chiqaring
+    replyButton.addEventListener("click", function() {
+      var replyForm = document.getElementById("replyForm");
+        replyForm.style.display = "block";
     });
+  });
 
   document.addEventListener("DOMContentLoaded", function () {
       const likeButtons = document.querySelectorAll('.like-comment');

@@ -129,7 +129,7 @@
 		</a>
 		<div style="position: relative; top: 15em;" class="content">
 			<p style="color: #676a79; position: relative; top: 1em; letter-spacing: 1px;">from</p>
-			<h4 style="color: #0f6fec;"><i style="position: relative; font-family: Tajawal; top: 3px; color: #fff;" class="bi bi-infinity me-2"></i>shohrukh</h4>
+			<h4 style="color: #0f6fec;"><i style="position: relative; font-family: Tajawal; top: 3px; color: #0f6fec;" class="bi bi-meta me-2"></i>shohrukh</h4>
 		</div>
 		<!-- Logo END -->
 	</div>
@@ -187,7 +187,7 @@ Header START -->
 
 					<!-- Nav item -->
 				  	<li class="nav-item">
-					  	<a class="nav-link" href=""> 
+					  	<a class="nav-link" href="{% url 'notifications'  username=user.username %}"> 
 							<div class="badge-notif badge-notif-bottom"></div>
 							<i class="bi bi-bell"></i> <span class="nav-text"> Notifications </span>
 						</a>

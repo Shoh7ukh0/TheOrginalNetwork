@@ -15,6 +15,7 @@ from accounts.models import Contact, Profile
 from django.db.models import Q
 from core.models import ChatSession, ChatMessage
 from django.contrib.auth.mixins import LoginRequiredMixin
+from .tasks import process_post
 
 # соединить с redis
 r = redis.Redis(host=settings.REDIS_HOST, port=settings.REDIS_PORT, db=settings.REDIS_DB)
@@ -23,6 +24,14 @@ r = redis.Redis(host=settings.REDIS_HOST, port=settings.REDIS_PORT, db=settings.
 class PostListView(LoginRequiredMixin, ListView):
     login_url = '/accounts/login/'
     template_name = 'base/index-classic.html'
+    model = Post
+    fields = ['caption', 'image', 'video']
+
+    def form_valid(self, form):
+        response = super().form_valid(form)
+        # Call Celery task to process the post asynchronously
+        process_post.delay(self.object.id)
+        return response
 
 
     def get(self, request, tag_slug=None, *args, **kwargs):

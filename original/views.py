@@ -1,8 +1,9 @@
 from django.shortcuts import render, redirect
 from django.contrib.auth.decorators import login_required
 from django.utils.decorators import method_decorator
-from django.views.generic import DetailView, ListView
+from django.views.generic import DetailView, ListView, CreateView
 from django.views import View
+from django.urls import reverse
 from django.shortcuts import get_object_or_404
 from .models import Post, Comment
 from .forms import PostForm, CommentForm
@@ -15,82 +16,98 @@ from accounts.models import Contact, Profile
 from django.db.models import Q
 from core.models import ChatSession, ChatMessage
 from django.contrib.auth.mixins import LoginRequiredMixin
-from .tasks import process_post
+from .tasks import process_video
+from actions.utils import create_action
+from django.contrib import messages
 
 # соединить с redis
 r = redis.Redis(host=settings.REDIS_HOST, port=settings.REDIS_PORT, db=settings.REDIS_DB)
 
 
-class PostListView(LoginRequiredMixin, ListView):
+class PostCreateView(LoginRequiredMixin, CreateView):
     login_url = '/accounts/login/'
-    template_name = 'base/index-classic.html'
+    template_name = 'base/post-create.html'
     model = Post
     fields = ['caption', 'image', 'video']
 
     def form_valid(self, form):
         response = super().form_valid(form)
         # Call Celery task to process the post asynchronously
-        process_post.delay(self.object.id)
+        process_video.delay(self.object.id)
         return response
 
+    def get(self, request, *args, **kwargs):
+        # Handle GET request, e.g., when form is submitted with errors
+        form = PostForm(data=request.GET)
+        return render(request, self.template_name, {'section': 'post', 'form': form})
 
-    def get(self, request, tag_slug=None, *args, **kwargs):
-        queryset = Profile.objects.filter(user_type=Profile.Status.BLOGER)
-        current_url = request.build_absolute_uri()
-        post = Post.objects.filter(hidden=False)
+    def post(self, request, *args, **kwargs):
+        # Handle POST request
+        form = PostForm(data=request.POST)
+        if form.is_valid():
+            cd = form.cleaned_data
+            new_post = form.save(commit=False)
+            new_post.user = request.user
+            new_post.save()
+            create_action(request.user, 'lifebook post', new_post)
+            messages.success(request, 'Post created successfully')
+            return redirect('core:post_list')
+        return render(request, self.template_name, {'section': 'post', 'form': form})
 
-        form = PostForm()
-        posts = Post.objects.all().order_by('-created_at')
-        user_post_count = Post.objects.filter(user=request.user).count()
-        users = User.objects.filter(is_active=True)
 
-        user = request.user
-        friends = Contact.objects.filter(user_to=user)
-        followers = Contact.objects.filter(user_from=user)
-        
-        for post in posts:
-            time_difference = datetime.now(timezone.utc) - post.created_at
-            hours, remainder = divmod(time_difference.seconds, 3600)
-            minutes, _ = divmod(remainder, 60)
-            post.time_since_creation = f"{hours}h {minutes}m ago"
+class PostListView(LoginRequiredMixin, ListView):
+    login_url = '/accounts/login/'
+    template_name = 'base/index-classic.html'
+    model = Post
+    context_object_name = 'posts'
+    paginate_by = 10
 
-        user_inst = request.user
-        user_all_friends = ChatSession.objects.filter(Q(user1 = user_inst) | Q(user2 = user_inst)).select_related('user1','user2').order_by('-updated_on')
+    def get_queryset(self):
+        return Post.objects.filter(hidden=False).order_by('-created_at')
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['form'] = PostForm()
+        context['user_post_count'] = Post.objects.filter(user=self.request.user).count()
+        context['users'] = User.objects.filter(is_active=True)
+        new_post_created = self.request.GET.get('new_post') == 'true'
+        context['new_post_created'] = new_post_created
+
+        user = self.request.user
+        context['friends'] = Contact.objects.filter(user_to=user)
+        context['followers'] = Contact.objects.filter(user_from=user)
+
+        context['current_url'] = self.request.build_absolute_uri()
+
+        user_inst = self.request.user
+        user_all_friends = ChatSession.objects.filter(Q(user1=user_inst) | Q(user2=user_inst)).select_related(
+            'user1', 'user2').order_by('-updated_on')
         all_friends = []
         for ch_session in user_all_friends:
-            user,user_inst = [ch_session.user2,ch_session.user1] if request.user.username == ch_session.user1.username else [ch_session.user1,ch_session.user2]
-            un_read_msg_count = ChatMessage.objects.filter(chat_session = ch_session.id,message_detail__read = False).exclude(user = user_inst).count()        
+            user, user_inst = [ch_session.user2, ch_session.user1] if self.request.user.username == ch_session.user1.username else [
+                ch_session.user1, ch_session.user2]
+            un_read_msg_count = ChatMessage.objects.filter(chat_session=ch_session.id,
+                                                           message_detail__read=False).exclude(
+                user=user_inst).count()
             data = {
-                "user_name" : user.username,
-                "room_name" : ch_session.room_group_name,
-                "un_read_msg_count" : un_read_msg_count,
-                "user_id" : user.id
+                "user_name": user.username,
+                "room_name": ch_session.room_group_name,
+                "un_read_msg_count": un_read_msg_count,
+                "user_id": user.id
             }
             all_friends.append(data)
 
-        context = {
-            'post': post,
-            'queryset': queryset,
-            'section': 'people', 
-            'users': users, 
-            'posts': posts, 
-            'user_post_count': user_post_count, 
-            'form': form, 
-            'friends': friends, 
-            'followers': followers,
-            'current_url': current_url,
-            'user_list': all_friends,
-        }
+        context['user_list'] = all_friends
+        context['section'] = 'people'
+        return context
 
-        return render(request, self.template_name, context)
-    
     def post(self, request, *args, **kwargs):
-        form = PostForm(request.POST, request.FILES, instance=Post())  # Use instance=Post()
+        form = PostForm(request.POST, request.FILES, instance=Post(user=request.user))
         if form.is_valid():
-            post = form.save(commit=False)
-            post.user = self.request.user  # Associate the post with the current user
-            post.save()
+            form.save()
             return redirect('core:post_list')
+        else:
+            print(form.errors)
         return render(request, self.template_name, {'form': form})
     
 

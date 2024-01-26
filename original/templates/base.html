@@ -119,10 +119,9 @@
 
 </head>
 <body>
-<!-- Pre loader -->
+<!-- Pre loader 
 <div class="preloader">
-	<div class="preloader-item">
-		<!-- Logo START -->
+	<div class="preloader-item"> 
 		<a class="navbar-brand" href="{% url 'core:post_list' %}">
 			<img class="light-mode-item navbar-brand-item" src="{% static 'L.png' %}" alt="logo">
 			<img class="dark-mode-item navbar-brand-item" src="{% static 'L.png' %}" alt="logo">
@@ -131,9 +130,8 @@
 			<p style="color: #676a79; position: relative; top: 1em; letter-spacing: 1px;">from</p>
 			<h4 style="color: #0f6fec;"><i style="position: relative; font-family: Tajawal; top: 3px; color: #0f6fec;" class="bi bi-meta me-2"></i>shohrukh</h4>
 		</div>
-		<!-- Logo END -->
 	</div>
-</div>
+</div>-->
 <!-- Responsive navbar toggler -->
 <button class="close-navbar-toggler navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
 </button>
@@ -151,8 +149,8 @@ Header START -->
 			</a>
 			<!-- Logo START -->
 			<a style="letter-spacing: 1px; font-family: Tajawal; font-size: 25px; font-weight: 600;" class="navbar-brand" href="{% url 'core:post_list' %}">
-				<img class="light-mode-item navbar-brand-item" src="{% static 'L.png' %}" alt="logo">
-				<img class="dark-mode-item navbar-brand-item" src="{% static 'L.png' %}" alt="logo">
+				<img style="border-radius: 5px;" class="light-mode-item navbar-brand-item" src="{% static 'L.png' %}" alt="logo">
+				<img style="border-radius: 5px;" class="dark-mode-item navbar-brand-item" src="{% static 'L.png' %}" alt="logo">
 				lifebook
 			</a>
 		  	<!-- Logo END -->
@@ -177,6 +175,10 @@ Header START -->
 						<a class="nav-link" href="{% url 'user_list' %}"> <i class="bi bi-people"></i> <span class="nav-text"> Groups </span> </a>
 					</li>
 
+					<li class="nav-item dropdown">
+						<a class="nav-link" href="{% url 'core:post_create' %}"> <i class="bi bi-plus-square"></i> <span class="nav-text"> Post Create </span> </a>
+					</li>
+
 				  	<!-- Nav item -->
 					<li class="nav-item">
 						<a class="nav-link" href="{% url 'friend_list' %}"> 
@@ -192,11 +194,6 @@ Header START -->
 							<i class="bi bi-bell"></i> <span class="nav-text"> Notifications </span>
 						</a>
 				  	</li>
-		
-					<!-- Nav item -->
-					<li class="nav-item">
-						<a class="nav-link" href="{% url 'core:post_list' %}"> <i class="bi bi-ui-radios-grid"></i> <span class="nav-text"> My network </span> </a>
-					</li>
 
 			  	</ul>
 			</div>

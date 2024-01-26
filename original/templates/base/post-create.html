@@ -1,0 +1,187 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load thumbnail %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+
+	<!-- Meta Tags -->
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+	<meta name="description" content="Bootstrap 5 based Social Media Network and Community Theme">
+
+</head>
+
+{% block content %}
+<body>
+<!-- **************** MAIN CONTENT START **************** -->
+<main>
+  
+  <!-- Container START -->
+  <div class="container-fluid">
+    <div class="row justify-content-between g-0">
+
+      <!-- Main content START -->
+      <div class="col-md-8 col-lg-6 col-xxl-4 vstack gap-4">
+
+        <!-- Share feed START -->
+        <div class="card card-body">
+          <!-- Share feed toolbar START -->
+          <ul class="nav nav-pills nav-stack small fw-normal">
+            <li class="nav-item">
+              <a class="nav-link bg-light py-1 px-2 mb-0" href="#!" data-bs-toggle="modal" data-bs-target="#feedActionPhoto"> <i class="bi bi-image-fill text-success pe-2"></i>Photo</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link bg-light py-1 px-2 mb-0" href="#!" data-bs-toggle="modal" data-bs-target="#feedActionVideo"> <i class="bi bi-camera-reels-fill text-info pe-2"></i>Video</a>
+            </li>
+            <li class="nav-item">
+              <a href="#" class="nav-link bg-light py-1 px-2 mb-0" data-bs-toggle="modal" data-bs-target="#modalCreateEvents"> <i class="bi bi-calendar2-event-fill text-danger pe-2"></i>Event </a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link bg-light py-1 px-2 mb-0" href="#!" data-bs-toggle="modal" data-bs-target="#modalCreateFeed"> <i class="bi bi-emoji-smile-fill text-warning pe-2"></i>Feeling /Activity</a>
+            </li>
+            <li class="nav-item dropdown ms-lg-auto">
+              <a class="nav-link bg-light py-1 px-2 mb-0" href="#" id="feedActionShare" data-bs-toggle="dropdown" aria-expanded="false">
+                <i class="bi bi-three-dots"></i>
+              </a>
+              <!-- Dropdown menu -->
+              <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="feedActionShare">
+                <li><a class="dropdown-item" href="#"> <i class="bi bi-envelope fa-fw pe-2"></i>Create a poll</a></li>
+                <li><a class="dropdown-item" href="#"> <i class="bi bi-bookmark-check fa-fw pe-2"></i>Ask a question </a></li>
+                <li><hr class="dropdown-divider"></li>
+                <li><a class="dropdown-item" href="{% url 'help' %}"> <i class="bi bi-pencil-square fa-fw pe-2"></i>Help</a></li>
+              </ul>
+            </li>
+          </ul>
+          <!-- Share feed toolbar END -->
+        </div>
+        <!-- Share feed END -->
+      </div>
+      <!-- Main content END -->
+
+    </div> <!-- Row END -->
+  </div>
+  <!-- Container END -->
+
+</main>
+<!-- **************** MAIN CONTENT END **************** -->
+
+<form method="post" enctype="multipart/form-data">
+	<!-- Modal create Feed photo START -->
+	<div class="modal fade" id="feedActionPhoto" tabindex="-1" aria-labelledby="feedActionPhotoLabel" aria-hidden="true">
+		<div class="modal-dialog modal-dialog-centered">
+			<div class="modal-content">
+				<!-- Modal feed header START -->
+				<div class="modal-header">
+					<h5 class="modal-title" id="feedActionPhotoLabel">Photoli post yaratish</h5>
+					<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+				</div>
+				<!-- Modal feed header END -->
+
+					<!-- Modal feed body START -->
+					<div class="modal-body">
+						<!-- Add Feed -->
+						<div class="mb-3">
+							<!-- Feed box  -->
+							<form class="w-100">
+								{% csrf_token %}
+								<div class="d-flex">
+                  <div class="avatar me-2">
+                    <a href="#!"> <img class="avatar-img rounded-circle" src="{% if user.profile.photo %}{% thumbnail user.profile.photo 180x180 %}{% else %}../static/profile.gif{% endif %}" alt=""> </a>
+                  </div>
+                  {{ form.caption }}
+                </div><br>
+								{{ form.hashtags }}<br>
+								{{ form.location }}<br>
+							</form>
+						</div>
+
+					<!-- Dropzone photo START -->
+					<div>
+						<label class="form-label">Photo yuklash</label>
+						<div class="dropzone dropzone-default card shadow-none" data-dropzone='{"maxFiles":2}'>
+							<div class="dz-message">
+								<label class="form-label">Photoni yuklash</label>
+								{{ form.image }}
+							</div>
+						</div>
+					</div>
+					<!-- Dropzone photo END -->
+
+					</div>
+					<!-- Modal feed body END -->
+
+					<!-- Modal feed footer -->
+					<div class="modal-footer ">
+						<!-- Button -->
+							<button type="submit" class="btn btn-success-soft">Postni yuklash</button>
+					</div>
+					<!-- Modal feed footer -->
+			</div>
+		</div>
+	</div>
+	<!-- Modal create Feed photo END -->
+</form>
+
+<!-- Modal create Feed video START -->
+<form method="post" enctype="multipart/form-data">
+	<div class="modal fade" id="feedActionVideo" tabindex="-1" aria-labelledby="feedActionVideoLabel" aria-hidden="true">
+		<div class="modal-dialog modal-dialog-centered">
+			<div class="modal-content">
+				<!-- Modal feed header START -->
+				<div class="modal-header">
+					<h5 class="modal-title" id="feedActionVideoLabel">Videoli post yaratish</h5>
+					<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+				</div>
+				<!-- Modal feed header END -->
+
+				<!-- Modal feed body START -->
+				<div class="modal-body">
+					<!-- Add Feed -->
+					<div class="mb-3">
+						<!-- Feed box  -->
+						<form class="w-100">
+							{% csrf_token %}
+							<div class="d-flex">
+                <div class="avatar me-2">
+                  <a href="#!"> <img class="avatar-img rounded-circle" src="{% if user.profile.photo %}{% thumbnail user.profile.photo 180x180 %}{% else %}../static/profile.gif{% endif %}" alt=""> </a>
+                </div>
+                {{ form.caption }}
+              </div><br>
+							{{ form.hashtags }}<br>
+							{{ form.location }}<br>
+						</form>
+					</div>
+
+					<!-- Dropzone photo START -->
+					<div>
+						<label class="form-label">Video yuklash</label>
+						<div class="dropzone dropzone-default card shadow-none" data-dropzone='{"maxFiles":2}'>
+							<div class="dz-message">
+								<label class="form-label">Videoni yuklash</label>
+								{{ form.video }}
+							</div>
+						</div>
+					</div>
+					<!-- Dropzone photo END -->
+				</div>
+				<!-- Modal feed body END -->
+
+				<!-- Modal feed footer -->
+				<div class="modal-footer">
+					<!-- Button -->
+					<button type="submit" class="btn btn-success-soft">Postni yuklash</button>
+				</div>
+				<!-- Modal feed footer -->
+			</div>
+		</div>
+	</div>
+</form>
+<!-- Modal create Feed video END -->
+
+
+</body>
+{% endblock %}
+
+</html>

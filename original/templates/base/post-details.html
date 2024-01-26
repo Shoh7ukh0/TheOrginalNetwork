@@ -32,11 +32,13 @@
 						{% endif %}
 
 						{% if post.video %}
-						<div class="player-wrapper overflow-hidden">
-							<video class="player-html" controls crossorigin="anonymous">
-								<source src="{{ post.video.url }}" type="video/mp4">Your browser does not support the video tag.
-							</video>
-						</div>
+						<div class="overflow-hidden fullscreen-video w-100">
+              <div class="player-wrapper overflow-hidden">
+                <video class="player-html" controls crossorigin="anonymous" poster="{{ post.sign.url }}">
+                  <source src="{{ post.video.url }}" type="video/mp4">Your browser does not support the video tag.
+                </video>
+              </div>
+            </div>
 						{% endif %}
             <!-- Feed meta START -->
             <div class="d-flex align-items-center justify-content-between my-3">
@@ -97,7 +99,8 @@
                 <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="cardShareAction">
                   <li><a class="dropdown-item" href="#"> <i class="bi bi-envelope fa-fw pe-2"></i>Send via Direct Message</a></li>
                   <li><a class="dropdown-item" href="#"> <i class="bi bi-bookmark-check fa-fw pe-2"></i>Bookmark </a></li>
-                  <li><a class="dropdown-item" id="copyLinkToPost" href=""> <i class="bi bi-link fa-fw pe-2"></i>{{ post.get_absolute_url }}</a></li>
+                  <input type="hidden" id="postUrl" value="{{ post.get_absolute_url }}">
+                  <li><a class="dropdown-item" href=""><i class="bi bi-link fa-fw pe-2"></i><button style="background-color: transparent; border: none; color: #fff;" id="copyButton" onclick="copyPostUrl()">Copy Post URL</button></a></li>
                   <li><a class="dropdown-item" href="#"> <i class="bi bi-share fa-fw pe-2"></i>Share post via …</a></li>
                   <li><hr class="dropdown-divider"></li>
                   <li><a class="dropdown-item" href="#"> <i class="bi bi-pencil-square fa-fw pe-2"></i>Share to News Feed</a></li>
@@ -249,33 +252,27 @@
       });
     });
   
-    function copyLinkToPost(postId) {
-		// Postning identifikatorini olish
-		var postElement = document.getElementById(postId);
-		
-		if (postElement) {
-			// Postning havolani olish
-			var postLink = postElement.querySelector('.post-link');
-			
-			if (postLink) {
-			// Havolani tanlang
-			postLink.select();
-			
-			try {
-				// Tanlangan havolani klibortga nusxalash
-				var successful = document.execCommand('copy');
-				var message = successful ? 'Havola nusxalandi!' : "Nusxa bo'lmadi. Qaytadan urinib ko'ring.";
-				console.log(message);
-			} catch (err) {
-				console.error('Xatolik yuz berdi:', err);
-			}
-			} else {
-			console.error('Havola topilmadi');
-			}
-		} else {
-			console.error('Post topilmadi');
-		}
-	}
+    function copyPostUrl() {
+      // Get the post URL from the hidden input field
+      var postUrl = document.getElementById("postUrl").value;
+
+      // Create a temporary input element
+      var tempInput = document.createElement("input");
+      tempInput.value = postUrl;
+      document.body.appendChild(tempInput);
+
+      // Select the input value and copy it to the clipboard
+      tempInput.select();
+      document.execCommand("copy");
+
+      // Remove the temporary input element
+      document.body.removeChild(tempInput);
+
+      // Alert or notify the user that the URL has been copied
+      // alert("Post URL copied to clipboard: " + postUrl);
+    }
+
+
 
   document.addEventListener("DOMContentLoaded", function() {
     // reply tugmasini tanlang

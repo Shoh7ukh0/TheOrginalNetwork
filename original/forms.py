@@ -9,7 +9,7 @@ class SearchForm(forms.Form):
 class PostForm(forms.ModelForm):
     class Meta:
         model = Post
-        fields = ['caption', 'hashtags', 'image', 'video', 'location']
+        fields = ['caption', 'hashtags', 'image', 'video', 'sign', 'location']
     
         widgets = {
             'caption': forms.TextInput(

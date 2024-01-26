@@ -341,7 +341,7 @@
                           <div class="card p-0 shadow-none border-0 position-relative">
                             <!-- Video image -->
                             <div class="position-relative">
-                              <img class="rounded" src="{% static 'assets/images/albums/01.jpg' %}" alt="">
+                              <img class="rounded" src="{{ post.sign.url }}" alt="">
                               <!-- Play icon -->
                               <div class="position-absolute top-0 end-0 p-3">
                                 <a class="icon-md bg-danger text-white rounded-circle" data-glightbox href="{{ post.video.url }}"> <i class="bi bi-play-fill fs-5"> </i> </a>

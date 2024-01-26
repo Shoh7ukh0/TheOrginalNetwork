@@ -127,7 +127,7 @@
                       <div>
                         <div class="nav nav-divider">
                           <h6 class="nav-item card-title mb-0"> <a href="{% url 'dashboard' username=user.username %}"> {{ post.user.username }} </a></h6>
-                          <span class="nav-item small"> {{ post.time_since_creation }}</span>
+                          <span class="nav-item small"> {{ post.created_ago }}</span>
                         </div>
                         <p class="mb-0 small">{{ post.location }}</p>
                       </div>
@@ -162,7 +162,7 @@
                   {% if post.video %}
                     <div class="overflow-hidden fullscreen-video w-100">
                       <div class="player-wrapper overflow-hidden">
-                        <video class="player-html" controls crossorigin="anonymous">
+                        <video class="player-html" controls crossorigin="anonymous" poster="{{ post.sign.url }}">
                           <source src="{{ post.video.url }}" type="video/mp4">Your browser does not support the video tag.
                         </video	>
                       </div>
@@ -199,7 +199,7 @@
                       <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="cardShareAction">
                         <li><a class="dropdown-item" href="#"> <i class="bi bi-envelope fa-fw pe-2"></i>Send via Direct Message</a></li>
                         <li><a class="dropdown-item" href="#"> <i class="bi bi-bookmark-check fa-fw pe-2"></i>Bookmark </a></li>
-                        <li><a class="dropdown-item" href="#"> <i class="bi bi-link fa-fw pe-2"></i>Copy link to post</a></li>
+                        <li><a class="dropdown-item" href=""> <i class="bi bi-link fa-fw pe-2"></i>Copy link to post</a></li>
                         <li><a class="dropdown-item" href="#"> <i class="bi bi-share fa-fw pe-2"></i>Share post via …</a></li>
                         <li><hr class="dropdown-divider"></li>
                         <li><a class="dropdown-item" href="#"> <i class="bi bi-pencil-square fa-fw pe-2"></i>Share to News Feed</a></li>
@@ -328,7 +328,7 @@
                       <div>
                         <div class="nav nav-divider">
                           <h6 class="nav-item card-title mb-0"> <a href="{% url 'core:post_detail' slug=post.slug %}"> {{ post.user.username }} </a></h6>
-                          <span class="nav-item small"> {{ post.time_since_creation }}</span>
+                          <span class="nav-item small"> {{ post.created_ago }}</span>
                         </div>
                         <p class="mb-0 small">{{ post.location }}</p>
                       </div>
@@ -358,10 +358,12 @@
                   {% endif %}
 
                   {% if post.video %}
-                    <div class="player-wrapper overflow-hidden">
-                      <video class="player-html" controls crossorigin="anonymous">
-                        <source src="{{ post.video.url }}" type="video/mp4">Your browser does not support the video tag.
-                      </video	>
+                    <div class="overflow-hidden fullscreen-video w-100">
+                      <div class="player-wrapper overflow-hidden">
+                        <video class="player-html" controls crossorigin="anonymous" poster="{{ post.sign.url }}">
+                          <source src="{{ post.video.url }}" type="video/mp4">Your browser does not support the video tag.
+                        </video	>
+                      </div>
                     </div>
                   {% endif %}
                   <p>{{ post.caption }}</p><br/>
@@ -708,6 +710,16 @@
 							</div>
 						</div>
 					</div>
+
+          <div>
+						<label class="form-label">Belgi yuklash</label>
+						<div class="dropzone dropzone-default card shadow-none" data-dropzone='{"maxFiles":2}'>
+							<div class="dz-message">
+								<label class="form-label">Belgi yuklash</label>
+								{{ form.sign }}
+							</div>
+						</div>
+					</div>
 					<!-- Dropzone photo END -->
 				</div>
 				<!-- Modal feed body END -->
@@ -723,111 +735,6 @@
 	</div>
 </form>
 <!-- Modal create Feed video END -->
-
-<!-- Modal create events START -->
-<div class="modal fade" id="modalCreateEvents" tabindex="-1" aria-labelledby="modalLabelCreateAlbum" aria-hidden="true">
-  <div class="modal-dialog modal-dialog-centered">
-    <div class="modal-content">
-      <!-- Modal feed header START -->
-      <div class="modal-header">
-        <h5 class="modal-title" id="modalLabelCreateAlbum">Create event</h5>
-        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-      </div>
-      <!-- Modal feed header END -->
-      <!-- Modal feed body START -->
-      <div class="modal-body">
-        <!-- Form START -->
-        <form class="row g-4">
-          <!-- Title -->
-          <div class="col-12">
-            <label class="form-label">Title</label>
-            <input type="email" class="form-control" placeholder="Event name here">
-          </div>
-          <!-- Description -->
-          <div class="col-12">
-            <label class="form-label">Description</label>
-            <textarea class="form-control" rows="2" placeholder="Ex: topics, schedule, etc."></textarea>
-          </div>
-          <!-- Date -->
-          <div class="col-sm-4">
-            <label class="form-label">Date</label>
-            <input type="text" class="form-control flatpickr" placeholder="Select date">
-          </div>
-          <!-- Time -->
-          <div class="col-sm-4">
-            <label class="form-label">Time</label>
-            <input type="text" class="form-control flatpickr" data-enableTime="true" data-noCalendar="true" placeholder="Select time">
-          </div>
-          <!-- Duration -->
-          <div class="col-sm-4">
-            <label class="form-label">Duration</label>
-            <input type="email" class="form-control" placeholder="1hr 23m">
-          </div>
-          <!-- Location -->
-          <div class="col-12">
-            <label class="form-label">Location</label>
-            <input type="email" class="form-control" placeholder="Logansport, IN 46947">
-          </div>
-          <!-- Add guests -->
-          <div class="col-12">
-            <label class="form-label">Add guests</label>
-            <input type="email" class="form-control" placeholder="Guest email">
-          </div>
-          <!-- Avatar group START -->
-          <div class="col-12 mt-3">
-            <ul class="avatar-group list-unstyled align-items-center mb-0">
-              <li class="avatar avatar-xs">
-                <img class="avatar-img rounded-circle" src="{% if user.profile.photo %}{% thumbnail user.profile.photo 180x180 %}{% else %}../static/profile.gif{% endif %}" alt="avatar">
-              </li>
-              <li class="avatar avatar-xs">
-                <img class="avatar-img rounded-circle" src="{% if user.profile.photo %}{% thumbnail user.profile.photo 180x180 %}{% else %}../static/profile.gif{% endif %}" alt="avatar">
-              </li>
-              <li class="avatar avatar-xs">
-                <img class="avatar-img rounded-circle" src="{% if user.profile.photo %}{% thumbnail user.profile.photo 180x180 %}{% else %}../static/profile.gif{% endif %}" alt="avatar">
-              </li>
-              <li class="avatar avatar-xs">
-                <img class="avatar-img rounded-circle" src="{% if user.profile.photo %}{% thumbnail user.profile.photo 180x180 %}{% else %}../static/profile.gif{% endif %}" alt="avatar">
-              </li>
-              <li class="avatar avatar-xs">
-                <img class="avatar-img rounded-circle" src="{% if user.profile.photo %}{% thumbnail user.profile.photo 180x180 %}{% else %}../static/profile.gif{% endif %}" alt="avatar">
-              </li>
-              <li class="avatar avatar-xs">
-                <img class="avatar-img rounded-circle" src="{% if user.profile.photo %}{% thumbnail user.profile.photo 180x180 %}{% else %}../static/profile.gif{% endif %}" alt="avatar">
-              </li>
-              <li class="avatar avatar-xs">
-                <img class="avatar-img rounded-circle" src="{% if user.profile.photo %}{% thumbnail user.profile.photo 180x180 %}{% else %}../static/profile.gif{% endif %}" alt="avatar">
-              </li>
-              <li class="ms-3">
-                <small> +50 </small>
-              </li>
-            </ul>
-          </div>
-          <!-- Upload Photos or Videos -->
-          <!-- Dropzone photo START -->
-          <div>
-            <label class="form-label">Upload attachment</label>
-            <div class="dropzone dropzone-default card shadow-none" data-dropzone='{"maxFiles":2}'>
-              <div class="dz-message">
-                <i class="bi bi-file-earmark-text display-3"></i>
-                <p>Drop presentation and document here or click to upload.</p>
-              </div>
-            </div>
-          </div>
-          <!-- Dropzone photo END -->
-        </form>
-        <!-- Form END -->
-      </div>
-      <!-- Modal feed body END -->
-      <!-- Modal footer -->
-      <!-- Button -->
-      <div class="modal-footer">
-        <button type="button" class="btn btn-danger-soft me-2" data-bs-dismiss="modal"> Cancel</button>
-        <button type="button" class="btn btn-success-soft">Create now</button>
-      </div>
-    </div>
-  </div>
-</div>
-<!-- Modal create events END -->
  
 <script>
 	let sessionKey = '{{ request.session.session_key }}';
@@ -835,6 +742,26 @@
 </script>
 
 <script>
+
+function copyPostUrl() {
+      // Get the post URL from the data attribute
+      var postUrl = document.getElementById("copyButton").getAttribute("data-post-url");
+
+      // Create a temporary input element
+      var tempInput = document.createElement("input");
+      tempInput.value = postUrl;
+      document.body.appendChild(tempInput);
+
+      // Select the input value and copy it to the clipboard
+      tempInput.select();
+      document.execCommand("copy");
+
+      // Remove the temporary input element
+      document.body.removeChild(tempInput);
+
+      // Alert or notify the user that the URL has been copied
+      alert("Post URL copied to clipboard: " + postUrl);
+    }
 
     // Assuming you have a button or link to hide/unhide posts
     document.getElementById('hidePostButton').addEventListener('click', function() {

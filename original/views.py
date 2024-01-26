@@ -10,7 +10,7 @@ from .forms import PostForm, CommentForm
 from django.contrib.auth.models import User
 import redis
 from django.conf import settings
-from datetime import datetime, timezone
+from django.utils import timezone
 from django.http import JsonResponse
 from accounts.models import Contact, Profile
 from django.db.models import Q
@@ -99,6 +99,22 @@ class PostListView(LoginRequiredMixin, ListView):
 
         context['user_list'] = all_friends
         context['section'] = 'people'
+
+        # Vaqt bilan bog'liq ma'lumotlarni olish
+        posts = context['posts']
+        for post in posts:
+            created_at = post.created_at
+            now = timezone.now()
+
+            # Vaqt orqali formatlash
+            time_difference = now - created_at
+            if time_difference.total_seconds() > 60:
+                post.created_ago = f"{int(time_difference.total_seconds() / 60)} m ago"
+            elif time_difference.total_seconds() > 1:
+                post.created_ago = f"{int(time_difference.total_seconds())} s ago"
+            else:
+                post.created_ago = "now"
+
         return context
 
     def post(self, request, *args, **kwargs):

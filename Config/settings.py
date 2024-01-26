@@ -65,9 +65,11 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'core',
-    'actions',
-    'original',
+
+    'actions.apps.ActionsConfig',
+    'original.apps.OriginalConfig',
+    'direct.apps.DirectConfig',
+
     'rest_framework',    # Only for login purpose
     'django_admin_inline_paginator',
     'channels',

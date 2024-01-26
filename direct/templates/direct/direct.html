@@ -32,7 +32,7 @@
             <!-- Chat new create message item START -->
             <div class="dropend position-relative">
               <div class="nav">
-                <a class="icon-md rounded-circle btn btn-sm btn-primary-soft nav-link toast-btn" data-target="chatToast" href="#" > <i class="bi bi-pencil-square"></i> </a>
+                <a class="icon-md rounded-circle btn btn-sm btn-primary-soft nav-link toast-btn" data-target="chatToast" href="{% url 'direct:usersearch' %}" > <i class="bi bi-pencil-square"></i> </a>
               </div>
             </div>
             <!-- Chat new create message item END -->
@@ -49,20 +49,36 @@
             <!-- Offcanvas body -->
             <div class="offcanvas-body p-0">
               <div class="card card-chat-list rounded-end-lg-0 card-body border-end-lg-0 rounded-top-0">
+                
+                <!-- Search chat START -->
+                <form class="position-relative">
+                  <input class="form-control py-2" type="search" placeholder="Search for chats" aria-label="Search">
+                  <button class="btn bg-transparent text-secondary px-2 py-0 position-absolute top-50 end-0 translate-middle-y" type="submit">
+                    <i class="bi bi-search fs-5"></i>
+                  </button>
+                </form>
+                <!-- Search chat END -->
                 <!-- Chat list tab START -->
                 <div class="mt-4 h-100">
                   <div class="chat-tab-list custom-scrollbar">
-                    <ul class="nav flex-column nav-pills nav-pills-soft">
-                      <!-- Chat user tab item -->
-                      <li data-bs-dismiss="offcanvas">
-                        <a id="user-list" href="#chat-2" class="nav-link text-start" id="chat-2-tab" data-bs-toggle="pill" role="tab">
-                          <div class="d-flex">
-                            <div class="col-md-4">
+                    {% for message in messages %}
+                      <ul class="nav flex-column nav-pills nav-pills-soft">
+                        <li data-bs-dismiss="offcanvas">
+                          <!-- Chat user tab item -->
+                          <a href="{% url 'direct:directs' message.user.username %}" class="nav-link active text-start {% if active_direct == message.user.username %}is-active{% endif %}" id="chat-1-tab" data-bs-toggle="pill" role="tab">
+                            <div class="d-flex">
+                              <div class="flex-shrink-0 avatar avatar-story me-2 status-online">
+                                <img class="avatar-img rounded-circle" src="{% if message.user.profile.photo %}{% thumbnail message.user.profile.photo 180x180 %}{% else %}../static/profile.gif{% endif %}" alt="">
+                              </div>
+                              <div class="flex-grow-1 d-block">
+                                <h6 class="mb-0 mt-1">{{ message.user.first_name }} {{ message.user.last_name }}</h6>
+                                <div class="small text-secondary">@{{ message.user.username }}</div>
+                              </div>
                             </div>
-                          </div>
-                        </a>
-                      </li>
-                    </ul>
+                          </a>
+                        </li>
+                      </ul>
+                    {% endfor %}
                   </div>
                 </div>
                 <!-- Chat list tab END -->
@@ -82,15 +98,17 @@
               <div class="fade tab-pane show active h-100" id="chat-1" role="tabpanel" aria-labelledby="chat-1-tab">
                 <!-- Top avatar and status START -->
                 <div class="d-sm-flex justify-content-between align-items-center">
+                  {% for message in messages %}
                   <div class="d-flex mb-2 mb-sm-0">
                     <div class="flex-shrink-0 avatar me-2">
-                      <img class="avatar-img rounded-circle" src="{% static 'assets/images/avatar/10.jpg' %}" alt="">
+                      <img class="avatar-img rounded-circle" src="{% if message.user.profile.photo %}{% thumbnail message.user.profile.photo 180x180 %}{% else %}../static/profile.gif{% endif %}" alt="">
                     </div>
                     <div class="d-block flex-grow-1">
-                      <h6 class="mb-0 mt-1">{{ user.username }}</h6>
+                      <h6 class="mb-0 mt-1">{{ message.user.first_name }} {{ message.user.last_name }}</h6>
                       <div class="small text-secondary"><i class="fa-solid fa-circle text-success me-1"></i>Online</div>
                     </div>
                   </div>
+                  {% endfor %}
                   <div class="d-flex align-items-center">
                     <!-- Call button -->
                     <!-- <a href="#!" class="icon-md rounded-circle btn btn-primary-soft me-2 px-2" data-bs-toggle="tooltip" data-bs-placement="top" title="Audio call"><i class="bi bi-telephone-fill"></i></a>
@@ -117,28 +135,38 @@
                   <!-- Chat time -->
                   <div class="text-center small my-2">Jul 16, 2022, 06:15 am</div>
                   <!-- Chat message left -->
-                  <div class="d-flex mb-1 messages">
-                    <div class="flex-grow-1 ">
-                      <div class="w-100">
-                        <div class="d-flex flex-column align-items-start">
-                          <div id="messages" class="text-secondary p-2 px-3 rounded-2"></div>
+                  {% for direct in directs %}
+                    <div class="d-flex mb-1">
+                      <div class="flex-shrink-0 avatar avatar-xs me-2">
+                        <img class="avatar-img rounded-circle" src="assets/images/avatar/11.jpg" alt="">
+                      </div>
+                      <div class="flex-grow-1">
+                        <div class="w-100">
+                          <div class="d-flex flex-column align-items-start">
+                            <div class="bg-light text-secondary p-2 px-3 rounded-2">{{ direct.body }} </div>
+                            <div class="small my-2">{{ direct.date|date:'N d G:i'}}</div>
+                          </div>
                         </div>
                       </div>
                     </div>
-                  </div>
+                  {% endfor %}
                 </div>
                 <!-- Chat conversation END -->
               </div>
             </div>
           </div>
-          <div class="card-footer">
-            <div class="d-sm-flex align-items-end">
-              <textarea id="chat-input" class="form-control mb-sm-0 mb-3" data-autoresize placeholder="Type a message" rows="1"></textarea>
-              <button id="emoji-picker" class="btn btn-sm btn-danger-soft ms-sm-2"><i class="fa-solid fa-face-smile fs-6"></i></button>
-              <button class="btn btn-sm btn-secondary-soft ms-2"><i class="fa-solid fa-paperclip fs-6"></i></button>
-              <button id="btn-send" class="btn btn-sm btn-primary ms-2"><i class="fa-solid fa-paper-plane fs-6"></i></button>
+          <form action="{% url 'direct:send_direct' %}" method="post">
+            {% csrf_token %}
+            <div class="card-footer">
+              <div class="d-sm-flex align-items-end">
+                <input type="hidden" name="to_user" value="{{ active_direct }}">
+                <textarea name="body" class="form-control mb-sm-0 mb-3" data-autoresize placeholder="Type a message" rows="1"></textarea>
+                <button id="emoji-picker" class="btn btn-sm btn-danger-soft ms-sm-2"><i class="fa-solid fa-face-smile fs-6"></i></button>
+                <button class="btn btn-sm btn-secondary-soft ms-2"><i class="fa-solid fa-paperclip fs-6"></i></button>
+                <button name="action" class="btn btn-sm btn-primary ms-2"><i class="fa-solid fa-paper-plane fs-6"></i></button>
+              </div>
             </div>
-          </div>
+          </form>
         </div>
       </div>
       <!-- Chat conversation END -->
@@ -151,50 +179,6 @@
 
 </main>
 <!-- **************** MAIN CONTENT END **************** -->
-
-<!-- Chat START -->
-<div class="position-fixed bottom-0 end-0 p-3">
-
-  <!-- Chat toast START -->
-  <div id="chatToast" class="toast bg-mode" role="alert" aria-live="assertive" aria-atomic="true" data-bs-autohide="false">
-    <div class="toast-header bg-mode d-flex justify-content-between">
-      <!-- Title -->
-      <h6 class="mb-0">New message</h6>
-      <button class="btn btn-secondary-soft-hover py-1 px-2" data-bs-dismiss="toast" aria-label="Close"><i class="fa-solid fa-xmark"></i></button>
-    </div>
-    <!-- Top avatar and status END -->
-    <div class="toast-body collapse show" id="collapseChat">
-      <!-- Chat conversation START -->
-      <!-- Form -->
-      <form>
-        <div class="input-group mb-3">
-          <span class="input-group-text border-0">To</span>
-          <input class="form-control" type="text" placeholder="Type a name or multiple names">
-        </div>
-      </form>         
-      <!-- Chat conversation END -->
-      <!-- Extra space -->
-      <div class="h-200px"></div>
-      <!-- Button  -->
-      <div class="d-sm-flex align-items-end">
-        <textarea class="form-control mb-sm-0 mb-3" placeholder="Type a message" rows="1" spellcheck="false"></textarea>
-        <button class="btn btn-sm btn-danger-soft ms-sm-2"><i class="fa-solid fa-face-smile fs-6"></i></button>
-        <button class="btn btn-sm btn-secondary-soft ms-2"><i class="fa-solid fa-paperclip fs-6"></i></button>
-        <button class="btn btn-sm btn-primary ms-2"><i class="fa-solid fa-paper-plane fs-6"></i></button>
-      </div>
-    </div>
-  </div>
-  <!-- Chat toast END -->
-
-</div>
-<!-- Chat END -->
-
-<script>
-  let sessionKey = '{{ request.session.session_key }}';
-  let currentUser = '{{ request.user.username }}';
-</script>
-
-<script src="{% static 'js/app.js' %}"></script>
 
 </body>
 {% endblock %}

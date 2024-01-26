@@ -32,9 +32,9 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('accounts/', include('accounts.urls')),
     path('', include(('original.urls', 'core',), namespace='core')),
+    path('direct/', include('direct.urls', namespace='direct')),
     path('social-auth/', include('social_django.urls', namespace='social')),
     path('users/', UsersListView.as_view(), name='users_list'),
-    path('core/', include('core.urls')),
     
     path('api_auth/', include('rest_framework.urls', namespace='rest_framework'))
 ]

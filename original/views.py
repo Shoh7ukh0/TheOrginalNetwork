@@ -100,14 +100,17 @@ class PostListView(LoginRequiredMixin, ListView):
 
             # Vaqt orqali formatlash
             time_difference = now - created_at
-            if time_difference.total_seconds() > 60:
+            if time_difference.total_seconds() > 3600:  # More than 1 hour ago
+                post.created_ago = created_at.strftime(f"%H h ago")
+            elif time_difference.total_seconds() > 60:  # 1 to 60 minutes ago
                 post.created_ago = f"{int(time_difference.total_seconds() / 60)} m ago"
-            elif time_difference.total_seconds() > 1:
+            elif time_difference.total_seconds() > 1:  # 1 to 59 seconds ago
                 post.created_ago = f"{int(time_difference.total_seconds())} s ago"
-            else:
+            else:  # Less than 1 second ago
                 post.created_ago = "now"
 
         return context
+
 
     def post(self, request, *args, **kwargs):
         form = PostForm(request.POST, request.FILES, instance=Post(user=request.user))

@@ -121,7 +121,9 @@
                     <div class="d-flex align-items-center">
                       <!-- Avatar -->
                       <div class="avatar avatar-story me-2">
-                        <a href="#!"> <img class="avatar-img rounded-circle" src="{% if post.user.profile.photo %}{% thumbnail post.user.profile.photo 180x180 %}{% else %}../static/profile.gif{% endif %}" alt=""> </a>
+                        <a href="#!">
+                          <img class="avatar-img rounded-circle" src="{% if post.user.profile.photo %}{% thumbnail post.user.profile.photo 180x180 %}{% else %}../static/profile.gif{% endif %}">
+                        </a>
                       </div>
                       <!-- Info -->
                       <div>
@@ -322,7 +324,7 @@
                     <div class="d-flex align-items-center">
                       <!-- Avatar -->
                       <div class="avatar avatar-story me-2">
-                        <a href="#!"> <img class="avatar-img rounded-circle" src="{% if user.profile.photo %}{% thumbnail user.profile.photo 180x180 %}{% else %}../static/profile.gif{% endif %}" alt=""> </a>
+                        <a href="#!"> <img class="avatar-img rounded-circle" src="{% if post.user.profile.photo %}{% thumbnail post.user.profile.photo 180x180 %}{% else %}../static/profile.gif{% endif %}" alt=""> </a>
                       </div>
                       <!-- Info -->
                       <div>
@@ -366,6 +368,24 @@
                       </div>
                     </div>
                   {% endif %}
+
+                  <div style="position: relative; top: 5px;" class="d-md-flex align-items-center mb-4 border-top border-bottom">Liked by:
+                    <div style="position: relative; top: 7px; left: 5px;">
+                      <!-- Info -->
+                      <div class="w-100">
+                        <!-- Connections START -->
+                        <ul class="avatar-group mt-1 list-unstyled align-items-sm-center">
+                          {% for user in post.likes.all %}
+                            <li class="avatar avatar-xxs">
+                              <img class="avatar-img rounded-circle" src="{% if user.profile.photo %}{% thumbnail user.profile.photo 180x180 %}{% else %}../static/profile.gif{% endif %}" alt="avatar">
+                            </li>
+                          {% endfor %}
+                        </ul>
+                        <!-- Connections END -->
+                      </div>
+                    </div>
+                  </div>
+
                   <p>{{ post.caption }}</p><br/>
                   <a href="{% url 'core:post_detail' slug=post.slug %}">{{ post.hashtags }}</a>
                   <!-- Feed react START -->
@@ -408,12 +428,6 @@
                     </li>
                   </ul>
                   <!-- Feed react START -->
-
-                  <p>Liked by:
-                    {% for user in post.likes.all %}
-                      {{ user.username }}{% if not forloop.last %}, {% endif %}
-                    {% endfor %}
-                  </p>
 
                   {% for comment in post.comments.all %}
                     <!-- Comment wrap START -->

@@ -12,13 +12,13 @@ import redis
 from django.conf import settings
 from django.utils import timezone
 from django.http import JsonResponse
-from accounts.models import Contact, Profile
+from accounts.models import Contact
 from django.db.models import Q
-from core.models import ChatSession, ChatMessage
 from django.contrib.auth.mixins import LoginRequiredMixin
 from .tasks import process_video
 from actions.utils import create_action
 from django.contrib import messages
+from direct.models import Message
 
 # соединить с redis
 r = redis.Redis(host=settings.REDIS_HOST, port=settings.REDIS_PORT, db=settings.REDIS_DB)
@@ -79,26 +79,18 @@ class PostListView(LoginRequiredMixin, ListView):
 
         context['current_url'] = self.request.build_absolute_uri()
 
-        user_inst = self.request.user
-        user_all_friends = ChatSession.objects.filter(Q(user1=user_inst) | Q(user2=user_inst)).select_related(
-            'user1', 'user2').order_by('-updated_on')
-        all_friends = []
-        for ch_session in user_all_friends:
-            user, user_inst = [ch_session.user2, ch_session.user1] if self.request.user.username == ch_session.user1.username else [
-                ch_session.user1, ch_session.user2]
-            un_read_msg_count = ChatMessage.objects.filter(chat_session=ch_session.id,
-                                                           message_detail__read=False).exclude(
-                user=user_inst).count()
-            data = {
-                "user_name": user.username,
-                "room_name": ch_session.room_group_name,
-                "un_read_msg_count": un_read_msg_count,
-                "user_id": user.id
-            }
-            all_friends.append(data)
+        context['messages'] = Message.get_messages(user=self.request.user)
+        context['active_direct'] = None
+        context['directs'] = None
 
-        context['user_list'] = all_friends
-        context['section'] = 'people'
+        if context['messages']:
+            message = context['messages'][0]
+            active_direct = message['user'].username
+            directs = Message.objects.filter(user=self.request.user, recipient=message['user'])
+            directs.update(is_read=True)
+            for message in context['messages']:
+                if message['user'].username == active_direct:
+                    message['unread'] = 0
 
         # Vaqt bilan bog'liq ma'lumotlarni olish
         posts = context['posts']

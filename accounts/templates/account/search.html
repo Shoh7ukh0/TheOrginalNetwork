@@ -1,6 +1,7 @@
 {% extends 'base.html' %}
 {% load thumbnail %}
 {% block content %}
+{% block title %} Search {% endblock %}
 {% if users %}
   <section style="height: 100vh; background-image: url(../../static/assets/366946-watchtower-in-oled-style-k-wallpaper-hdwallpaper-desktop.jpg); background-repeat: no-repeat; background-size: cover;" class="content">
     {% for user in users %}

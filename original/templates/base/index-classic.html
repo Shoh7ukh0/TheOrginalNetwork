@@ -44,7 +44,7 @@
                   <a class="nav-link" href="{% url 'edit_profile' username=user.username %}"> <i class="bi bi-gear-wide-connected nav-icon"></i> <span class="nav-text">Settings </span></a>
                 </li>
                 <li class="nav-item">
-                  <a class="nav-link" href="{% url 'friend_list' %}"> <i class="bi bi-chat-left-text nav-icon"></i> <span class="nav-text">Messaging </span></a>
+                  <a class="nav-link" href="{% url 'direct:inbox' %}"> <i class="bi bi-chat-left-text nav-icon"></i> <span class="nav-text">Messaging </span></a>
                 </li>
                 <li class="nav-item">
                   <a class="nav-link" href="{% url 'help' %}"> <i class="bi bi-info-circle nav-icon"></i> <span class="nav-text">Help </span></a>
@@ -121,7 +121,7 @@
                     <div class="d-flex align-items-center">
                       <!-- Avatar -->
                       <div class="avatar avatar-story me-2">
-                        <a href="#!"> <img class="avatar-img rounded-circle" src="{% if user.profile.photo %}{% thumbnail user.profile.photo 180x180 %}{% else %}../static/profile.gif{% endif %}" alt=""> </a>
+                        <a href="#!"> <img class="avatar-img rounded-circle" src="{% if post.user.profile.photo %}{% thumbnail post.user.profile.photo 180x180 %}{% else %}../static/profile.gif{% endif %}" alt=""> </a>
                       </div>
                       <!-- Info -->
                       <div>
@@ -518,25 +518,22 @@
               <input class="form-control bg-light" type="search" placeholder="Search..." aria-label="Search">
             </form>
             <!-- Search contact END -->
-            {% for user in user_list %}
-            <ul class="list-unstyled">
-
-              <!-- Contact item -->
-              <li id={{user.user_name}} class="mt-3 hstack gap-3 align-items-center position-relative toast-btn" data-target="chatToast">
-                <!-- Avatar -->
-                <div class="avatar avatar-xs">
-                  <a href="#">
-                    <img class="avatar-img rounded-circle" src="{% if user.profile.photo %}{% thumbnail user.profile.photo 180x180 %}{% else %}../static/profile.gif{% endif %}" alt="">
-                  </a>
-                </div>
-                <!-- Info -->
-                <div class="overflow-hidden contact-name">
-                  <a class="h6 mb-0" href="{% url 'start_chat' user.room_name %}">{{user.user_name | title}}</a>
-                </div>
-                <!-- Chat time -->
-                <div class="contact-status ms-auto"> <span id="{{user.user_id}}" style="background-color: rgb(0, 60, 255); border-radius: 50%; padding: 0px 7px 0px 7px; float: right; color: #fff;">{{user.un_read_msg_count}}</span>  </div>
-              </li>
-            </ul>
+            {% for message in messages %}
+              <ul class="list-unstyled">
+                <!-- Contact item -->
+                <li class="mt-3 hstack gap-3 align-items-center position-relative toast-btn" data-target="chatToast">
+                  <!-- Avatar -->
+                  <div class="avatar avatar-xs">
+                    <a href="{% url 'direct:directs' message.user.username %}"><img class="avatar-img rounded-circle" src="{% if message.user.profile.photo %}{% thumbnail message.user.profile.photo 180x180 %}{% else %}../static/profile.gif{% endif %}" alt=""></a>
+                  </div>
+                  <!-- Info -->
+                  <div class="overflow-hidden contact-name">
+                    <a class="h6 mb-0" href="#!">{{ message.user.first_name }} {{ message.user.last_name }} </a>
+                  </div>
+                  <!-- Chat time -->
+                  <div class="contact-status ms-auto fs-3"> <i class="bi bi-dot text-success"></i> </div>
+                </li>
+              </ul>
             {% endfor %}
           </div>
           <!-- Offcanvas body END -->

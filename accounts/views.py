@@ -17,7 +17,6 @@ from django.contrib.auth.models import User
 from django.utils.decorators import method_decorator
 from django.http import HttpResponseServerError
 from django.db.models import Q
-from core.models import ChatSession, ChatMessage
 from original.forms import SearchForm
 import pdfkit
 from django.template import loader
@@ -346,29 +345,12 @@ class NotificationsView(View):
         user = get_object_or_404(User, username=username)
         notifications = Notification.objects.filter(user=user)
 
-        user_1 = request.user
-        if request.GET.get('id'):
-            user2_id = request.GET.get('id')
-            user_2 = get_object_or_404(User,id = user2_id)
-            get_create = ChatSession.create_if_not_exists(user_1,user_2)
-            if get_create:
-                messages.add_message(request,messages.SUCCESS,f'{user_2.username} successfully added in your chat list!!')
-            else:
-                messages.add_message(request,messages.SUCCESS,f'{user_2.username} already added in your chat list!!')
-            return HttpResponseRedirect('/notifications', username=username)
-        else:
-            user_all_friends = ChatSession.objects.filter(Q(user1 = user_1) | Q(user2 = user_1))
-            user_list = []
-            for ch_session in user_all_friends:
-                user_list.append(ch_session.user1.id)
-                user_list.append(ch_session.user2.id)
-            all_user = User.objects.exclude(Q(username=user_1.username)|Q(id__in = list(set(user_list))))
+        
         # Profilga bog'liq xabarlar
         notifications = Notification.objects.filter(user=request.user)
 
         context = {
             'notifications': notifications,
-            'all_user': all_user,
         }
 
         return render(request, self.template_name, context)

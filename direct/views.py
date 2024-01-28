@@ -10,6 +10,7 @@ from direct.models import Message
 
 from django.db.models import Q
 from django.core.paginator import Paginator
+
 # Create your views here.
 
 @login_required
@@ -31,7 +32,7 @@ def Inbox(request):
 		'directs': directs,
 		'messages': messages,
 		'active_direct': active_direct,
-		}
+	}
 
 	template = loader.get_template('direct/direct.html')
 
@@ -61,7 +62,7 @@ def UserSearch(request):
 @login_required
 def Directs(request, username):
 	user = request.user
-	messages = Message.get_messages(user=user)
+	messages = Message.get_messages(user=user).count()
 	active_direct = username
 	directs = Message.objects.filter(user=user, recipient__username=username)
 	directs.update(is_read=True)
@@ -72,10 +73,10 @@ def Directs(request, username):
 	context = {
 		'directs': directs,
 		'messages': messages,
-		'active_direct':active_direct,
+		'active_direct': active_direct,
 	}
 
-	template = loader.get_template('direct.html')
+	template = loader.get_template('direct/direct.html')
 
 	return HttpResponse(template.render(context, request))
 

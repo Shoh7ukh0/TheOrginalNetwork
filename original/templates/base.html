@@ -5,7 +5,7 @@
 
 <!-- Mirrored from social.webestica.com/ by HTTrack Website Copier/3.x [XR&CO'2014], Thu, 27 Apr 2023 18:05:50 GMT -->
 <head>
-	<title>lifebook</title>
+	<title>lifebook {% block title %}{% endblock %}</title>
 
 	<!-- Meta Tags -->
 	<meta charset="utf-8">
@@ -233,7 +233,7 @@ Header START -->
 								<div>
 									<a class="h6 stretched-link" href="#">
 										{% if request.user.is_authenticated %}
-											{{ request.user.first_name|default:request.user.username }}
+											{{ request.user.username|default:request.user.username }}
 										{% else %}
 											Username
 										{% endif %}

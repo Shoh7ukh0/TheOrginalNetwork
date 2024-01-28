@@ -115,7 +115,7 @@ TEMPLATES = [
     },
 ]
 
-# WSGI_APPLICATION = 'Config.wsgi.application'
+WSGI_APPLICATION = 'Config.wsgi.application'
 
 
 # Database
@@ -263,7 +263,7 @@ REDIS_DB = 0
 LOGIN_REDIRECT_URL = '/login/'
 
 
-ASGI_APPLICATION = 'Config.asgi.application'
+# ASGI_APPLICATION = 'Config.asgi.application'
 CHANNEL_LAYERS = {
     'default': {
         'BACKEND': 'channels_redis.core.RedisChannelLayer',
